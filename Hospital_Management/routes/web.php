@@ -23,5 +23,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/userList', 'UserController@index')->name('userList');
 Route::get('/createUser/{user}', 'UserController@create')->name('createUser');
+Route::post('/postUserDate', 'UserController@store')->name('postUserDate');
 
 
