@@ -12,4 +12,8 @@ class UserController extends Controller
         return view('admin.user.index')->with('userlist', $userList);
     }
 
+    public function create($type){
+        return view('admin.user.createForm')->with('usertype', $type);
+    }
+
 }

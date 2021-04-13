@@ -9,7 +9,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">User List</h6>
                 </div>
                 <div class="col-md-2" style="margin-left: 65px;">
-                    <a href="#" class="btn btn-primary btn-sm pl-10">Create User</a>
+                    <a href="{{route('createUser',['userList'])}}" class="btn btn-primary btn-sm pl-10">Create User</a>
                 </div>
             </div>
         </div>
