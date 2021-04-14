@@ -25,7 +25,8 @@ class User extends Authenticatable
         'address',
         'degree',
         'joining_date',
-        'doctor_specialist'
+        'doctor_specialist',
+        'password_ref'
     ];
 
     /**

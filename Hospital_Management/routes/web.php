@@ -24,5 +24,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/userList', 'UserController@index')->name('userList');
 Route::get('/createUser/{user}', 'UserController@create')->name('createUser');
 Route::post('/postUserDate', 'UserController@store')->name('postUserDate');
+Route::get('/editUser/{id}', 'UserController@edit')->name('editUser');
+Route::post('/updateUser', 'UserController@update')->name('updateUser');
+Route::post('/deleteUser/{id}', 'UserController@delete')->name('deleteUser');
 
 
