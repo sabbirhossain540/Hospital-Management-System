@@ -20,5 +20,9 @@ class ActiveLog extends Model
         'ip_address',
     ];
 
+    public function users(){
+        return $this->belongsTo(User::class);
+    }
+
 
 }

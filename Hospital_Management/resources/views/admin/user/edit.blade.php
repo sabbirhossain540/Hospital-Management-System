@@ -20,6 +20,7 @@
                             <div class="col">
                                 <label for="Fullname">Fullname</label>
                                 <input type="hidden" name="id" value="@if(isset($userInfo)) {{ $userInfo->id }} @endif">
+                                <input type="hidden" name="edittype" value="{{ $editStatus }}">
                                 <input type="text" name="name" id="name" class="form-control" placeholder="Enter your fullname" value="@if(isset($userInfo)) {{ $userInfo->name }} @endif" required>
                                 @error('name')
                                 <span class="text-danger">{{ $message }}</span>
@@ -43,10 +44,11 @@
                                 @enderror
                             </div>
 
-                            <div class="col">
+                            <div class="col" @if($editStatus == 'PE') hidden @endif>
                                 <label for="mobile_no">Password</label>
                                 <input type="text" name="password" id="password" class="form-control" placeholder="Enter Password" value="@if(isset($userInfo)) {{ $userInfo->password_ref }} @endif" required>
                             </div>
+
 
                             <div class="col">
                                 <label for="mobile_no">Mobile No</label>

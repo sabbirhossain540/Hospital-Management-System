@@ -15,4 +15,15 @@ class ActiveController extends Controller
         $active_log->function_name = $fn;
         $active_log->save();
     }
+
+    public function getActiveLog(){
+        $activityList = ActiveLog::with('users')->Where('user_id', auth()->user()->id)->orderBy('id','desc')->get();
+        $this->activity_log("show activity log", "getActiveLog");
+        return view('admin.activityLog.index')->with('activityList', $activityList);
+    }
+
+    public function activity_log($log_details, $fn){
+        $ac = new ActiveController();
+        $ac->saveLogData(auth()->user()->id, $log_details, 'UserController', $fn);
+    }
 }

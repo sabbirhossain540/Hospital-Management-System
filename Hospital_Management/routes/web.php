@@ -27,5 +27,12 @@ Route::post('/postUserDate', 'UserController@store')->name('postUserDate');
 Route::get('/editUser/{id}', 'UserController@edit')->name('editUser');
 Route::post('/updateUser', 'UserController@update')->name('updateUser');
 Route::post('/deleteUser/{id}', 'UserController@delete')->name('deleteUser');
+Route::get('/showProfile', 'UserController@showProfile')->name('showProfile');
+Route::get('/editProfile', 'UserController@editProfile')->name('editProfile');
+Route::get('/changePassword', 'UserController@changePassword')->name('changePassword');
+Route::post('/updatePassword', 'UserController@updatePassword')->name('updatePassword');
+
+
+Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 
 
