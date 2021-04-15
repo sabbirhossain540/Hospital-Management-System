@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Auth;
 
 class UserController extends Controller
 {
     public function index(){
         $userList = User::all();
+        $this->activity_log("get user list", "index");
         return view('admin.user.index')->with('userlist', $userList);
     }
 
     public function create($type){
+        $this->activity_log("open user from", "create");
         return view('admin.user.createForm')->with('usertype', $type);
     }
 
@@ -38,14 +41,15 @@ class UserController extends Controller
         $user->joining_date = $request->joining_date;
         $user->role = 'staff';
         $user->address = $request->address;
-        $user->save();
+        $userList = $user->save();
         session()->flash('success', 'User created successfully');
+        $this->activity_log("store new user. { name:".$userList->name." id:".$userList->id." }", "store");
         return redirect()->route('userList');
     }
 
     public function edit($id){
         $userInfo = User::where('id',$id)->first();
-        //dd($userInfo);
+        $this->activity_log("edit user. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
         return view('admin.user.edit')->with('userInfo', $userInfo);
     }
 
@@ -69,17 +73,25 @@ class UserController extends Controller
         $user->joining_date = $request->joining_date;
         $user->role = 'staff';
         $user->address = $request->address;
-        $user->save();
+        $userlist = $user->save();
         session()->flash('success', 'User updated successfully');
+        $this->activity_log("update user. { name:".$userList->name." id:".$userList->id." }", "update");
         return redirect()->route('userList');
     }
 
     public function delete($id){
         $user = User::findOrFail($id);
+        $this->activity_log("delete user. { name:".$user->name." id:".$user->id." }", "delete");
         $user->delete();
         session()->flash('success', 'User deleted successfully');
         return redirect()->route('userList');
 
+    }
+
+    public function activity_log($log_details, $fn){
+
+        $ac = new ActiveController();
+        $ac->saveLogData(auth()->user()->id, $log_details, 'UserController', $fn);
     }
 
 }
