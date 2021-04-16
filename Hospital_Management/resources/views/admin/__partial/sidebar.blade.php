@@ -32,6 +32,11 @@
             <i class="fas fa-users"></i>
             <span>User List</span></a>
     </li>
+    <li class="nav-item {{ request()->is('userList*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('userList') }}">
+            <i class="fas fa-users"></i>
+            <span>Doctor List</span></a>
+    </li>
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
            aria-expanded="true" aria-controls="collapseTwo">
