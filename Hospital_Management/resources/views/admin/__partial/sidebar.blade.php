@@ -32,8 +32,8 @@
             <i class="fas fa-users"></i>
             <span>User List</span></a>
     </li>
-    <li class="nav-item {{ request()->is('userList*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('userList') }}">
+    <li class="nav-item {{ request()->is('doctorList*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('doctorList.index') }}">
             <i class="fas fa-users"></i>
             <span>Doctor List</span></a>
     </li>

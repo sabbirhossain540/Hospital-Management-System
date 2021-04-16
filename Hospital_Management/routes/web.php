@@ -32,6 +32,8 @@ Route::get('/editProfile', 'UserController@editProfile')->name('editProfile');
 Route::get('/changePassword', 'UserController@changePassword')->name('changePassword');
 Route::post('/updatePassword', 'UserController@updatePassword')->name('updatePassword');
 
+Route::resource('doctorList','DoctorController');
+
 
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 
