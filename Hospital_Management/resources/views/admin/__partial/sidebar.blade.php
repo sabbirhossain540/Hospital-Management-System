@@ -37,7 +37,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('medicalCollege.index') }}">Medical College Name</a>
                 <a class="collapse-item" href="{{ route('educationalQualification.index') }}">Educational Qualification</a>
-                <a class="collapse-item" href="cards.html">Specialist Area</a>
+                <a class="collapse-item" href="{{ route('specialistArea.index') }}">Specialist Area</a>
             </div>
         </div>
     </li>
