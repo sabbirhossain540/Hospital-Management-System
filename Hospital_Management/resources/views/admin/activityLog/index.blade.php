@@ -16,13 +16,17 @@
                     <thead>
                     <tr>
                         <th>Log Details</th>
+                        <th>User Role</th>
+                        <th>Created By</th>
                         <th>Created At</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($activityList as $data)
                         <tr>
-                            <td>{{ $data->log_details }}</td>
+                            <td>{{ $data->log_details }}. <strong style="color: mediumvioletred">operated By {{ $data->users->username }}</strong></td>
+                            <td>{{ $data->users->role }}</td>
+                            <td>{{ $data->users->name }}</td>
                             <td>{{ $data->created_at }}</td>
                         </tr>
                     @endforeach

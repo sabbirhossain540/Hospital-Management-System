@@ -18,6 +18,7 @@ class ActiveController extends Controller
 
     public function getActiveLog(){
         $activityList = ActiveLog::with('users')->Where('user_id', auth()->user()->id)->orderBy('id','desc')->get();
+        //dd($activityList);
         $this->activity_log("show activity log", "getActiveLog");
         return view('admin.activityLog.index')->with('activityList', $activityList);
     }
