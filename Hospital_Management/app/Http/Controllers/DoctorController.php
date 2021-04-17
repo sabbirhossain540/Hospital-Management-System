@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\EducationalQualification;
+use App\MedicalCollege;
+use App\SpecialistArea;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +18,8 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        $userList = User::where('role','doctor')->get();
+        $userList = User::with('educationQualification')->where('role','doctor')->get();
+        $this->activity_log("get doctor list", "index");
         return view('admin.doctor.index')->with('userlist', $userList);
     }
 
@@ -26,7 +30,11 @@ class DoctorController extends Controller
      */
     public function create()
     {
-        return view('admin.doctor.create');
+        $collegeList = MedicalCollege::all();
+        $qualificationList = EducationalQualification::all();
+        $specialistAreaList = SpecialistArea::all();
+        $this->activity_log("open doctor create from", "create");
+        return view('admin.doctor.create',compact(array('collegeList', 'qualificationList', 'specialistAreaList')));
     }
 
     /**
@@ -47,23 +55,13 @@ class DoctorController extends Controller
         $temp_password = rand(10000000,99999999);
 
         $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->username = $request->username;
         $user->password = Hash::make(trim($temp_password));
         $user->password_ref = trim($temp_password);
-        $user->mobile_no = $request->mobile_no;
-        $user->gander = $request->gander;
-        $user->date_of_birth = $request->birth_day;
         $user->role = 'doctor';
-        $user->degree = $request->educational_qualification;
-        $user->doctor_specialist = $request->specialist;
-        $user->institute_name = $request->institute_name;
-        $user->passing_year = $request->passing_year;
-        $user->address = $request->address;
-        $user->save();
+        $this->dataInsert($user,$request);
+
         session()->flash('success', 'Doctor created successfully');
-        //$this->activity_log("store new user. { name:".$request->name." id:".$user->id." }", "store");
+        $this->activity_log("store new doctor. { name:".$request->name." }", "store");
         return redirect()->route('doctorList.index');
     }
 
@@ -75,7 +73,9 @@ class DoctorController extends Controller
      */
     public function show($id)
     {
-        //
+        $userInfo = User::with('educationQualification', 'CollageName', 'Specialist')->where('id',$id)->first();
+        $this->activity_log("show doctor details. { name:".$userInfo->name." id:".$userInfo->id." }", "show");
+        return view('admin.doctor.show',compact(array('userInfo')));
     }
 
     /**
@@ -86,9 +86,12 @@ class DoctorController extends Controller
      */
     public function edit($id)
     {
-        $userInfo = User::where('id',$id)->first();
-        dd($userInfo);
-//        return view('admin.user.edit')->with('userInfo', $userInfo)->with('editStatus','Normal');
+        $collegeList = MedicalCollege::all();
+        $qualificationList = EducationalQualification::all();
+        $specialistAreaList = SpecialistArea::all();
+        $userInfo = User::with('educationQualification', 'CollageName', 'Specialist')->where('id',$id)->first();
+        $this->activity_log("edit doctor. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
+        return view('admin.doctor.edit',compact(array('collegeList', 'qualificationList', 'specialistAreaList', 'userInfo')));
     }
 
     /**
@@ -100,7 +103,39 @@ class DoctorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required',
+            'username' => 'required',
+            'mobile_no' => 'required|min:11'
+        ]);
+
+        $user->password = Hash::make(trim($request->password));
+        $user->password_ref = trim($request->password);
+        $this->dataInsert($user, $request);
+        $this->activity_log("update doctor. { name:".$request->name." }", "edit");
+        session()->flash('success', 'Doctor updated successfully');
+        return redirect()->route('doctorList.index');
+    }
+
+    /**
+     * @param $modelName
+     * @param $request
+     */
+    public function dataInsert($modelName, $request){
+        $modelName->name = $request->name;
+        $modelName->email = $request->email;
+        $modelName->username = $request->username;
+        $modelName->mobile_no = $request->mobile_no;
+        $modelName->gander = $request->gander;
+        $modelName->date_of_birth = $request->birth_day;
+        $modelName->degree = $request->educational_qualification;
+        $modelName->doctor_specialist = $request->specialist;
+        $modelName->institute_name = $request->institute_name;
+        $modelName->passing_year = $request->passing_year;
+        $modelName->address = $request->address;
+        $modelName->save();
     }
 
     /**
@@ -111,6 +146,15 @@ class DoctorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $this->activity_log("delete doctor. { name:".$user->name." id:".$user->id." }", "delete");
+        $user->delete();
+        session()->flash('success', 'Doctor deleted successfully');
+        return redirect()->route('doctorList.index');
+    }
+
+    public function activity_log($log_details, $fn){
+        $ac = new ActiveController();
+        $ac->saveLogData(auth()->user()->id, $log_details, 'UserController', $fn);
     }
 }

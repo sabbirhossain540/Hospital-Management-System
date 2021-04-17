@@ -50,4 +50,16 @@ class User extends Authenticatable
     public function activity_log(){
         return $this->hasMany(ActiveLog::class, 'user_id', 'id');
     }
+
+    public function educationQualification(){
+        return $this->hasOne(EducationalQualification::class, 'id', 'degree');
+    }
+
+    public function CollageName(){
+        return $this->hasOne(MedicalCollege::class, 'id', 'institute_name');
+    }
+
+    public function Specialist(){
+        return $this->hasOne(SpecialistArea::class, 'id', 'doctor_specialist');
+    }
 }

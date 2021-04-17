@@ -33,6 +33,7 @@ Route::get('/changePassword', 'UserController@changePassword')->name('changePass
 Route::post('/updatePassword', 'UserController@updatePassword')->name('updatePassword');
 
 Route::resource('doctorList','DoctorController');
+Route::post('/deleteDoctor/{id}', 'DoctorController@destroy')->name('deleteDoctor');
 
 Route::resource('medicalCollege','MedicalCollegeController');
 Route::post('/deleteCollege/{id}', 'MedicalCollegeController@destroy')->name('deleteCollege');
