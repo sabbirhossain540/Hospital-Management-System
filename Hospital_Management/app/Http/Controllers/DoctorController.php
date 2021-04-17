@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class DoctorController extends Controller
 {
@@ -13,7 +15,8 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        return view('admin.doctor.index');
+        $userList = User::where('role','doctor')->get();
+        return view('admin.doctor.index')->with('userlist', $userList);
     }
 
     /**
@@ -34,7 +37,34 @@ class DoctorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'username' => 'required|unique:users',
+            'mobile_no' => 'required|min:11'
+        ]);
+
+        $temp_password = rand(10000000,99999999);
+
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->username = $request->username;
+        $user->password = Hash::make(trim($temp_password));
+        $user->password_ref = trim($temp_password);
+        $user->mobile_no = $request->mobile_no;
+        $user->gander = $request->gander;
+        $user->date_of_birth = $request->birth_day;
+        $user->role = 'doctor';
+        $user->degree = $request->educational_qualification;
+        $user->doctor_specialist = $request->specialist;
+        $user->institute_name = $request->institute_name;
+        $user->passing_year = $request->passing_year;
+        $user->address = $request->address;
+        $user->save();
+        session()->flash('success', 'Doctor created successfully');
+        //$this->activity_log("store new user. { name:".$request->name." id:".$user->id." }", "store");
+        return redirect()->route('doctorList.index');
     }
 
     /**
@@ -56,7 +86,9 @@ class DoctorController extends Controller
      */
     public function edit($id)
     {
-        //
+        $userInfo = User::where('id',$id)->first();
+        dd($userInfo);
+//        return view('admin.user.edit')->with('userInfo', $userInfo)->with('editStatus','Normal');
     }
 
     /**

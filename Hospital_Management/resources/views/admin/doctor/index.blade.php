@@ -14,34 +14,38 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-{{--                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">--}}
-{{--                    <thead>--}}
-{{--                    <tr>--}}
-{{--                        <th>Name</th>--}}
-{{--                        <th>Email</th>--}}
-{{--                        <th>Username</th>--}}
-{{--                        <th>Password</th>--}}
-{{--                        <th>Role</th>--}}
-{{--                        <th>Action</th>--}}
-{{--                    </tr>--}}
-{{--                    </thead>--}}
-{{--                    <tbody>--}}
-{{--                    @foreach($userlist as $user)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{ $user->name }}</td>--}}
-{{--                            <td>{{ $user->email }}</td>--}}
-{{--                            <td>{{ $user->username }}</td>--}}
-{{--                            <td>{{ $user->password_ref }}</td>--}}
-{{--                            <td>{{ $user->role }}</td>--}}
-{{--                            <td>--}}
-{{--                                <a href="{{route('editUser',['id'=> $user->id ])}}" class="btn btn-primary btn-sm">Edit</a>--}}
-{{--                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $user->id }})">Delete</button>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Mobile No</th>
+                        <th>Gander</th>
+                        <th>Qualification</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($userlist as $user)
+                        <tr>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->username }}</td>
+                            <td>{{ $user->password_ref }}</td>
+                            <td>{{ $user->mobile_no }}</td>
+                            <td>{{ $user->gander }}</td>
+                            <td>{{ $user->degree }}</td>
+                            <td>
+                                <a href="{{route('doctorList.edit',$user->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $user->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
 
-{{--                    </tbody>--}}
-{{--                </table>--}}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

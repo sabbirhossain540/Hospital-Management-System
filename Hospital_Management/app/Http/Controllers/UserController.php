@@ -71,7 +71,7 @@ class UserController extends Controller
         $user->mobile_no = $request->mobile_no;
         $user->gander = $request->gander;
         $user->joining_date = $request->joining_date;
-        $user->role = 'staff';
+        //$user->role = 'staff';
         $user->address = $request->address;
         $userlist = $user->save();
         session()->flash('success', 'User updated successfully');

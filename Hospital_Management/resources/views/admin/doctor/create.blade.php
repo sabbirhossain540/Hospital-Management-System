@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{route('postUserDate')}}" >
+                    <form method="POST" action="{{route('doctorList.store')}}" >
                         @csrf
                         <div class="row mb-3">
                             <div class="col">
@@ -48,12 +48,6 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            {{--                            <div class="col">--}}
-                            {{--                                <input type="text" name="password" id="password" class="form-control" placeholder="Password" value="{{ old('password') }}" >--}}
-                            {{--                                @error('password')--}}
-                            {{--                                    <span class="text-danger">{{ $message }}</span>--}}
-                            {{--                                @enderror--}}
-                            {{--                            </div>--}}
                         </div>
 
                         <div class="row mb-3">
@@ -78,7 +72,7 @@
                             </div>
                             <div class="col">
                                 <label for="Specialist">Specialist</label>
-                                <input type="text" name="Specialist" id="Specialist" class="form-control" placeholder="Field of Specialist" value="{{ old('Specialist') }}">
+                                <input type="text" name="specialist" id="specialist" class="form-control" placeholder="Field of Specialist" value="{{ old('Specialist') }}">
                             </div>
                         </div>
 
@@ -103,22 +97,12 @@
                         <div class="d-flex flex-row mb-3">
                             <div class="col-10 p-2"></div>
                             <div class="col-2 p-2">
-                                <a href="{{route('userList')}}" class="btn btn-danger btn-sm">Cancel</a>
+                                <a href="{{route('doctorList.index')}}" class="btn btn-danger btn-sm">Cancel</a>
                                 <button type="submit" class="btn btn-success btn-sm">Submit</button>
                             </div>
                         </div>
 
 
-{{--                        <div class="row">--}}
-{{--                            <div class="col"></div>--}}
-{{--                            <div class="col"></div>--}}
-{{--                            <div class="col"></div>--}}
-{{--                            <div class="col"></div>--}}
-{{--                            <div class="col">--}}
-{{--                                <a href="{{route('userList')}}" class="btn btn-danger btn-sm">Cancel</a>--}}
-{{--                                <button type="submit" class="btn btn-success btn-sm">Submit</button>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
                     </form>
                 </div>
             </div>
