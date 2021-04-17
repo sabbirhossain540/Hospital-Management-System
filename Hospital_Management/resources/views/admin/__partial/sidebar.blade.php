@@ -35,8 +35,8 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="buttons.html">Medical College Name</a>
-                <a class="collapse-item" href="cards.html">Educational Qualification</a>
+                <a class="collapse-item" href="{{ route('medicalCollege.index') }}">Medical College Name</a>
+                <a class="collapse-item" href="{{ route('educationalQualification.index') }}">Educational Qualification</a>
                 <a class="collapse-item" href="cards.html">Specialist Area</a>
             </div>
         </div>

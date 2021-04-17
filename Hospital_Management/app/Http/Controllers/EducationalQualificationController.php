@@ -14,7 +14,9 @@ class EducationalQualificationController extends Controller
      */
     public function index()
     {
-        //
+        $eduQualification = EducationalQualification::all();
+        $this->activity_log("get educational qualification list", "index");
+        return view('admin.educationalQualification.index')->with('eduQualification', $eduQualification);
     }
 
     /**
@@ -24,7 +26,8 @@ class EducationalQualificationController extends Controller
      */
     public function create()
     {
-        //
+        $this->activity_log("open educational qualification form", "create");
+        return view('admin.educationalQualification.create');
     }
 
     /**
@@ -35,51 +38,72 @@ class EducationalQualificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|unique:medical_colleges',
+        ]);
+        $eduQualification = new EducationalQualification();
+        $eduQualification->name = $request->name;
+        $eduQualification->save();
+
+        session()->flash('success', 'Educational Qualification created successfully');
+        $this->activity_log("store new educational qualification. { name:".$request->name." }", "store");
+        return redirect()->route('educationalQualification.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\EducationalQualification  $educationalQualification
-     * @return \Illuminate\Http\Response
-     */
-    public function show(EducationalQualification $educationalQualification)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\EducationalQualification  $educationalQualification
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(EducationalQualification $educationalQualification)
+    public function edit($id)
     {
-        //
+        $eduQualification = EducationalQualification::where('id',$id)->first();
+        $this->activity_log("edit qualification. { name:".$eduQualification->name." id:".$eduQualification->id." }", "edit");
+        return view('admin.educationalQualification.create')->with('eduQualification', $eduQualification);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\EducationalQualification  $educationalQualification
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, EducationalQualification $educationalQualification)
+    public function update(Request $request, $id)
     {
-        //
+        $eduQualification = EducationalQualification::findOrFail($id);
+
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $eduQualification->name = $request->name;
+        $eduQualification->save();
+        $this->activity_log("updated educational qualification. { name:".$eduQualification->name." id:".$eduQualification->id." }", "update");
+        session()->flash('success', 'Education Qualification updated successfully');
+        return redirect()->route('educationalQualification.index');
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\EducationalQualification  $educationalQualification
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(EducationalQualification $educationalQualification)
+    public function destroy($id)
     {
-        //
+        $eduQualification = EducationalQualification::findOrFail($id);
+        $this->activity_log("deleted educational qualification { name:".$eduQualification->name." id:".$eduQualification->id." }", "destroy");
+        $eduQualification->delete();
+        session()->flash('success', 'Educational Qualification deleted successfully');
+        return redirect()->route('educationalQualification.index');
+    }
+
+    public function activity_log($log_details, $fn){
+        $ac = new ActiveController();
+        $ac->saveLogData(auth()->user()->id, $log_details, 'EducationalQualificationController', $fn);
     }
 }
