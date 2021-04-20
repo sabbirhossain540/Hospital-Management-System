@@ -20,7 +20,7 @@
     </form>
 
     <marquee width="60%" direction="left">
-        Welcome to <b style="color: green;">Bashundhara Clinic</b>
+        Welcome <span style="color: purple">{{ Auth::user()->name }}</span> to <b style="color: green;">Bashundhara Clinic And Digonestic Center</b>
     </marquee>
 
     <!-- Topbar Navbar -->

@@ -1,11 +1,8 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-        <div class="sidebar-brand-icon">
-            <i class="fas fa-hospital-user"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">Bashundhara Clinic</div>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center mb-4 mt-4" href="{{ route('home') }}">
+        <img src="{{ asset('img/logo.webp') }}" class="img-fluid rounded-circle" alt="logo" width="90" height="90">
     </a>
 
     <!-- Divider -->
@@ -51,6 +48,12 @@
         <a class="nav-link" href="{{ route('doctorList.index') }}">
             <i class="fas fa-users"></i>
             <span>Doctor List</span></a>
+    </li>
+
+    <li class="nav-item {{ request()->is('doctorList*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('doctorList.index') }}">
+            <i class="fas fa-users"></i>
+            <span>Patient List</span></a>
     </li>
 
 
