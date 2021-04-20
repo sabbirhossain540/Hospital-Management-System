@@ -22,6 +22,7 @@
                     </tr>
                     </thead>
                     <tbody>
+
                     @foreach($activityList as $data)
                         <tr>
                             <td>{{ $data->log_details }}. <strong style="color: mediumvioletred">operated By {{ $data->users->username }}</strong></td>
