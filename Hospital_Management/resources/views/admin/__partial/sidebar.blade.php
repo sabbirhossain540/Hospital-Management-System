@@ -50,8 +50,8 @@
             <span>Doctor List</span></a>
     </li>
 
-    <li class="nav-item {{ request()->is('doctorList*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('doctorList.index') }}">
+    <li class="nav-item {{ request()->is('patientList*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('patientList.index') }}">
             <i class="fas fa-users"></i>
             <span>Patient List</span></a>
     </li>

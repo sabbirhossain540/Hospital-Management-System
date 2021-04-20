@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Patient;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PatientController extends Controller
 {
@@ -14,7 +16,9 @@ class PatientController extends Controller
      */
     public function index()
     {
-        //
+        $userList = User::where('role','patient')->get();
+        $this->activity_log("get patient list", "index");
+        return view('admin.patient.index')->with('userlist', $userList);
     }
 
     /**
@@ -24,7 +28,8 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
+        $this->activity_log("open patient create from", "create");
+        return view('admin.patient.create');
     }
 
     /**
@@ -35,51 +40,120 @@ class PatientController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'unique:users',
+            'birth_day' => 'required',
+            'mobile_no' => 'required|min:11'
+        ]);
+
+        $temp_password = rand(10000000,99999999);
+        $username = $this->randomUsername();
+
+        $user = new User;
+        $user->password = Hash::make(trim($temp_password));
+        $user->password_ref = trim($temp_password);
+        $user->role = 'patient';
+        $user->username = $username;
+        $this->dataInsert($user,$request);
+
+        session()->flash('success', 'Patient created successfully');
+        $this->activity_log("store new patient. { name:".$request->name." }", "store");
+        return redirect()->route('patientList.index');
+    }
+
+    /**
+     * @return string
+     */
+    function randomUsername() {
+        $str = "";
+        $characters = array_merge(range('A','Z'), range('a','z'), range('0','9'));
+        $max = count($characters) - 1;
+        for ($i = 0; $i < 8; $i++) {
+            $rand = mt_rand(0, $max);
+            $str .= $characters[$rand];
+        }
+        return $str;
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Patient  $patient
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Patient $patient)
+    public function show($id)
     {
-        //
+        $userInfo = User::where('id',$id)->first();
+        $this->activity_log("show patient details. { name:".$userInfo->name." id:".$userInfo->id." }", "show");
+        return view('admin.patient.show',compact(array('userInfo')));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Patient  $patient
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Patient $patient)
+    public function edit($id)
     {
-        //
+        $userInfo = User::with('educationQualification', 'CollageName', 'Specialist')->where('id',$id)->first();
+        $this->activity_log("edit patient. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
+        return view('admin.patient.edit',compact(array('userInfo')));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Patient  $patient
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Patient $patient)
+    public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $this->validate($request, [
+            'name' => 'required',
+            'mobile_no' => 'required|min:11'
+        ]);
+
+        $this->dataInsert($user, $request);
+        $this->activity_log("update patient. { name:".$request->name." }", "edit");
+        session()->flash('success', 'Patient updated successfully');
+        return redirect()->route('patientList.index');
+    }
+
+    /**
+     * @param $modelName
+     * @param $request
+     */
+    public function dataInsert($modelName, $request){
+        $modelName->name = $request->name;
+        $modelName->email = $request->email;
+        $modelName->mobile_no = $request->mobile_no;
+        $modelName->gander = $request->gander;
+        $modelName->date_of_birth = $request->birth_day;
+        $modelName->address = $request->address;
+        $modelName->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Patient  $patient
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Patient $patient)
+    public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $this->activity_log("delete patient. { name:".$user->name." id:".$user->id." }", "delete");
+        $user->delete();
+        session()->flash('success', 'Patient deleted successfully');
+        return redirect()->route('patientList.index');
+    }
+
+    public function activity_log($log_details, $fn){
+        $ac = new ActiveController();
+        $ac->saveLogData(auth()->user()->id, $log_details, 'UserController', $fn);
     }
 }

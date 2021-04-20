@@ -44,6 +44,9 @@ Route::post('/deleteQualification/{id}', 'EducationalQualificationController@des
 Route::resource('specialistArea','SpecialistAreaController');
 Route::post('/deleteSA/{id}', 'SpecialistAreaController@destroy')->name('deleteQualification');
 
+Route::resource('patientList','PatientController');
+Route::post('/deletePatient/{id}', 'PatientController@destroy')->name('deletePatient');
+
 
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 
