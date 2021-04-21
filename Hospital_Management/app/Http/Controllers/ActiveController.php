@@ -26,6 +26,6 @@ class ActiveController extends Controller
 
     public function activity_log($log_details, $fn){
         $ac = new ActiveController();
-        $ac->saveLogData(auth()->user()->id, $log_details, 'UserController', $fn);
+        $ac->saveLogData(auth()->user()->id, $log_details, 'ActiveController', $fn);
     }
 }

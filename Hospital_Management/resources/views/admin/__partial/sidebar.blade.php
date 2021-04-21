@@ -56,6 +56,18 @@
             <span>Patient List</span></a>
     </li>
 
+    <li class="nav-item {{ request()->is('services*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('services.index') }}">
+            <i class="fab fa-servicestack"></i>
+            <span>Service List</span></a>
+    </li>
+
+    <li class="nav-item {{ request()->is('references*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('references.index') }}">
+            <i class="fas fa-hands-helping"></i>
+            <span>Reference List</span></a>
+    </li>
+
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">

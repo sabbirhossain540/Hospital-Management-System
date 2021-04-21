@@ -47,6 +47,11 @@ Route::post('/deleteSA/{id}', 'SpecialistAreaController@destroy')->name('deleteQ
 Route::resource('patientList','PatientController');
 Route::post('/deletePatient/{id}', 'PatientController@destroy')->name('deletePatient');
 
+Route::resource('services','ServicesController');
+Route::post('/deleteService/{id}', 'ServicesController@destroy')->name('deleteService');
+
+Route::resource('references','ReferencesController');
+Route::post('/deleteReference/{id}', 'ReferencesController@destroy')->name('deleteReference');
 
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 

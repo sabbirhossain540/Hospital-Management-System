@@ -104,6 +104,6 @@ class SpecialistAreaController extends Controller
 
     public function activity_log($log_details, $fn){
         $ac = new ActiveController();
-        $ac->saveLogData(auth()->user()->id, $log_details, 'MedicalCollegeController', $fn);
+        $ac->saveLogData(auth()->user()->id, $log_details, 'SpecialistAreaController', $fn);
     }
 }
