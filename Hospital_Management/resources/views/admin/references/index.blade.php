@@ -8,7 +8,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">References List</h6>
                 </div>
                 <div class="col-md-2" style="margin-left: 65px;">
-                    <a href="{{route('services.create')}}" class="btn btn-primary btn-sm pl-10">Create Service</a>
+                    <a href="{{route('references.create')}}" class="btn btn-primary btn-sm pl-10">Create Reference</a>
                 </div>
             </div>
         </div>
@@ -17,21 +17,23 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th width="35%">Name</th>
-                        <th width="20%">Price</th>
-                        <th width="20%">Unit</th>
-                        <th>Action</th>
+                        <th width="25%">Name</th>
+                        <th width="15%">Mobile No</th>
+                        <th width="25%">Address</th>
+                        <th width="15%">Comission(%)</th>
+                        <th width="20">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($serviceList as $service)
+                    @foreach($referenceList as $reference)
                         <tr>
-                            <td>{{ $service->name }}</td>
-                            <td>{{ $service->price }}</td>
-                            <td>{{ $service->unit }}</td>
+                            <td>{{ $reference->name }}</td>
+                            <td>{{ $reference->mobile_no }}</td>
+                            <td>{{ $reference->address }}</td>
+                            <td>{{ $reference->comission }}</td>
                             <td>
-                                <a href="{{route('services.edit',$service->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $service->id }})">Delete</button>
+                                <a href="{{route('references.edit',$reference->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $reference->id }})">Delete</button>
                             </td>
                         </tr>
                     @endforeach
@@ -49,7 +51,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Are you sure want to delete this Service?</h4>
+                        <h4>Are you sure want to delete this Reference?</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -66,7 +68,7 @@
     <script>
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
-            form.action = '/deleteService/'+id
+            form.action = '/deleteReference/'+id
             $('#deleteModal').modal('show')
         }
     </script>

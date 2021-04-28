@@ -53,6 +53,7 @@
                             <td>{{ $userProfile->address }}</td>
                         </tr>
                         <br>
+                        @if($userProfile->role == 'doctor')
                         <tr>
                             <td>Educational Qualification: </td>
                             <td>{{ $userProfile->degree }}</td>
@@ -63,6 +64,7 @@
                             <td>{{ $userProfile->doctor_specialist }}</td>
                         </tr>
                         <br>
+                        @endif
                         <tr>
                             <td>User Role: </td>
                             <td>{{ $userProfile->role }}</td>

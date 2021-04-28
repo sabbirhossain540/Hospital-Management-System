@@ -26,8 +26,8 @@ class ReferencesController extends Controller
      */
     public function create()
     {
-        $this->activity_log("open service create from", "create");
-        return view('admin.services.create');
+        $this->activity_log("open reference create from", "create");
+        return view('admin.references.create');
     }
 
     /**
@@ -40,18 +40,16 @@ class ReferencesController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'price' => 'required',
+            'mobile_no' => 'required|min:11|max:11',
+            'comission' => 'required',
         ]);
 
-        $services = new Services();
-        $services->name = $request->name;
-        $services->price = $request->price;
-        $services->unit = $request->unit;
-        $services->save();
+        $references = new References();
+        $this->dataStore($references, $request);
 
-        session()->flash('success', $request->name.' created successfully');
-        $this->activity_log("store new service. { name:".$request->name." }", "store");
-        return redirect()->route('services.index');
+        session()->flash('success', $request->name.' references created successfully');
+        $this->activity_log("store new reference. { name:".$request->name." }", "store");
+        return redirect()->route('references.index');
     }
 
 
@@ -63,9 +61,9 @@ class ReferencesController extends Controller
      */
     public function edit($id)
     {
-        $serviceInfo = Services::where('id',$id)->first();
-        $this->activity_log("edit service. { name:".$serviceInfo->name." id:".$serviceInfo->id." }", "edit");
-        return view('admin.services.create')->with('serviceInfo', $serviceInfo);
+        $referenceInfo = References::where('id',$id)->first();
+        $this->activity_log("edit reference. { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "edit");
+        return view('admin.references.create')->with('referenceInfo', $referenceInfo);
     }
 
     /**
@@ -77,21 +75,31 @@ class ReferencesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $serviceInfo = Services::findOrFail($id);
+        $referenceInfo = References::findOrFail($id);
 
         $this->validate($request, [
             'name' => 'required',
-            'price' => 'required',
+            'mobile_no' => 'required|min:11|max:11',
+            'comission' => 'required',
         ]);
+        $this->dataStore($referenceInfo, $request);
 
-        $serviceInfo->name = $request->name;
-        $serviceInfo->price = $request->price;
-        $serviceInfo->unit = $request->unit;
-        $serviceInfo->save();
-        $this->activity_log("updated service. { name:".$serviceInfo->name." id:".$serviceInfo->id." }", "update");
-        session()->flash('success', $serviceInfo->name.' service updated successfully');
-        return redirect()->route('services.index');
+        $this->activity_log("updated reference. { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "update");
+        session()->flash('success', $referenceInfo->name.' reference updated successfully');
+        return redirect()->route('references.index');
 
+    }
+
+    /**
+     * @param $model
+     * @param $request
+     */
+    public function dataStore($model, $request){
+        $model->name = $request->name;
+        $model->mobile_no = $request->mobile_no;
+        $model->comission = $request->comission;
+        $model->address = $request->address;
+        $model->save();
     }
 
     /**
@@ -102,15 +110,15 @@ class ReferencesController extends Controller
      */
     public function destroy($id)
     {
-        $medicalCollege = Services::findOrFail($id);
-        $this->activity_log("deleted service { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
-        $medicalCollege->delete();
-        session()->flash('success', 'Service deleted successfully');
-        return redirect()->route('services.index');
+        $referenceInfo = References::findOrFail($id);
+        $this->activity_log("deleted reference { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "destroy");
+        $referenceInfo->delete();
+        session()->flash('success', 'Reference deleted successfully');
+        return redirect()->route('references.index');
     }
 
     public function activity_log($log_details, $fn){
         $ac = new ActiveController();
-        $ac->saveLogData(auth()->user()->id, $log_details, 'ServicesController', $fn);
+        $ac->saveLogData(auth()->user()->id, $log_details, 'ReferencesController', $fn);
     }
 }
