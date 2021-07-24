@@ -68,6 +68,12 @@
             <span>Reference List</span></a>
     </li>
 
+    <li class="nav-item {{ request()->is('references*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('references.index') }}">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>Sales Invoice</span></a>
+    </li>
+
 
     <!-- Nav Item - Utilities Collapse Menu -->
     <li class="nav-item">
