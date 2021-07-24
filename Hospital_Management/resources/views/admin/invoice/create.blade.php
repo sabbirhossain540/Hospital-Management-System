@@ -137,41 +137,49 @@
                         @csrf
                         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" style="margin-top: 90px;">
-                                <div class="modal-content" style="width: 750px;">
+                                <div class="modal-content" style="width: 500px;">
                                         <div class="modal-body">
-                                            <div class="row mb-3">
+                                            <div class="row mb-2">
                                                 <div class="col">
-                                                    <label for="pn">Patient Name</label>
-                                                    <select name="pataint_id" id="pataint_id" class="form-control" required>
-                                                        <option value="">Select Patient Name</option>
-                                                        @foreach($patientList as $patient)
-                                                            <option value="{{ $patient->id }}">{{ $patient->name }}</option>
+                                                    <label for="pn">Item Name</label>
+                                                    <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
+                                                        <option value="">Select a service</option>
+                                                        @foreach($serviceList as $service)
+                                                            <option value="{{ $service->id }}">{{ $service->name }}</option>
                                                         @endforeach
                                                     </select>
-                                                    @error('pataint_id')
+                                                    @error('service_id')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
+                                            </div>
+                                            <div class="row mb-2">
                                                 <div class="col">
-                                                    <label for="pn">Doctor Name</label>
-                                                    <select name="doctor_id" id="doctor_id" class="form-control" required>
-                                                        <option value="">Select Doctor Name</option>
-                                                        @foreach($doctorList as $doctor)
-                                                            <option value="{{ $doctor->id }}">{{ $doctor->name }} ({{ $doctor->Specialist->name }})</option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('doctor_id')
+                                                    <label for="price">Price</label>
+                                                    <input type="text" name="price" id="price" class="form-control" placeholder="0">
+                                                    @error('price')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="col">
+                                                    <label for="quantity">Quantity</label>
+                                                    <input type="text" name="quantity" id="quantity" class="form-control" placeholder="0">
+                                                    @error('quantity')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <label for="total">Total</label>
+                                                    <input type="text" name="total" id="total" class="form-control" placeholder="0">
+                                                    @error('total')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
                                         </div>
-{{--                                    <div class="modal-header">--}}
-{{--                                        <h4>Are you sure want to delete this Reference?</h4>--}}
-{{--                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                                            <span aria-hidden="true">&times;</span>--}}
-{{--                                        </button>--}}
-{{--                                    </div>--}}
 {{--                                    <div class="modal-footer">--}}
 {{--                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">No. Go back</button>--}}
 {{--                                        <button type="submit" class="btn btn-danger btn-sm">Yes. Delete</button>--}}
@@ -192,6 +200,11 @@
     <script>
         function handleItem(){
             $('#deleteModal').modal('show')
+        }
+
+        function getProductDetails(){
+            var str = $("#service_id").val();
+            alert(str);
         }
     </script>
 
