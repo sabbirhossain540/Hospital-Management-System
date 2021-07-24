@@ -68,8 +68,8 @@
             <span>Reference List</span></a>
     </li>
 
-    <li class="nav-item {{ request()->is('references*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('references.index') }}">
+    <li class="nav-item {{ request()->is('invoices*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('invoices.index') }}">
             <i class="fas fa-file-invoice-dollar"></i>
             <span>Sales Invoice</span></a>
     </li>
