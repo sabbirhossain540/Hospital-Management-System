@@ -202,6 +202,7 @@
             $('#deleteModal').modal('show')
         }
 
+
         function getProductDetails(){
             var str = $("#service_id").val();
             alert(str);
