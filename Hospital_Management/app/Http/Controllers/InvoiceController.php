@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\References;
 use App\Services;
+use App\TempSales;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class InvoiceController extends Controller
 {
@@ -92,5 +94,19 @@ class InvoiceController extends Controller
     public function getServiceInfo($id){
         $serviceInfo = Services::where('id',$id)->first();
         return $serviceInfo;
+    }
+
+    public function postServiceInfo(Request $request){
+        $this->validate($request, [
+            'service_id' => 'required',
+        ]);
+
+        $temp_data = new TempSales();
+        $temp_data->service_id = $request->service_id;
+        $temp_data->price = $request->price;
+        $temp_data->quantity = $request->quantity;
+        $temp_data->total = $request->total;
+        $temp_data->save();
+        return "success";
     }
 }

@@ -141,6 +141,7 @@
                                         <div class="modal-body">
                                             <div class="row mb-2">
                                                 <div class="col">
+                                                    <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
                                                     <label for="pn">Item Name</label>
                                                     <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
                                                         <option value="">Select a service</option>
@@ -181,8 +182,8 @@
                                             </div>
                                         </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-success btn-sm">Save</button>
+                                        <button type="button" class="btn btn-danger btn-sm cancel-button" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-success btn-sm save-data">Save</button>
                                     </div>
                                 </div>
                             </div>
@@ -223,6 +224,40 @@
             var totalAmount = price * quantity;
             $('#total').val(totalAmount);
         }
+
+        function formReset(){
+            $('#service_id').val('');
+            $('#price').val(0);
+            $('#quantity').val(0);
+            $('#total').val(0);
+        }
+
+
+        $(".save-data").click(function(event){
+            event.preventDefault();
+
+            let _token   = $("#csrf-token").val();
+            let service_id   = $("#service_id").val();
+            let price   = $("#price").val();
+            let quantity   = $("#quantity").val();
+            let total   = $("#total").val();
+
+            $.ajax({
+                url: "{{url('postServiceInfo')}}",
+                type:"POST",
+                data:{
+                    service_id:service_id,
+                    price:price,
+                    quantity:quantity,
+                    total:total,
+                    _token: _token
+                },
+                success:function(response){
+                    formReset();
+                    $('.cancel-button').click();
+                },
+            });
+        });
 
 
     </script>
