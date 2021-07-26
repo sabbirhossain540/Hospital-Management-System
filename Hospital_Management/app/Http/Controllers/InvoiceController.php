@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoice;
+use App\InvoiceDetails;
 use App\References;
 use App\Services;
 use App\TempSales;
@@ -43,7 +45,31 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $invoiceMaster = new Invoice();
+        $invoiceMaster->pataint_id = $request->pataint_id;
+        $invoiceMaster->doctor_id = $request->doctor_id;
+        $invoiceMaster->reference_id = $request->reference_id;
+        $invoiceMaster->ic_date = $request->ic_date;
+        $invoiceMaster->remark = $request->remark;
+        $invoiceMaster->save();
+
+        $getTempItem = TempSales::all();
+        $size = count($getTempItem);
+        for($i = 0; $i < $size ; $i++){
+            $invoiceDetails = new InvoiceDetails();
+            $invoiceDetails->invoice_id = $invoiceMaster->id;
+            $invoiceDetails->service_id = $getTempItem[$i]['service_id'];
+            $invoiceDetails->price = $getTempItem[$i]['price'];
+            $invoiceDetails->quantity = $getTempItem[$i]['quantity'];
+            $invoiceDetails->total = $getTempItem[$i]['total'];
+            $invoiceDetails->save();
+        }
+
+        TempSales::truncate();
+
+        session()->flash('success', 'Invoice Created successfully');
+        return redirect()->route('invoices.index');
+
     }
 
     /**

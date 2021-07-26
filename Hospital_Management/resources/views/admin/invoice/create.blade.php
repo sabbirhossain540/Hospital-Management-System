@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="@if(isset($referenceInfo)) {{route('references.update',$referenceInfo->id)}} @else {{route('references.store')}} @endif" >
+                    <form method="POST" action="@if(isset($referenceInfo)) {{route('references.update',$referenceInfo->id)}} @else {{route('invoices.store')}} @endif" >
                         @csrf
                         @if(isset($referenceInfo))
                             @method('PUT')
@@ -105,7 +105,6 @@
                                 </thead>
                                 <tbody>
 
-
                                 </tbody>
                             </table>
                         </div>
@@ -113,7 +112,7 @@
                         <div class="d-flex flex-row mb-3">
                             <div class="col-10 p-2"></div>
                             <div class="col-2 p-2">
-                                <a href="{{route('references.index')}}" class="btn btn-danger btn-sm">Cancel</a>
+                                <a href="{{route('invoices.index')}}" class="btn btn-danger btn-sm">Cancel</a>
                                 <button type="submit" class="btn btn-success btn-sm">@if(isset($referenceInfo)) Update @else Save @endif</button>
                             </div>
                         </div>
@@ -131,7 +130,7 @@
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
-                                                    <input type="text" name="id" id="id">
+                                                    <input type="hidden" name="id" id="id">
                                                     <label for="pn">Item Name</label>
                                                     <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
                                                         <option value="">Select a service</option>
@@ -190,11 +189,12 @@
 
     <script>
 
-        // $( document ).ready(function() {
-        //     showDataOnGrid();
-        // });
+        $( document ).ready(function() {
+            showDataOnGrid();
+        });
 
         function showDataOnGrid(){
+
             $.ajax({
                 type:"GET",
                 url:"{{url('getTempInvoiceDetails')}}",
