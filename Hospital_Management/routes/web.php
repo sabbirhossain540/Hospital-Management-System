@@ -53,6 +53,9 @@ Route::post('/deleteService/{id}', 'ServicesController@destroy')->name('deleteSe
 Route::resource('references','ReferencesController');
 Route::post('/deleteReference/{id}', 'ReferencesController@destroy')->name('deleteReference');
 
+Route::resource('invoices','InvoiceController');
+//Route::post('/deleteReference/{id}', 'ReferencesController@destroy')->name('deleteReference');
+
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 
 //

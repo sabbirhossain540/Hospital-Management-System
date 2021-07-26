@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\References;
+use App\Services;
+use App\User;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -13,7 +16,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.invoice.index');
     }
 
     /**
@@ -23,7 +26,11 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        $patientList = User::where('role', 'patient')->get();
+        $doctorList = User::where('role', 'doctor')->with('Specialist')->get();
+        $referenceList = References::all();
+        $serviceList = Services::all();
+        return view('admin.invoice.create', compact('patientList', 'doctorList', 'referenceList', 'serviceList'));
     }
 
     /**
