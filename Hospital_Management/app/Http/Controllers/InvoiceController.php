@@ -20,7 +20,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return view('admin.invoice.index');
+        $invoiceList = Invoice::with('getPatient', 'getDoctor', 'getReference')->get();
+        return view('admin.invoice.index', compact('invoiceList'));
     }
 
     /**
@@ -91,7 +92,8 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $invoiceDetails = TempSales::findOrFail($id);
+        dd($invoiceDetails);
     }
 
     /**

@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
-    //
+    public function getPatient(){
+        return $this->hasOne(User::class, 'id', 'pataint_id');
+    }
+
+    public function getDoctor(){
+        return $this->hasOne(User::class, 'id', 'doctor_id');
+    }
+
+    public function getReference(){
+        return $this->hasOne(References::class, 'id', 'reference_id');
+    }
 }
