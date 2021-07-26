@@ -88,4 +88,9 @@ class InvoiceController extends Controller
     {
         //
     }
+
+    public function getServiceInfo($id){
+        $serviceInfo = Services::where('id',$id)->first();
+        return $serviceInfo;
+    }
 }

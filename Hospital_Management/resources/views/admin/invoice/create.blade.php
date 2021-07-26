@@ -133,8 +133,8 @@
 
 
                     <!-- Modal -->
-                    <form action="" method="POST" id="deleteForm">
-                        @csrf
+{{--                    <form action="" method="POST" id="deleteForm">--}}
+{{--                        @csrf--}}
                         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" style="margin-top: 90px;">
                                 <div class="modal-content" style="width: 500px;">
@@ -156,7 +156,7 @@
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <label for="price">Price</label>
-                                                    <input type="text" name="price" id="price" class="form-control" placeholder="0">
+                                                    <input type="text" name="price" id="price" class="form-control" placeholder="0" readonly>
                                                     @error('price')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -164,7 +164,7 @@
 
                                                 <div class="col">
                                                     <label for="quantity">Quantity</label>
-                                                    <input type="text" name="quantity" id="quantity" class="form-control" placeholder="0">
+                                                    <input type="number" name="quantity" id="quantity" class="form-control" placeholder="0" onkeyup="calculatePrice()">
                                                     @error('quantity')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -173,21 +173,21 @@
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <label for="total">Total</label>
-                                                    <input type="text" name="total" id="total" class="form-control" placeholder="0">
+                                                    <input type="text" name="total" id="total" class="form-control" placeholder="0" readonly>
                                                     @error('total')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
                                         </div>
-{{--                                    <div class="modal-footer">--}}
-{{--                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">No. Go back</button>--}}
-{{--                                        <button type="submit" class="btn btn-danger btn-sm">Yes. Delete</button>--}}
-{{--                                    </div>--}}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-success btn-sm">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+{{--                    </form>--}}
 
 
 
@@ -204,9 +204,27 @@
 
 
         function getProductDetails(){
-            var str = $("#service_id").val();
-            alert(str);
+            var service_id = $("#service_id").val();
+
+            $.ajax({
+                type:"GET",
+                url:"{{url('getServiceInfo')}}/"+service_id,
+                success: function(data) {
+                    $('#price').val(data.price);
+                    $('#quantity').val(1);
+                    $('#total').val(data.price);
+                }
+            });
         }
+
+        function calculatePrice(){
+            var price = $("#price").val();
+            var quantity = $("#quantity").val();
+            var totalAmount = price * quantity;
+            $('#total').val(totalAmount);
+        }
+
+
     </script>
 
 
