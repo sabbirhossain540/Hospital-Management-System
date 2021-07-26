@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="@if(isset($referenceInfo)) {{route('references.update',$referenceInfo->id)}} @else {{route('references.store')}} @endif" >
+                    <form method="POST" action="@if(isset($referenceInfo)) {{route('references.update',$referenceInfo->id)}} @else {{route('invoices.store')}} @endif" >
                         @csrf
                         @if(isset($referenceInfo))
                             @method('PUT')
@@ -93,29 +93,17 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTabledd" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th width="25%">Name</th>
-                                    <th width="15%">Mobile No</th>
-                                    <th width="25%">Address</th>
-                                    <th width="15%">Comission(%)</th>
+                                    <th width="25%">Service Name</th>
+                                    <th width="15%">Price</th>
+                                    <th width="25%">Quantity</th>
+                                    <th width="15%">Total</th>
                                     <th width="20">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {{--                    @foreach($referenceList as $reference)--}}
-                                {{--                        <tr>--}}
-                                {{--                            <td>{{ $reference->name }}</td>--}}
-                                {{--                            <td>{{ $reference->mobile_no }}</td>--}}
-                                {{--                            <td>{{ $reference->address }}</td>--}}
-                                {{--                            <td>{{ $reference->comission }}</td>--}}
-                                {{--                            <td>--}}
-                                {{--                                <a href="{{route('references.edit',$reference->id)}}" class="btn btn-primary btn-sm">Edit</a>--}}
-                                {{--                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $reference->id }})">Delete</button>--}}
-                                {{--                            </td>--}}
-                                {{--                        </tr>--}}
-                                {{--                    @endforeach--}}
 
                                 </tbody>
                             </table>
@@ -124,7 +112,7 @@
                         <div class="d-flex flex-row mb-3">
                             <div class="col-10 p-2"></div>
                             <div class="col-2 p-2">
-                                <a href="{{route('references.index')}}" class="btn btn-danger btn-sm">Cancel</a>
+                                <a href="{{route('invoices.index')}}" class="btn btn-danger btn-sm">Cancel</a>
                                 <button type="submit" class="btn btn-success btn-sm">@if(isset($referenceInfo)) Update @else Save @endif</button>
                             </div>
                         </div>
@@ -133,14 +121,16 @@
 
 
                     <!-- Modal -->
-                    <form action="" method="POST" id="deleteForm">
-                        @csrf
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+{{--                    <form action="" method="POST" id="deleteForm">--}}
+{{--                        @csrf--}}
+                        <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" style="margin-top: 90px;">
                                 <div class="modal-content" style="width: 500px;">
                                         <div class="modal-body">
                                             <div class="row mb-2">
                                                 <div class="col">
+                                                    <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
+                                                    <input type="hidden" name="id" id="id">
                                                     <label for="pn">Item Name</label>
                                                     <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
                                                         <option value="">Select a service</option>
@@ -156,7 +146,7 @@
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <label for="price">Price</label>
-                                                    <input type="text" name="price" id="price" class="form-control" placeholder="0">
+                                                    <input type="text" name="price" id="price" class="form-control" placeholder="0" readonly>
                                                     @error('price')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -164,7 +154,7 @@
 
                                                 <div class="col">
                                                     <label for="quantity">Quantity</label>
-                                                    <input type="text" name="quantity" id="quantity" class="form-control" placeholder="0">
+                                                    <input type="number" name="quantity" id="quantity" class="form-control" placeholder="0" onkeyup="calculatePrice()">
                                                     @error('quantity')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -173,21 +163,21 @@
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <label for="total">Total</label>
-                                                    <input type="text" name="total" id="total" class="form-control" placeholder="0">
+                                                    <input type="text" name="total" id="total" class="form-control" placeholder="0" readonly>
                                                     @error('total')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
                                             </div>
                                         </div>
-{{--                                    <div class="modal-footer">--}}
-{{--                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">No. Go back</button>--}}
-{{--                                        <button type="submit" class="btn btn-danger btn-sm">Yes. Delete</button>--}}
-{{--                                    </div>--}}
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger btn-sm cancel-button" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-success btn-sm save-data">Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </form>
+{{--                    </form>--}}
 
 
 
@@ -198,14 +188,117 @@
     </div>
 
     <script>
-        function handleItem(){
-            $('#deleteModal').modal('show')
+
+        $( document ).ready(function() {
+            showDataOnGrid();
+        });
+
+        function showDataOnGrid(){
+
+            $.ajax({
+                type:"GET",
+                url:"{{url('getTempInvoiceDetails')}}",
+                success: function(data) {
+                    console.log(data);
+                    for (var i=0; i<data.length; i++) {
+                        var row = $('<tr><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                        $('#myTable').append(row);
+                    }
+                }
+            });
         }
 
-        function getProductDetails(){
-            var str = $("#service_id").val();
-            alert(str);
+        function handleDelete(id){
+            $.ajax({
+                type:"GET",
+                url:"{{url('deleteTempService')}}/"+id,
+                success: function(data) {
+                    showDataOnGrid();
+                }
+            });
         }
+
+
+        function handleEdit(id){
+            $.ajax({
+                type:"GET",
+                url:"{{url('getTempServiceForEdit')}}/"+id,
+                success: function(data) {
+                    $('#serviceModal').modal('show')
+                    $('#id').val(data.id);
+                    $('#service_id').val(data.service_id);
+                    $('#price').val(data.price);
+                    $('#quantity').val(data.quantity);
+                    $('#total').val(data.total);
+                }
+            });
+
+        }
+
+        function handleItem(){
+            $('#serviceModal').modal('show')
+        }
+
+
+        function getProductDetails(){
+            var service_id = $("#service_id").val();
+
+            $.ajax({
+                type:"GET",
+                url:"{{url('getServiceInfo')}}/"+service_id,
+                success: function(data) {
+                    $('#price').val(data.price);
+                    $('#quantity').val(1);
+                    $('#total').val(data.price);
+                }
+            });
+        }
+
+        function calculatePrice(){
+            var price = $("#price").val();
+            var quantity = $("#quantity").val();
+            var totalAmount = price * quantity;
+            $('#total').val(totalAmount);
+        }
+
+        function formReset(){
+            $('#service_id').val('');
+            $('#price').val(0);
+            $('#quantity').val(0);
+            $('#total').val(0);
+        }
+
+
+        $(".save-data").click(function(event){
+            event.preventDefault();
+
+            let _token   = $("#csrf-token").val();
+            let service_id   = $("#service_id").val();
+            let price   = $("#price").val();
+            let quantity   = $("#quantity").val();
+            let total   = $("#total").val();
+            let id   = $("#id").val();
+
+            $.ajax({
+                url: "{{url('postServiceInfo')}}",
+                type:"POST",
+                data:{
+                    id:id,
+                    service_id:service_id,
+                    price:price,
+                    quantity:quantity,
+                    total:total,
+                    _token: _token
+                },
+                success:function(response){
+                    formReset();
+                    $('.cancel-button').click();
+                    showDataOnGrid();
+                },
+            });
+        });
+
+
     </script>
 
 

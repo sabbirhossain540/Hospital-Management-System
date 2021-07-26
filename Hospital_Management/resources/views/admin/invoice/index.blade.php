@@ -17,26 +17,29 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th width="25%">Name</th>
-                        <th width="15%">Mobile No</th>
-                        <th width="25%">Address</th>
-                        <th width="15%">Comission(%)</th>
-                        <th width="20">Action</th>
+                        <th width="10%">Invoice Date</th>
+                        <th width="15%">Patient Name</th>
+                        <th width="15%">Doctor Name</th>
+                        <th width="15%">Refferal</th>
+                        <th width="15%">Remark</th>
+                        <th width="20%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-{{--                    @foreach($referenceList as $reference)--}}
-{{--                        <tr>--}}
-{{--                            <td>{{ $reference->name }}</td>--}}
-{{--                            <td>{{ $reference->mobile_no }}</td>--}}
-{{--                            <td>{{ $reference->address }}</td>--}}
-{{--                            <td>{{ $reference->comission }}</td>--}}
-{{--                            <td>--}}
-{{--                                <a href="{{route('references.edit',$reference->id)}}" class="btn btn-primary btn-sm">Edit</a>--}}
-{{--                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $reference->id }})">Delete</button>--}}
-{{--                            </td>--}}
-{{--                        </tr>--}}
-{{--                    @endforeach--}}
+                    @foreach($invoiceList as $invoice)
+                        <tr>
+                            <td>{{ $invoice->ic_date }}</td>
+                            <td>{{ $invoice->getPatient->name }}</td>
+                            <td>{{ $invoice->getDoctor->name }}</td>
+                            <td>{{ $invoice->getReference->name }}</td>
+                            <td>{{ $invoice->remark }}</td>
+                            <td>
+                                <a href="{{route('invoices.show',$invoice->id)}}" class="btn btn-info btn-sm">View</a>
+                                <a href="{{route('invoices.edit',$invoice->id)}}" class="btn btn-primary btn-sm">Edit</a>
+                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $invoice->id }})">Delete</button>
+                            </td>
+                        </tr>
+                    @endforeach
 
                     </tbody>
                 </table>
@@ -51,7 +54,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Are you sure want to delete this Reference?</h4>
+                        <h4>Are you sure want to delete this Invoice?</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -68,7 +71,7 @@
     <script>
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
-            form.action = '/deleteReference/'+id
+            form.action = '/deleteInvoice/'+id
             $('#deleteModal').modal('show')
         }
     </script>
