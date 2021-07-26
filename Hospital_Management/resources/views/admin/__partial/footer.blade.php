@@ -5,7 +5,8 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Basundhara Clinic All Right Reserve, 2021</span>
+            <span>Copyright &copy; Basundhara Clinic and digonestic center All Right Reserve, 2021 || Developed by <a
+                    href="https://www.facebook.com/SabbirHossain308/" target="_blank">Md Sabbir Hossain</a></span>
         </div>
     </div>
 </footer>

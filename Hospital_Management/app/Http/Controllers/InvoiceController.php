@@ -109,4 +109,16 @@ class InvoiceController extends Controller
         $temp_data->save();
         return "success";
     }
+
+
+    public function getTempInvoiceDetails(){
+        $tempInvoiceDetails = TempSales::with('serviceName')->get();
+        return $tempInvoiceDetails;
+    }
+
+    public function deleteTempService($id){
+        $tempRecord = TempSales::findOrFail($id);
+        $tempRecord->delete();
+        return "Delete Successfully";
+    }
 }

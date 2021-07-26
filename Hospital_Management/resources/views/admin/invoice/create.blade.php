@@ -93,29 +93,18 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTabledd" width="100%" cellspacing="0">
+                            <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th width="25%">Name</th>
-                                    <th width="15%">Mobile No</th>
-                                    <th width="25%">Address</th>
-                                    <th width="15%">Comission(%)</th>
+                                    <th width="25%">Service Name</th>
+                                    <th width="15%">Price</th>
+                                    <th width="25%">Quantity</th>
+                                    <th width="15%">Total</th>
                                     <th width="20">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {{--                    @foreach($referenceList as $reference)--}}
-                                {{--                        <tr>--}}
-                                {{--                            <td>{{ $reference->name }}</td>--}}
-                                {{--                            <td>{{ $reference->mobile_no }}</td>--}}
-                                {{--                            <td>{{ $reference->address }}</td>--}}
-                                {{--                            <td>{{ $reference->comission }}</td>--}}
-                                {{--                            <td>--}}
-                                {{--                                <a href="{{route('references.edit',$reference->id)}}" class="btn btn-primary btn-sm">Edit</a>--}}
-                                {{--                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $reference->id }})">Delete</button>--}}
-                                {{--                            </td>--}}
-                                {{--                        </tr>--}}
-                                {{--                    @endforeach--}}
+
 
                                 </tbody>
                             </table>
@@ -199,6 +188,35 @@
     </div>
 
     <script>
+
+        $( document ).ready(function() {
+            showDataOnGrid();
+        });
+
+        function showDataOnGrid(){
+            $.ajax({
+                type:"GET",
+                url:"{{url('getTempInvoiceDetails')}}",
+                success: function(data) {
+                    console.log(data);
+                    for (var i=0; i<data.length; i++) {
+                        var row = $('<tr><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')">E</button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')">D</button></td></tr>');
+                        $('#myTable').append(row);
+                    }
+                }
+            });
+        }
+
+        function handleDelete(id){
+            $.ajax({
+                type:"GET",
+                url:"{{url('deleteTempService')}}/"+id,
+                success: function(data) {
+                    showDataOnGrid();
+                }
+            });
+        }
+
         function handleItem(){
             $('#deleteModal').modal('show')
         }
@@ -255,6 +273,7 @@
                 success:function(response){
                     formReset();
                     $('.cancel-button').click();
+                    showDataOnGrid();
                 },
             });
         });
