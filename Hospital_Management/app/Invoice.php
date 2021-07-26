@@ -17,4 +17,8 @@ class Invoice extends Model
     public function getReference(){
         return $this->hasOne(References::class, 'id', 'reference_id');
     }
+
+    public function invoiceDetails(){
+        return $this->hasMany(InvoiceDetails::class, 'invoice_id', 'id');
+    }
 }

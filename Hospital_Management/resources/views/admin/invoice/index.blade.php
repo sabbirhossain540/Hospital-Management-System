@@ -34,6 +34,7 @@
                             <td>{{ $invoice->getReference->name }}</td>
                             <td>{{ $invoice->remark }}</td>
                             <td>
+                                <a href="{{route('invoices.show',$invoice->id)}}" class="btn btn-info btn-sm">View</a>
                                 <a href="{{route('invoices.edit',$invoice->id)}}" class="btn btn-primary btn-sm">Edit</a>
                                 <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $invoice->id }})">Delete</button>
                             </td>
@@ -53,7 +54,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Are you sure want to delete this Reference?</h4>
+                        <h4>Are you sure want to delete this Invoice?</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -70,7 +71,7 @@
     <script>
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
-            form.action = '/deleteReference/'+id
+            form.action = '/deleteInvoice/'+id
             $('#deleteModal').modal('show')
         }
     </script>

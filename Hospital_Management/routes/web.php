@@ -63,7 +63,7 @@ Route::get('/getTempInvoiceDetails', 'InvoiceController@getTempInvoiceDetails')-
 Route::get('/deleteTempService/{id}', 'InvoiceController@deleteTempService')->name('deleteTempService');
 Route::get('/getTempServiceForEdit/{id}', 'InvoiceController@getTempServiceForEdit')->name('getTempServiceForEdit');
 
-//Route::post('/deleteReference/{id}', 'ReferencesController@destroy')->name('deleteReference');
+Route::post('/deleteInvoice/{id}', 'InvoiceController@destroy')->name('deleteInvoice');
 
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 

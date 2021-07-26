@@ -81,7 +81,8 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        //
+        $invoiceInfo = Invoice::with('invoiceDetails')->where('id', $id)->first();
+        dd($invoiceInfo);
     }
 
     /**
@@ -92,8 +93,24 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        $invoiceDetails = TempSales::findOrFail($id);
-        dd($invoiceDetails);
+//        $invoiceMaster = Invoice::findOrFail($id);
+//        $InvoiceDetails = InvoiceDetails::where('invoice_id', $invoiceMaster->id)->get();
+//        $size = count($InvoiceDetails);
+//        for($i = 0; $i < $size ; $i++){
+//            $tempData = new TempSales();
+//            $tempData->service_id = $InvoiceDetails[$i]['id'];
+//            $tempData->price = $InvoiceDetails[$i]['price'];
+//            $tempData->quantity = $InvoiceDetails[$i]['quantity'];
+//            $tempData->total = $InvoiceDetails[$i]['total'];
+//            $tempData->save();
+//        }
+//
+//        $patientList = User::where('role', 'patient')->get();
+//        $doctorList = User::where('role', 'doctor')->with('Specialist')->get();
+//        $referenceList = References::all();
+//        $serviceList = Services::all();
+//        return view('admin.invoice.create', compact('patientList', 'doctorList', 'referenceList', 'serviceList'));
+
     }
 
     /**
@@ -116,7 +133,16 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $invoiceInfo = Invoice::findOrFail($id);
+        $invoiceDetails = InvoiceDetails::where('invoice_id', $invoiceInfo->id)->get();
+        foreach($invoiceDetails as $idetails)
+        {
+            $idetails->delete();
+        }
+
+        $invoiceInfo->delete();
+        session()->flash('success', 'Invoice deleted successfully');
+        return redirect()->route('invoices.index');
     }
 
     public function getServiceInfo($id){
