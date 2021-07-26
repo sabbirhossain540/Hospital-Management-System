@@ -124,13 +124,14 @@
                     <!-- Modal -->
 {{--                    <form action="" method="POST" id="deleteForm">--}}
 {{--                        @csrf--}}
-                        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                             <div class="modal-dialog" style="margin-top: 90px;">
                                 <div class="modal-content" style="width: 500px;">
                                         <div class="modal-body">
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
+                                                    <input type="text" name="id" id="id">
                                                     <label for="pn">Item Name</label>
                                                     <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
                                                         <option value="">Select a service</option>
@@ -189,9 +190,9 @@
 
     <script>
 
-        $( document ).ready(function() {
-            showDataOnGrid();
-        });
+        // $( document ).ready(function() {
+        //     showDataOnGrid();
+        // });
 
         function showDataOnGrid(){
             $.ajax({
@@ -200,7 +201,7 @@
                 success: function(data) {
                     console.log(data);
                     for (var i=0; i<data.length; i++) {
-                        var row = $('<tr><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')">E</button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')">D</button></td></tr>');
+                        var row = $('<tr><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                         $('#myTable').append(row);
                     }
                 }
@@ -217,8 +218,25 @@
             });
         }
 
+
+        function handleEdit(id){
+            $.ajax({
+                type:"GET",
+                url:"{{url('getTempServiceForEdit')}}/"+id,
+                success: function(data) {
+                    $('#serviceModal').modal('show')
+                    $('#id').val(data.id);
+                    $('#service_id').val(data.service_id);
+                    $('#price').val(data.price);
+                    $('#quantity').val(data.quantity);
+                    $('#total').val(data.total);
+                }
+            });
+
+        }
+
         function handleItem(){
-            $('#deleteModal').modal('show')
+            $('#serviceModal').modal('show')
         }
 
 
@@ -259,11 +277,13 @@
             let price   = $("#price").val();
             let quantity   = $("#quantity").val();
             let total   = $("#total").val();
+            let id   = $("#id").val();
 
             $.ajax({
                 url: "{{url('postServiceInfo')}}",
                 type:"POST",
                 data:{
+                    id:id,
                     service_id:service_id,
                     price:price,
                     quantity:quantity,

@@ -61,6 +61,7 @@ Route::get('/getServiceInfo/{id}', 'InvoiceController@getServiceInfo')->name('ge
 Route::post('/postServiceInfo', 'InvoiceController@postServiceInfo')->name('postServiceInfo');
 Route::get('/getTempInvoiceDetails', 'InvoiceController@getTempInvoiceDetails')->name('getTempInvoiceDetails');
 Route::get('/deleteTempService/{id}', 'InvoiceController@deleteTempService')->name('deleteTempService');
+Route::get('/getTempServiceForEdit/{id}', 'InvoiceController@getTempServiceForEdit')->name('getTempServiceForEdit');
 
 //Route::post('/deleteReference/{id}', 'ReferencesController@destroy')->name('deleteReference');
 
