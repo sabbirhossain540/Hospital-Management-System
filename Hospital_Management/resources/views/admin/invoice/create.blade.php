@@ -130,7 +130,7 @@
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
-                                                    <input type="hidden" name="id" id="id">
+                                                    <input type="text" name="id" id="id">
                                                     <label for="pn">Item Name</label>
                                                     <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
                                                         <option value="">Select a service</option>
@@ -147,6 +147,7 @@
                                                 <div class="col">
                                                     <label for="price">Price</label>
                                                     <input type="text" name="price" id="price" class="form-control" placeholder="0" readonly>
+                                                    <input type="hidden" name="service_name" id="service_name" class="form-control" readonly>
                                                     @error('price')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -190,32 +191,54 @@
     <script>
 
         $( document ).ready(function() {
-            showDataOnGrid();
+            //showDataOnGrid();
         });
 
-        function showDataOnGrid(){
+        let arr = []
 
-            $.ajax({
-                type:"GET",
-                url:"{{url('getTempInvoiceDetails')}}",
-                success: function(data) {
-                    console.log(data);
-                    for (var i=0; i<data.length; i++) {
-                        var row = $('<tr><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
-                        $('#myTable').append(row);
-                    }
-                }
-            });
+        function showDataOnGrid(){
+            //alert(arr.length);
+
+            for (var i=0; i<arr.length; i++) {
+                var row = $('<tr id="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                $('#myTable').append(row);
+            }
+
+            {{--$.ajax({--}}
+            {{--    type:"GET",--}}
+            {{--    url:"{{url('getTempInvoiceDetails')}}",--}}
+            {{--    success: function(data) {--}}
+            {{--        console.log(data);--}}
+            {{--        for (var i=0; i<data.length; i++) {--}}
+            {{--            var row = $('<tr><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');--}}
+            {{--            $('#myTable').append(row);--}}
+            {{--        }--}}
+            {{--    }--}}
+            {{--});--}}
         }
 
         function handleDelete(id){
-            $.ajax({
-                type:"GET",
-                url:"{{url('deleteTempService')}}/"+id,
-                success: function(data) {
-                    showDataOnGrid();
-                }
-            });
+            arr = arr.filter(item => item.id != id);
+            console.log("from handle delete");
+            console.log(arr);
+
+            // for (var i=0; i<arr.length; i++) {
+            //     var row = $('<tr id="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+            //     $('#myTable').append(row);
+            // }
+
+
+            // alert("OK");
+            // showDataOnGrid();
+            // console.log(arr);
+            //alert(id);
+            {{--$.ajax({--}}
+            {{--    type:"GET",--}}
+            {{--    url:"{{url('deleteTempService')}}/"+id,--}}
+            {{--    success: function(data) {--}}
+            {{--        showDataOnGrid();--}}
+            {{--    }--}}
+            {{--});--}}
         }
 
 
@@ -247,9 +270,12 @@
                 type:"GET",
                 url:"{{url('getServiceInfo')}}/"+service_id,
                 success: function(data) {
+                    console.log(data);
                     $('#price').val(data.price);
+                    $('#service_name').val(data.name);
                     $('#quantity').val(1);
                     $('#total').val(data.price);
+                    $('#id').val(data.id);
                 }
             });
         }
@@ -271,31 +297,49 @@
 
         $(".save-data").click(function(event){
             event.preventDefault();
-
+            $('#rowTrack').remove();
             let _token   = $("#csrf-token").val();
             let service_id   = $("#service_id").val();
             let price   = $("#price").val();
             let quantity   = $("#quantity").val();
             let total   = $("#total").val();
+            let service_name   = $("#service_name").val();
             let id   = $("#id").val();
 
-            $.ajax({
-                url: "{{url('postServiceInfo')}}",
-                type:"POST",
-                data:{
-                    id:id,
-                    service_id:service_id,
-                    price:price,
-                    quantity:quantity,
-                    total:total,
-                    _token: _token
-                },
-                success:function(response){
-                    formReset();
-                    $('.cancel-button').click();
-                    showDataOnGrid();
-                },
-            });
+
+            let test = {
+                "id": id,
+                "service_id": service_id,
+                "price": price,
+                "quantity": quantity,
+                "total": total,
+                "service_name":service_name
+            }
+
+            arr.push(test);
+            console.log("from store data");
+            console.log(arr);
+            showDataOnGrid();
+
+            //alert(service_id + price + quantity + total);
+
+            {{--$.ajax({--}}
+            {{--    url: "{{url('postServiceInfo')}}",--}}
+            {{--    type:"POST",--}}
+            {{--    data:{--}}
+            {{--        id:id,--}}
+            {{--        service_id:service_id,--}}
+            {{--        price:price,--}}
+            {{--        quantity:quantity,--}}
+            {{--        total:total,--}}
+            {{--        _token: _token--}}
+            {{--    },--}}
+            {{--    success:function(response){--}}
+            {{--        formReset();--}}
+            {{--        $('.cancel-button').click();--}}
+            {{--        showDataOnGrid();--}}
+            {{--    },--}}
+            {{--});--}}
         });
 
 
