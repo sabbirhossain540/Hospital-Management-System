@@ -49,6 +49,8 @@
 
 
 
+
+
     <script>
         $( document ).ready(function() {
 
@@ -68,13 +70,24 @@
                 url:"{{url('generateSalesReport')}}/"+fromDate+"/"+toDate,
                 success: function(data) {
                     console.log(data);
-
+                    let totalAmount = 0;
+                    let totalQuantity = 0;
                     for (var i=0; i<data.length; i++) {
                         let serviceName = data[i].get_service_name['name'];
+                        let serial_no = i+1;
+                        totalAmount = totalAmount + parseInt(data[i].price);
+                        totalQuantity = totalQuantity + parseInt(data[i].quantity);
                         let formatedDate = formatDate(data[i].created_at);
-                        let row = $('<tr class="rowTrack"><td>' + data[i].id + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td></tr>');
+                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td></tr>');
                         $('#myTable').append(row);
                     }
+
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalAmount + '</td></tr>');
+                    $('#myTable').append(finalRow);
+
+                    //console.log(totalQuantity);
+
+
                 }
             });
 
