@@ -6,5 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class InvoiceDetails extends Model
 {
-    //
+    public function getServiceName(){
+        return $this->hasOne(Services::class, 'id', 'service_id');
+    }
 }

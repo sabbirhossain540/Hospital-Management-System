@@ -65,6 +65,12 @@ Route::get('/getTempServiceForEdit/{id}', 'InvoiceController@getTempServiceForEd
 
 Route::post('/deleteInvoice/{id}', 'InvoiceController@destroy')->name('deleteInvoice');
 
+//Report Path
+Route::get('/getSalesReport', 'ReportController@getSalesReport')->name('getSalesReport');
+Route::get('/generateSalesReport/{fromDate}/{toDate}', 'ReportController@generateSalesReport')->name('generateSalesReport');
+
+
+
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 
 //
