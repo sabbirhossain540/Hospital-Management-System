@@ -82,13 +82,14 @@
             <i class="fas fa-fw fa-wrench"></i>
             <span>Report</span>
         </a>
-        <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+        <div id="collapseUtilities" class="collapse {{ request()->is('getSalesReport') ? 'active' : '' }}" aria-labelledby="headingUtilities"
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="utilities-color.html">Sales Report</a>
-                <a class="collapse-item" href="utilities-border.html">Reference wise report</a>
-                <a class="collapse-item" href="utilities-animation.html">Doctor Wise Report</a>
-                <a class="collapse-item" href="utilities-other.html">Patient Wise Report</a>
+                <a class="collapse-item" href="{{ route('getSalesReport') }}">Sales report</a>
+                <a class="collapse-item" href="{{ route('getSalesReport') }}">Service wise sales report</a>
+                <a class="collapse-item" href="{{ route('invoices.index') }}">Reference wise report</a>
+                <a class="collapse-item" href="{{ route('invoices.index') }}">Doctor Wise report</a>
+                <a class="collapse-item" href="{{ route('invoices.index') }}">Patient Wise report</a>
             </div>
         </div>
     </li>
