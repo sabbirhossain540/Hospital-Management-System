@@ -201,7 +201,7 @@
                 success: function(data) {
                     console.log(data);
                     for (var i=0; i<data.length; i++) {
-                        var row = $('<tr><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                        var row = $('<tr class="rowTrack"><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                         $('#myTable').append(row);
                     }
                 }
@@ -209,6 +209,8 @@
         }
 
         function handleDelete(id){
+
+            $('.rowTrack').remove();
             $.ajax({
                 type:"GET",
                 url:"{{url('deleteTempService')}}/"+id,
@@ -271,7 +273,7 @@
 
         $(".save-data").click(function(event){
             event.preventDefault();
-
+            $('.rowTrack').remove();
             let _token   = $("#csrf-token").val();
             let service_id   = $("#service_id").val();
             let price   = $("#price").val();

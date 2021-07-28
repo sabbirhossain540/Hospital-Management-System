@@ -81,8 +81,9 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        $invoiceInfo = Invoice::with('invoiceDetails')->where('id', $id)->first();
-        dd($invoiceInfo);
+        $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getReference')->where('id', $id)->first();
+        //dd($invoiceInfo);
+        return view('admin.invoice.show', compact('invoiceInfo'));
     }
 
     /**
