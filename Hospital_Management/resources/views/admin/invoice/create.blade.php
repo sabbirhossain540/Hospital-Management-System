@@ -1,7 +1,6 @@
 @extends('admin.layouts')
 
 @section("content")
-
     <div class="row justify-content-md-center">
         <div class="col-md-10">
             <div class="card shadow mb-4">
@@ -26,7 +25,7 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="pn">Patient Name</label>
-                                <select name="pataint_id" id="pataint_id" class="form-control" required>
+                                <select name="pataint_id" id="pataint_id" class="form-control chosen" required>
                                     <option value="">Select Patient Name</option>
                                     @foreach($patientList as $patient)
                                         <option value="{{ $patient->id }}">{{ $patient->name }}</option>
@@ -65,7 +64,7 @@
                             </div>
                             <div class="col">
                                 <label for="date">Invoice Date</label>
-                                <input type="date" name="ic_date" id="ic_date" class="form-control">
+                                <input type="text" name="ic_date" id="ic_date" class="form-control flatPickerCustom" placeholder="Invoice Date">
                                 @error('ic_date')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -190,7 +189,9 @@
     <script>
 
         $( document ).ready(function() {
+            $(".chosen").chosen();
             showDataOnGrid();
+            flatpickr("#ic_date");
         });
 
         function showDataOnGrid(){
