@@ -46,6 +46,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+
         $invoiceMaster = new Invoice();
         $invoiceMaster->pataint_id = $request->pataint_id;
         $invoiceMaster->doctor_id = $request->doctor_id;
@@ -54,23 +55,19 @@ class InvoiceController extends Controller
         $invoiceMaster->remark = $request->remark;
         $invoiceMaster->save();
 
-        $getTempItem = TempSales::all();
-        $size = count($getTempItem);
+        $size = count($request->invoice_details);
+
         for($i = 0; $i < $size ; $i++){
             $invoiceDetails = new InvoiceDetails();
             $invoiceDetails->invoice_id = $invoiceMaster->id;
-            $invoiceDetails->service_id = $getTempItem[$i]['service_id'];
-            $invoiceDetails->price = $getTempItem[$i]['price'];
-            $invoiceDetails->quantity = $getTempItem[$i]['quantity'];
-            $invoiceDetails->total = $getTempItem[$i]['total'];
+            $invoiceDetails->service_id = $request->invoice_details[$i]['service_id'];
+            $invoiceDetails->price = $request->invoice_details[$i]['price'];
+            $invoiceDetails->quantity = $request->invoice_details[$i]['quantity'];
+            $invoiceDetails->total = $request->invoice_details[$i]['total'];
             $invoiceDetails->save();
         }
 
-        TempSales::truncate();
-
-        session()->flash('success', 'Invoice Created successfully');
-        return redirect()->route('invoices.index');
-
+        return true;
     }
 
     /**

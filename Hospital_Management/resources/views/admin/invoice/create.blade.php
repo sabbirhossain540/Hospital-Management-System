@@ -1,7 +1,7 @@
 @extends('admin.layouts')
 
 @section("content")
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.all.min.js"></script>
     <div class="row justify-content-md-center">
         <div class="col-md-10">
             <div class="card shadow mb-4">
@@ -18,11 +18,11 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="@if(isset($referenceInfo)) {{route('references.update',$referenceInfo->id)}} @else {{route('invoices.store')}} @endif" >
-                        @csrf
-                        @if(isset($referenceInfo))
-                            @method('PUT')
-                        @endif
+{{--                    <form method="POST" action="@if(isset($referenceInfo)) {{route('references.update',$referenceInfo->id)}} @else {{route('invoices.store')}} @endif" >--}}
+{{--                        @csrf--}}
+{{--                        @if(isset($referenceInfo))--}}
+{{--                            @method('PUT')--}}
+{{--                        @endif--}}
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="pn">Patient Name</label>
@@ -113,10 +113,10 @@
                             <div class="col-10 p-2"></div>
                             <div class="col-2 p-2">
                                 <a href="{{route('invoices.index')}}" class="btn btn-danger btn-sm">Cancel</a>
-                                <button type="submit" class="btn btn-success btn-sm">@if(isset($referenceInfo)) Update @else Save @endif</button>
+                                <button type="submit" class="btn btn-success btn-sm main-form-submit">@if(isset($referenceInfo)) Update @else Save @endif</button>
                             </div>
                         </div>
-                    </form>
+{{--                    </form>--}}
 
 
 
@@ -130,7 +130,7 @@
                                             <div class="row mb-2">
                                                 <div class="col">
                                                     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
-                                                    <input type="text" name="id" id="id">
+                                                    <input type="hidden" name="id" id="id">
                                                     <label for="pn">Item Name</label>
                                                     <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
                                                         <option value="">Select a service</option>
@@ -196,49 +196,52 @@
 
         let arr = []
 
-        function showDataOnGrid(){
-            //alert(arr.length);
+        $(".main-form-submit").click(function(event){
+            event.preventDefault();
 
+            let _token   = $("#csrf-token").val();
+            let pataint_id   = $("#pataint_id").val();
+            let doctor_id   = $("#doctor_id").val();
+            let reference_id   = $("#reference_id").val();
+            let ic_date   = $("#ic_date").val();
+            let remark   = $("#remark").val();
+
+            $.ajax({
+                url: "{{route('invoices.store')}}",
+                type:"POST",
+                data:{
+                    pataint_id:pataint_id,
+                    doctor_id:doctor_id,
+                    reference_id:reference_id,
+                    ic_date:ic_date,
+                    remark:remark,
+                    invoice_details: arr,
+                    _token: _token
+                },
+                success:function(response){
+                    Swal.fire({
+                        title: 'Invoice Created Successfully',
+                        confirmButtonText: `OK`,
+                    }).then((result) => {
+                        window.location.href = "{{ route('invoices.index')}}";
+                    });
+                },
+            });
+        });
+
+
+        function showDataOnGrid(){
             for (var i=0; i<arr.length; i++) {
-                var row = $('<tr id="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                //var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 $('#myTable').append(row);
             }
-
-            {{--$.ajax({--}}
-            {{--    type:"GET",--}}
-            {{--    url:"{{url('getTempInvoiceDetails')}}",--}}
-            {{--    success: function(data) {--}}
-            {{--        console.log(data);--}}
-            {{--        for (var i=0; i<data.length; i++) {--}}
-            {{--            var row = $('<tr><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');--}}
-            {{--            $('#myTable').append(row);--}}
-            {{--        }--}}
-            {{--    }--}}
-            {{--});--}}
         }
 
         function handleDelete(id){
+            $('.rowTrack').remove();
             arr = arr.filter(item => item.id != id);
-            console.log("from handle delete");
-            console.log(arr);
-
-            // for (var i=0; i<arr.length; i++) {
-            //     var row = $('<tr id="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
-            //     $('#myTable').append(row);
-            // }
-
-
-            // alert("OK");
-            // showDataOnGrid();
-            // console.log(arr);
-            //alert(id);
-            {{--$.ajax({--}}
-            {{--    type:"GET",--}}
-            {{--    url:"{{url('deleteTempService')}}/"+id,--}}
-            {{--    success: function(data) {--}}
-            {{--        showDataOnGrid();--}}
-            {{--    }--}}
-            {{--});--}}
+            showDataOnGrid();
         }
 
 
@@ -276,6 +279,7 @@
                     $('#quantity').val(1);
                     $('#total').val(data.price);
                     $('#id').val(data.id);
+
                 }
             });
         }
@@ -297,7 +301,7 @@
 
         $(".save-data").click(function(event){
             event.preventDefault();
-            $('#rowTrack').remove();
+            $('.rowTrack').remove();
             let _token   = $("#csrf-token").val();
             let service_id   = $("#service_id").val();
             let price   = $("#price").val();
@@ -317,29 +321,12 @@
             }
 
             arr.push(test);
-            console.log("from store data");
-            console.log(arr);
+
             showDataOnGrid();
 
-            //alert(service_id + price + quantity + total);
+            formReset();
+            $('.cancel-button').click();
 
-            {{--$.ajax({--}}
-            {{--    url: "{{url('postServiceInfo')}}",--}}
-            {{--    type:"POST",--}}
-            {{--    data:{--}}
-            {{--        id:id,--}}
-            {{--        service_id:service_id,--}}
-            {{--        price:price,--}}
-            {{--        quantity:quantity,--}}
-            {{--        total:total,--}}
-            {{--        _token: _token--}}
-            {{--    },--}}
-            {{--    success:function(response){--}}
-            {{--        formReset();--}}
-            {{--        $('.cancel-button').click();--}}
-            {{--        showDataOnGrid();--}}
-            {{--    },--}}
-            {{--});--}}
         });
 
 
