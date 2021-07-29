@@ -1,6 +1,7 @@
 @extends('admin.layouts')
 
 @section("content")
+
     <div class="row justify-content-md-center">
         <div class="col-md-10">
             <div class="card shadow mb-4">
@@ -17,11 +18,11 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="@if(isset($referenceInfo)) {{route('references.update',$referenceInfo->id)}} @else {{route('invoices.store')}} @endif" >
-                        @csrf
-                        @if(isset($referenceInfo))
-                            @method('PUT')
-                        @endif
+{{--                    <form method="POST" action="@if(isset($referenceInfo)) {{route('references.update',$referenceInfo->id)}} @else {{route('invoices.store')}} @endif" >--}}
+{{--                        @csrf--}}
+{{--                        @if(isset($referenceInfo))--}}
+{{--                            @method('PUT')--}}
+{{--                        @endif--}}
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="pn">Patient Name</label>
@@ -112,7 +113,7 @@
                             <div class="col-10 p-2"></div>
                             <div class="col-2 p-2">
                                 <a href="{{route('invoices.index')}}" class="btn btn-danger btn-sm">Cancel</a>
-                                <button type="submit" class="btn btn-success btn-sm">@if(isset($referenceInfo)) Update @else Save @endif</button>
+                                <button type="submit" class="btn btn-success btn-sm main-form-submit">@if(isset($referenceInfo)) Update @else Save @endif</button>
                             </div>
                         </div>
                     </form>
@@ -131,6 +132,7 @@
                                                     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
                                                     <input type="hidden" name="id" id="id">
                                                     <label for="pn">Item Name</label>
+                                                    <input type="hidden" name="service_name" id="service_name" class="form-control" readonly>
                                                     <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
                                                         <option value="">Select a service</option>
                                                         @foreach($serviceList as $service)
@@ -193,38 +195,54 @@
 
 
         $( document ).ready(function() {
-            showDataOnGrid();
+            //showDataOnGrid();
             flatpickr("#ic_date");
         });
 
+        let arr = []
+        $(".main-form-submit").click(function(event){
+            event.preventDefault();
+            let _token   = $("#csrf-token").val();
+            let pataint_id   = $("#pataint_id").val();
+            let doctor_id   = $("#doctor_id").val();
+            let reference_id   = $("#reference_id").val();
+            let ic_date   = $("#ic_date").val();
+            let remark   = $("#remark").val();
+            $.ajax({
+                url: "{{route('invoices.store')}}",
+                type:"POST",
+                data:{
+                    pataint_id:pataint_id,
+                    doctor_id:doctor_id,
+                    reference_id:reference_id,
+                    ic_date:ic_date,
+                    remark:remark,
+                    invoice_details: arr,
+                    _token: _token
+                },
+                success:function(response){
+                    Swal.fire({
+                        title: 'Invoice Created Successfully',
+                        confirmButtonText: `OK`,
+                    }).then((result) => {
+                        window.location.href = "{{ route('invoices.index')}}";
+                    });
+                },
+            });
+        });
         function showDataOnGrid(){
-
-            $.ajax({
-                type:"GET",
-                url:"{{url('getTempInvoiceDetails')}}",
-                success: function(data) {
-                    console.log(data);
-                    for (var i=0; i<data.length; i++) {
-                        var row = $('<tr class="rowTrack"><td>' + data[i].service_name['name']+ '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + data[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + data[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
-                        $('#myTable').append(row);
-                    }
-                }
-            });
+            console.log(arr);
+            for (var i=0; i<arr.length; i++) {
+                var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                //var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                $('#myTable').append(row);
+            }
         }
-
         function handleDelete(id){
-
             $('.rowTrack').remove();
-            $.ajax({
-                type:"GET",
-                url:"{{url('deleteTempService')}}/"+id,
-                success: function(data) {
-                    showDataOnGrid();
-                }
-            });
+            arr = arr.filter(item => item.id != id);
+            showDataOnGrid();
         }
-
-
         function handleEdit(id){
             $.ajax({
                 type:"GET",
@@ -238,43 +256,37 @@
                     $('#total').val(data.total);
                 }
             });
-
         }
-
         function handleItem(){
             $('#serviceModal').modal('show')
         }
-
-
         function getProductDetails(){
             var service_id = $("#service_id").val();
-
             $.ajax({
                 type:"GET",
                 url:"{{url('getServiceInfo')}}/"+service_id,
                 success: function(data) {
+                    console.log(data);
                     $('#price').val(data.price);
+                    $('#service_name').val(data.name);
                     $('#quantity').val(1);
                     $('#total').val(data.price);
+                    $('#id').val(data.id);
                 }
             });
         }
-
         function calculatePrice(){
             var price = $("#price").val();
             var quantity = $("#quantity").val();
             var totalAmount = price * quantity;
             $('#total').val(totalAmount);
         }
-
         function formReset(){
             $('#service_id').val('');
             $('#price').val(0);
             $('#quantity').val(0);
             $('#total').val(0);
         }
-
-
         $(".save-data").click(function(event){
             event.preventDefault();
             $('.rowTrack').remove();
@@ -283,27 +295,22 @@
             let price   = $("#price").val();
             let quantity   = $("#quantity").val();
             let total   = $("#total").val();
+            let service_name   = $("#service_name").val();
             let id   = $("#id").val();
+            let serviceData = {
+                "id": id,
+                "service_id": service_id,
+                "price": price,
+                "quantity": quantity,
+                "total": total,
+                "service_name":service_name
+            }
 
-            $.ajax({
-                url: "{{url('postServiceInfo')}}",
-                type:"POST",
-                data:{
-                    id:id,
-                    service_id:service_id,
-                    price:price,
-                    quantity:quantity,
-                    total:total,
-                    _token: _token
-                },
-                success:function(response){
-                    formReset();
-                    $('.cancel-button').click();
-                    showDataOnGrid();
-                },
-            });
+            arr.push(serviceData);
+            showDataOnGrid();
+            formReset();
+            $('.cancel-button').click();
         });
-
 
     </script>
 
