@@ -64,7 +64,7 @@
                     @endforeach
                         <tr>
                             <td colspan="4" align="right">Total</td>
-                            <td>500</td>
+                            <td>{{ $totalAmount }}</td>
                         </tr>
                     </tbody>
                 </table>

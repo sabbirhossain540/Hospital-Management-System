@@ -110,8 +110,14 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getReference')->where('id', $id)->first();
-        //dd($invoiceInfo);
-        return view('admin.invoice.show', compact('invoiceInfo'));
+        $totalAmount = 0;
+        $totalQuantity = 0;
+        foreach($invoiceInfo->invoiceDetails as $invoiceList){
+            $totalAmount = $totalAmount + $invoiceList->total;
+            $totalQuantity = $totalQuantity + $invoiceList->quantity;
+        }
+
+        return view('admin.invoice.show', compact('invoiceInfo', 'totalAmount', 'totalQuantity'));
     }
 
     /**
@@ -169,49 +175,5 @@ class InvoiceController extends Controller
         return $serviceInfo;
     }
 
-    public function postServiceInfo(Request $request){
 
-        $this->validate($request, [
-            'service_id' => 'required',
-        ]);
-
-        if($request->id == ''){
-            $temp_data = new TempSales();
-            $temp_data->service_id = $request->service_id;
-            $temp_data->price = $request->price;
-            $temp_data->quantity = $request->quantity;
-            $temp_data->total = $request->total;
-            $temp_data->save();
-            return "success";
-
-
-        }else{
-            $temp_data = TempSales::findOrFail($request->id);
-            $temp_data->service_id = $request->service_id;
-            $temp_data->price = $request->price;
-            $temp_data->quantity = $request->quantity;
-            $temp_data->total = $request->total;
-            $temp_data->save();
-            return "success";
-        }
-
-
-    }
-
-
-    public function getTempInvoiceDetails(){
-        $tempInvoiceDetails = TempSales::with('serviceName')->get();
-        return $tempInvoiceDetails;
-    }
-
-    public function deleteTempService($id){
-        $tempRecord = TempSales::findOrFail($id);
-        $tempRecord->delete();
-        return "Delete Successfully";
-    }
-
-    public function getTempServiceForEdit($id){
-        $tempRecord = TempSales::findOrFail($id);
-        return $tempRecord;
-    }
 }
