@@ -65,11 +65,15 @@ Route::get('/getTempServiceForEdit/{id}', 'InvoiceController@getTempServiceForEd
 
 Route::post('/deleteInvoice/{id}', 'InvoiceController@destroy')->name('deleteInvoice');
 
-//Report Path
+//Sales Report
 Route::get('/getSalesReport', 'ReportController@getSalesReport')->name('getSalesReport');
 Route::get('/generateSalesReport/{fromDate}/{toDate}', 'ReportController@generateSalesReport')->name('generateSalesReport');
+Route::get('/generatePdfSalesReport/{fromDate}/{toDate}', 'ReportController@generatePdfSalesReport')->name('generatePdfSalesReport');
 
-Route::get('/generatePdfSalesReport', 'ReportController@generatePdfSalesReport')->name('generatePdfSalesReport');
+//Service Wise Sales Report
+Route::get('/getServiceWiseSalesReport', 'ReportController@getServiceWiseSalesReport')->name('getServiceWiseSalesReport');
+Route::get('/generateServiceWiseSalesReport/{fromDate}/{toDate}/{serviceId}', 'ReportController@generateServiceWiseSalesReport')->name('generateServiceWiseSalesReport');
+Route::get('/generatePdfServiceWiseSalesReport/{fromDate}/{toDate}/{serviceId}', 'ReportController@generatePdfServiceWiseSalesReport')->name('generatePdfServiceWiseSalesReport');
 
 
 
