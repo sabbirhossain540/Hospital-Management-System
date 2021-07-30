@@ -67,7 +67,7 @@ class ReportController extends Controller
     }
 
     public function generatePdfServiceWiseSalesReport($fromDate, $toDate, $serviceId){
-
+        $serviceName = Services::findOrFail($serviceId);
 
         $invoiceList = InvoiceDetails::with('getServiceName')
             ->where('service_id', $serviceId)
@@ -83,8 +83,8 @@ class ReportController extends Controller
             $totalQuantity = $totalQuantity + $list->quantity;
         }
 
-        $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'fromDate', 'toDate'));
-        return $pdf->stream();
-        //return $pdf->download('SalesReport.pdf');
+        $pdf = PDF::loadView('admin.report.serviceWiseSalesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'fromDate', 'toDate', 'serviceName'));
+        //return $pdf->stream();
+        return $pdf->download('ServiceWiseSalesReport.pdf');
     }
 }

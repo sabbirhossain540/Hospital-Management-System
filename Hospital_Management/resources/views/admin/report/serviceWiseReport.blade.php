@@ -74,8 +74,9 @@
         $(".disableChecker").change(function(event){
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
+            let service_id = $("#service_id").val();
 
-            if(fromDate <= toDate){
+            if(fromDate <= toDate && service_id != null){
                 $(".generate-report").prop('disabled', false);
                 $(".generate-pdf-report").prop('disabled', false);
             }else{
@@ -88,7 +89,7 @@
             let service_id = $("#service_id").val();
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
-            window.location.href = "{{ url('generatePdfSalesReport')}}/"+fromDate+"/"+toDate+"/"+service_id;
+            window.location.href = "{{ url('generatePdfServiceWiseSalesReport')}}/"+fromDate+"/"+toDate+"/"+service_id;
         });
 
         $(".generate-report").click(function(event){
