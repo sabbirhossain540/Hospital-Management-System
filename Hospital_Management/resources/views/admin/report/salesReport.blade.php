@@ -59,6 +59,11 @@
             flatpickr("#toDate");
         });
 
+        // $('.print-report').click(function(){
+        //     window.print();
+        //     return false;
+        // });
+
         $(".disableChecker").change(function(event){
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
@@ -66,6 +71,9 @@
             if(fromDate <= toDate){
                 $(".generate-report").prop('disabled', false);
                 $(".generate-pdf-report").prop('disabled', false);
+            }else{
+                $(".generate-report").prop('disabled', true);
+                $(".generate-pdf-report").prop('disabled', true);
             }
         });
 
