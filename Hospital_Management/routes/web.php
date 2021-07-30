@@ -69,7 +69,7 @@ Route::post('/deleteInvoice/{id}', 'InvoiceController@destroy')->name('deleteInv
 Route::get('/getSalesReport', 'ReportController@getSalesReport')->name('getSalesReport');
 Route::get('/generateSalesReport/{fromDate}/{toDate}', 'ReportController@generateSalesReport')->name('generateSalesReport');
 
-Route::get('/generatePdfSalesReport', 'ReportController@generatePdfSalesReport')->name('generatePdfSalesReport');
+Route::get('/generatePdfSalesReport/{fromDate}/{toDate}', 'ReportController@generatePdfSalesReport')->name('generatePdfSalesReport');
 
 
 

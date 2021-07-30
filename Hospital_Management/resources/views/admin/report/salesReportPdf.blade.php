@@ -1,5 +1,6 @@
 <h1 style="text-align: center;">Boshundhara Clinic and Digonestic center</h1>
 <h3 style="text-align: center;">Sales Report</h3>
+<h4 style="text-align: center;">Date Range: {{ $fromDate }} -- {{ $toDate }}</h4>
 
 <table width="100%">
     <thead style="border: 1px solid black">

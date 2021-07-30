@@ -12,8 +12,12 @@ use Illuminate\Support\Facades\App;
 
 class ReportController extends Controller
 {
-    public function generatePdfSalesReport(){
-        $invoiceList = InvoiceDetails::with('getServiceName')->get();
+    public function generatePdfSalesReport($fromDate, $toDate){
+
+        $invoiceList = InvoiceDetails::with('getServiceName')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
         $totalAmount = 0;
         $totalQuantity = 0;
         foreach($invoiceList as $list){
@@ -21,9 +25,9 @@ class ReportController extends Controller
             $totalQuantity = $totalQuantity + $list->quantity;
         }
 
-        $pdf = PDF::loadView('admin.report.test', compact('invoiceList','totalAmount', 'totalQuantity'));
-        return $pdf->stream();
-        //return $pdf->download('invoice.pdf');
+        $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'fromDate', 'toDate'));
+        //return $pdf->stream();
+        return $pdf->download('SalesReport.pdf');
     }
 
 

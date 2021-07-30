@@ -13,15 +13,15 @@
         <div class="card-body">
             <div class="d-flex flex-nowrap bd-highlight mb-3">
                 <div class="order-1 p-2 bd-highlight">
-                    <input type="text" class="form-control" name="fromDate" id="fromDate" placeholder="From Date">
+                    <input type="text" class="form-control disableChecker" name="fromDate" id="fromDate" placeholder="From Date">
                 </div>
                 <div class="order-2 p-2 bd-highlight">
-                    <input type="text" class="form-control" name="toDate" id="toDate" placeholder="To Date">
+                    <input type="text" class="form-control disableChecker" name="toDate" id="toDate" placeholder="To Date">
                 </div>
                 <div class="order-3 p-2 bd-highlight">
-                    <button type="submit" class="btn btn-success generate-report">Generate Report</button>
-                    <button type="submit" class="btn btn-info">Print Report</button>
-                    <button type="submit" class="btn btn-warning">Generate PDF</button>
+                    <button type="submit" class="btn btn-success generate-report" disabled>Generate Report</button>
+                    <button type="submit" class="btn btn-info print-report">Print Report</button>
+                    <button type="submit" class="btn btn-warning generate-pdf-report" disabled>Generate PDF</button>
                 </div>
             </div>
 
@@ -53,10 +53,26 @@
 
     <script>
         $( document ).ready(function() {
-
             $( "#myTable" ).hide();
+            $( ".print-report" ).hide();
             flatpickr("#fromDate");
             flatpickr("#toDate");
+        });
+
+        $(".disableChecker").change(function(event){
+            let fromDate   = $("#fromDate").val();
+            let toDate   = $("#toDate").val();
+
+            if(fromDate <= toDate){
+                $(".generate-report").prop('disabled', false);
+                $(".generate-pdf-report").prop('disabled', false);
+            }
+        });
+
+        $(".generate-pdf-report").click(function(event){
+            let fromDate   = $("#fromDate").val();
+            let toDate   = $("#toDate").val();
+            window.location.href = "{{ url('generatePdfSalesReport')}}/"+fromDate+"/"+toDate;
         });
 
         $(".generate-report").click(function(event){
@@ -85,13 +101,11 @@
                     let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalAmount + '</td></tr>');
                     $('#myTable').append(finalRow);
 
-                    //console.log(totalQuantity);
+                    $( ".print-report" ).show();
 
 
                 }
             });
-
-
         });
 
         function formatDate(date) {
