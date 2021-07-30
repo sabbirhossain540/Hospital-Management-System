@@ -32,9 +32,13 @@ class ReportController extends Controller
     }
 
     public function generateSalesReport($fromDate, $toDate){
-        $endDate =  Carbon::parse($toDate)->addDays(1);
-        $endDate = $endDate->format('Y-m-d');
-        $recordList = InvoiceDetails::with('getServiceName')->whereBetween('created_at', [$fromDate, $endDate])->get();
+        $recordList = InvoiceDetails::with('getServiceName')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+//        return $toDate;
+//        $endDate =  Carbon::parse($toDate)->addDays(1);
+//        $endDate = $endDate->format('Y-m-d');
+//        $recordList = InvoiceDetails::with('getServiceName')->whereBetween('created_at', [$fromDate, $toDate])->get();
         return $recordList;
     }
 }
