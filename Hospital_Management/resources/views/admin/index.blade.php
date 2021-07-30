@@ -135,9 +135,9 @@
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Sales Overview</h6>
                     <div class="dropdown no-arrow">
-                        <button class="btn btn-info btn-sm">View</button>
+                        <a class="btn btn-info btn-sm" href="{{ route('invoices.index') }}">Details</a>
                     </div>
 
                 </div>

@@ -35,7 +35,7 @@ class HomeController extends Controller
 
         $totalService = Services::all()->count();
         $totalInvoice = Invoice::all()->count();
-        $totalUser = User::all()->count();
+        $totalUser = User::where('role','!=','patient')->count();
         $totalDoctor = User::where('role','doctor')->count();
         $totalPatient = User::where('role', 'patient')->count();
 
