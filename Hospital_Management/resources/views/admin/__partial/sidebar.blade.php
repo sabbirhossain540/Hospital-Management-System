@@ -86,7 +86,7 @@
              data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="{{ route('getSalesReport') }}">Sales report</a>
-                <a class="collapse-item" href="{{ route('getSalesReport') }}">Service wise sales report</a>
+                <a class="collapse-item" href="{{ route('getServiceWiseSalesReport') }}">Service wise sales report</a>
                 <a class="collapse-item" href="{{ route('invoices.index') }}">Reference wise report</a>
                 <a class="collapse-item" href="{{ route('invoices.index') }}">Doctor Wise report</a>
                 <a class="collapse-item" href="{{ route('invoices.index') }}">Patient Wise report</a>
