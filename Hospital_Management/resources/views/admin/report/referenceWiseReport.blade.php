@@ -94,7 +94,7 @@
             let reference_id = $("#reference_id").val();
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
-            window.location.href = "{{ url('generatePdfServiceWiseSalesReport')}}/"+fromDate+"/"+toDate+"/"+reference_id;
+            window.location.href = "{{ url('generatePdfReferenceWiseReport')}}/"+fromDate+"/"+toDate+"/"+reference_id;
         });
 
         $(".generate-report").click(function(event){
@@ -135,7 +135,7 @@
                     let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="4"></td><td style="text-align: right;">Total</td><td>' + totalSubtotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td><td>' + referelCommission + '</td><td>' + totalRefaralAmount + '</td></tr>');
                     $('#myTable').append(finalRow);
 
-                    // $( ".print-report" ).show();
+                    $( ".print-report" ).show();
 
 
                 }
