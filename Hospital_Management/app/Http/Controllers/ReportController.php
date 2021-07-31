@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Invoice;
 use App\InvoiceDetails;
 //use Barryvdh\DomPDF\PDF;
+use App\References;
 use App\Services;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
@@ -87,4 +88,34 @@ class ReportController extends Controller
         //return $pdf->stream();
         return $pdf->download('ServiceWiseSalesReport.pdf');
     }
+
+    //Reference Wise Report
+    public function getReferenceWiseReport(){
+        $referenceList = References::all();
+        return view('admin.report.referenceWiseReport', compact('referenceList'));
+    }
+
+    public function generateReferenceWiseReport($fromDate, $toDate, $referenceId){
+        //return $referenceId;
+        $recordList = Invoice::with('invoiceDetails')
+            ->where('reference_id', $referenceId)
+            ->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        foreach($recordList as $record){
+            //$record['sdvsd'] = "saca";
+
+            //dd($record);
+        }
+        dd($recordList);
+        //$allRecord = collect($recordList);
+
+        dd($recordList);
+
+
+        return $recordList;
+    }
+
+
 }
