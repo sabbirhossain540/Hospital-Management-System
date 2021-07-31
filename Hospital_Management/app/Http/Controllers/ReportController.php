@@ -96,23 +96,35 @@ class ReportController extends Controller
     }
 
     public function generateReferenceWiseReport($fromDate, $toDate, $referenceId){
-        //return $referenceId;
-        $recordList = Invoice::with('invoiceDetails')
+        $recordList = Invoice::with('invoiceDetails', 'getReference', 'getPatient', 'getDoctor')
             ->where('reference_id', $referenceId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->orderBy('created_at', 'DESC')
             ->get();
         foreach($recordList as $record){
-            //$record['sdvsd'] = "saca";
+            $subtotal = 0;
+            $discountAmount = 0;
+            $totalAmount = 0;
+            foreach($record->invoiceDetails as $ids){
+                $subtotal = $subtotal + $ids->subtotal;
+                $discount = $ids->subtotal * $ids->discount / 100;
+                $discountAmount = $discountAmount + $discount;
+                $totalAmount = $totalAmount + $ids->total;
+            }
 
-            //dd($record);
+            $referenceAmount = $totalAmount * $record->getReference->comission / 100;
+
+            $record['subtotal'] = floor($subtotal);
+            $record['discount'] = floor($discountAmount);
+            $record['total'] = floor($totalAmount);
+            $record['referalParcentage'] = $record->getReference->comission;
+            $record['referalAmount'] = floor($referenceAmount);
         }
-        dd($recordList);
+        //dd($recordList);
         //$allRecord = collect($recordList);
 
-        dd($recordList);
-
+       // dd($recordList);
 
         return $recordList;
     }

@@ -39,10 +39,15 @@
                     <thead>
                     <tr>
                         <th width="5%">SN</th>
-                        <th width="10%">Sales Date</th>
-                        <th width="15%">Price</th>
-                        <th width="10%">Quantity</th>
+                        <th width="10%">Date</th>
+                        <th width="10%">IV No</th>
+                        <th width="15%">Patient Name</th>
+                        <th width="15%">Doctor Name</th>
+                        <th width="5%">Sub Total</th>
+                        <th width="10%">Discount</th>
                         <th width="10%">Total</th>
+                        <th width="10%">Comission(%)</th>
+                        <th width="10%">Referal Amount</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -104,21 +109,32 @@
                 url:"{{url('generateReferenceWiseReport')}}/"+fromDate+"/"+toDate+"/"+service_id,
                 success: function(data) {
                     console.log(data);
-                    // let totalAmount = 0;
-                    // let totalQuantity = 0;
-                    // for (var i=0; i<data.length; i++) {
-                    //     let serviceName = data[i].get_service_name['name'];
-                    //     let serial_no = i+1;
-                    //     totalAmount = totalAmount + parseInt(data[i].price);
-                    //     totalQuantity = totalQuantity + parseInt(data[i].quantity);
-                    //     let formatedDate = formatDate(data[i].created_at);
-                    //     let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td></tr>');
-                    //     $('#myTable').append(row);
-                    // }
-                    //
-                    // let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="2"></td><td style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalAmount + '</td></tr>');
-                    // $('#myTable').append(finalRow);
-                    //
+                    let totalAmount = 0;
+                    let totalDiscount = 0;
+                    let totalRefaralAmount = 0
+                    let totalSubtotal = 0;
+                    let referelCommission = 0;
+
+                    for (var i=0; i<data.length; i++) {
+                        let doctorName = data[i].get_doctor['name'];
+                        let patientName = data[i].get_patient['name'];
+                        let IVNO = "demo";
+                        let serial_no = i+1;
+
+                        totalAmount = totalAmount + parseInt(data[i].total);
+                        totalDiscount = totalDiscount + parseInt(data[i].discount);
+                        totalRefaralAmount = totalRefaralAmount + parseInt(data[i].referalAmount);
+                        totalSubtotal = totalSubtotal + parseInt(data[i].subtotal);
+                        referelCommission = data[i].referalParcentage;
+
+                        let formatedDate = formatDate(data[i].created_at);
+                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + IVNO + '</td><td>' + patientName + '</td><td>' + doctorName + '</td><td>' + data[i].subtotal + '</td><td>' + data[i].discount + '</td><td>' + data[i].total + '</td><td>' + data[i].referalParcentage + '</td><td>' + data[i].referalAmount + '</td></tr>');
+                        $('#myTable').append(row);
+                    }
+
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="4"></td><td style="text-align: right;">Total</td><td>' + totalSubtotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td><td>' + referelCommission + '</td><td>' + totalRefaralAmount + '</td></tr>');
+                    $('#myTable').append(finalRow);
+
                     // $( ".print-report" ).show();
 
 
