@@ -46,6 +46,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        //dd($request->invoice_details);
         if($request->id != ''){
             $invoiceMaster = Invoice::findOrFail($request->id);
             $invoiceMaster->pataint_id = $request->pataint_id;
@@ -69,6 +70,8 @@ class InvoiceController extends Controller
                 $invoiceDetails->service_id = $request->invoice_details[$i]['service_id'];
                 $invoiceDetails->price = $request->invoice_details[$i]['price'];
                 $invoiceDetails->quantity = $request->invoice_details[$i]['quantity'];
+                $invoiceDetails->subtotal = $request->invoice_details[$i]['subTotal'];
+                $invoiceDetails->discount = $request->invoice_details[$i]['discount'];
                 $invoiceDetails->total = $request->invoice_details[$i]['total'];
                 $invoiceDetails->save();
             }
@@ -92,6 +95,8 @@ class InvoiceController extends Controller
                 $invoiceDetails->service_id = $request->invoice_details[$i]['service_id'];
                 $invoiceDetails->price = $request->invoice_details[$i]['price'];
                 $invoiceDetails->quantity = $request->invoice_details[$i]['quantity'];
+                $invoiceDetails->subtotal = $request->invoice_details[$i]['subTotal'];
+                $invoiceDetails->discount = $request->invoice_details[$i]['discount'];
                 $invoiceDetails->total = $request->invoice_details[$i]['total'];
                 $invoiceDetails->save();
             }

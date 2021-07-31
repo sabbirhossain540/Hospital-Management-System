@@ -97,9 +97,11 @@
                                 <thead>
                                 <tr>
                                     <th width="25%">Service Name</th>
-                                    <th width="15%">Price</th>
-                                    <th width="25%">Quantity</th>
-                                    <th width="15%">Total</th>
+                                    <th width="12%">Price</th>
+                                    <th width="12%">Quantity</th>
+                                    <th width="11%">Discount(%)</th>
+                                    <th width="10%">Sub total</th>
+                                    <th width="10%">Total</th>
                                     <th width="20">Action</th>
                                 </tr>
                                 </thead>
@@ -157,6 +159,23 @@
                                                     <label for="quantity">Quantity</label>
                                                     <input type="number" name="quantity" id="quantity" class="form-control" placeholder="0" onkeyup="calculatePrice()">
                                                     @error('quantity')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="row mb-2">
+                                                <div class="col">
+                                                    <label for="discount">Discount(%)</label>
+                                                    <input type="number" name="discount" id="discount" class="form-control" placeholder="0" onkeyup="calculatePrice()">
+                                                    @error('discount')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+
+                                                <div class="col">
+                                                    <label for="total">Sub total</label>
+                                                    <input type="text" name="subTotal" id="subTotal" class="form-control" placeholder="0" readonly>
+                                                    @error('subtotal')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>
@@ -233,7 +252,7 @@
         function showDataOnGrid(){
             console.log(arr);
             for (var i=0; i<arr.length; i++) {
-                var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].discount + '</td><td>' + arr[i].subTotal + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 //var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 $('#myTable').append(row);
             }
@@ -278,14 +297,19 @@
         function calculatePrice(){
             var price = $("#price").val();
             var quantity = $("#quantity").val();
+            var discount = $("#discount").val();
             var totalAmount = price * quantity;
-            $('#total').val(totalAmount);
+            var discounted_price = totalAmount - (totalAmount * discount / 100)
+            $('#subTotal').val(totalAmount);
+            $('#total').val(discounted_price);
         }
         function formReset(){
             $('#service_id').val('');
             $('#price').val(0);
             $('#quantity').val(0);
             $('#total').val(0);
+            $('#subTotal').val(0);
+            $('#discount').val(0);
         }
         $(".save-data").click(function(event){
             event.preventDefault();
@@ -294,6 +318,8 @@
             let service_id   = $("#service_id").val();
             let price   = $("#price").val();
             let quantity   = $("#quantity").val();
+            let subTotal   = $("#subTotal").val();
+            let discount   = $("#discount").val();
             let total   = $("#total").val();
             let service_name   = $("#service_name").val();
             let id   = $("#id").val();
@@ -302,6 +328,8 @@
                 "service_id": service_id,
                 "price": price,
                 "quantity": quantity,
+                "discount": discount,
+                "subTotal": subTotal,
                 "total": total,
                 "service_name":service_name
             }
