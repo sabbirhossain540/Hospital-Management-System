@@ -90,7 +90,6 @@
 
     <script>
         $( document ).ready(function() {
-            //showDataOnGrid();
             flatpickr("#birth_day");
         });
     </script>

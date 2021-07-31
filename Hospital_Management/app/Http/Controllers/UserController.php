@@ -10,7 +10,7 @@ use Auth;
 class UserController extends Controller
 {
     public function index(){
-        $userList = User::all();
+        $userList = User::where('role','!=','patient')->where('role','!=','doctor')->get();
         $this->activity_log("get user list", "index");
         return view('admin.user.index')->with('userlist', $userList);
     }

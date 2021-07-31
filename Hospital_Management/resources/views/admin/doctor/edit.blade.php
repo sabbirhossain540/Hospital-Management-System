@@ -127,5 +127,11 @@
         </div>
     </div>
 
+    <script>
+        $( document ).ready(function() {
+            flatpickr("#birth_day");
+        });
+    </script>
+
 
 @endsection
