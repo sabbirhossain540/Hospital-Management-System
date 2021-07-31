@@ -14,7 +14,7 @@ class ReferencesController extends Controller
      */
     public function index()
     {
-        $referenceList = References::all();
+        $referenceList = References::orderBy('id', 'DESC')->get();
         $this->activity_log("get all reference list", "index");
         return view('admin.references.index')->with('referenceList', $referenceList);
     }
@@ -42,6 +42,7 @@ class ReferencesController extends Controller
             'name' => 'required',
             'mobile_no' => 'required|min:11|max:11',
             'comission' => 'required',
+            'code' => 'required',
         ]);
 
         $references = new References();
@@ -96,6 +97,7 @@ class ReferencesController extends Controller
      */
     public function dataStore($model, $request){
         $model->name = $request->name;
+        $model->code = $request->code;
         $model->mobile_no = $request->mobile_no;
         $model->comission = $request->comission;
         $model->address = $request->address;

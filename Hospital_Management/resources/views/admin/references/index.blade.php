@@ -18,9 +18,10 @@
                     <thead>
                     <tr>
                         <th width="25%">Name</th>
+                        <th width="10%">Code</th>
                         <th width="15%">Mobile No</th>
                         <th width="25%">Address</th>
-                        <th width="15%">Comission(%)</th>
+                        <th width="5%">Comission(%)</th>
                         <th width="20">Action</th>
                     </tr>
                     </thead>
@@ -28,6 +29,7 @@
                     @foreach($referenceList as $reference)
                         <tr>
                             <td>{{ $reference->name }}</td>
+                            <td>{{ $reference->code }}</td>
                             <td>{{ $reference->mobile_no }}</td>
                             <td>{{ $reference->address }}</td>
                             <td>{{ $reference->comission }}</td>

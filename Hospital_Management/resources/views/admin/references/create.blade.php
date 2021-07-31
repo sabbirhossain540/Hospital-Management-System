@@ -31,6 +31,14 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
+
+                            <div class="col">
+                                <label for="mcn">Code</label>
+                                <input type="text" name="code" id="code" class="form-control" placeholder="Enter Code" @if(isset($referenceInfo)) value="{{ $referenceInfo->code }}" @else value="{{ old('code') }} @endif" required>
+                                @error('code')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
