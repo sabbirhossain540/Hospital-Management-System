@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Invoice;
 use App\InvoiceDetails;
 //use Barryvdh\DomPDF\PDF;
+use App\References;
 use App\Services;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
@@ -87,4 +88,91 @@ class ReportController extends Controller
         //return $pdf->stream();
         return $pdf->download('ServiceWiseSalesReport.pdf');
     }
+
+    //Reference Wise Report
+    public function getReferenceWiseReport(){
+        $referenceList = References::all();
+        return view('admin.report.referenceWiseReport', compact('referenceList'));
+    }
+
+    public function generateReferenceWiseReport($fromDate, $toDate, $referenceId){
+        $recordList = Invoice::with('invoiceDetails', 'getReference', 'getPatient', 'getDoctor')
+            ->where('reference_id', $referenceId)
+            ->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        foreach($recordList as $record){
+            $subtotal = 0;
+            $discountAmount = 0;
+            $totalAmount = 0;
+            foreach($record->invoiceDetails as $ids){
+                $subtotal = $subtotal + $ids->subtotal;
+                $discount = $ids->subtotal * $ids->discount / 100;
+                $discountAmount = $discountAmount + $discount;
+                $totalAmount = $totalAmount + $ids->total;
+            }
+
+            $referenceAmount = $totalAmount * $record->getReference->comission / 100;
+
+            $record['subtotal'] = floor($subtotal);
+            $record['discount'] = floor($discountAmount);
+            $record['total'] = floor($totalAmount);
+            $record['referalParcentage'] = $record->getReference->comission;
+            $record['referalAmount'] = floor($referenceAmount);
+        }
+
+        return $recordList;
+    }
+
+
+
+    public function generatePdfReferenceWiseReport($fromDate, $toDate, $referenceId){
+        $referelName = References::findOrFail($referenceId);
+
+        $recordList = Invoice::with('invoiceDetails', 'getReference', 'getPatient', 'getDoctor')
+            ->where('reference_id', $referenceId)
+            ->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        $finalTotalAmount = 0;
+        $finalTotalDiscount = 0;
+        $finalTotalRefaralAmount = 0;
+        $finalTotalSubtotal = 0;
+        $finalreferelCommission = 0;
+
+        foreach($recordList as $record){
+            $subtotal = 0;
+            $discountAmount = 0;
+            $totalAmount = 0;
+            foreach($record->invoiceDetails as $ids){
+                $subtotal = $subtotal + $ids->subtotal;
+                $discount = $ids->subtotal * $ids->discount / 100;
+                $discountAmount = $discountAmount + $discount;
+                $totalAmount = $totalAmount + $ids->total;
+            }
+
+            $referenceAmount = $totalAmount * $record->getReference->comission / 100;
+
+            $record['subtotal'] = floor($subtotal);
+            $record['discount'] = floor($discountAmount);
+            $record['total'] = floor($totalAmount);
+            $record['referalParcentage'] = $record->getReference->comission;
+            $record['referalAmount'] = floor($referenceAmount);
+
+            $finalTotalAmount = $finalTotalAmount + $totalAmount;
+            $finalTotalDiscount = $finalTotalDiscount + $discountAmount;
+            $finalTotalRefaralAmount = $finalTotalRefaralAmount + $referenceAmount;
+            $finalTotalSubtotal = $finalTotalSubtotal + $subtotal;
+            $finalreferelCommission = $record->getReference->comission;
+        }
+
+        $pdf = PDF::loadView('admin.report.referenceWiseReportPdf', compact('recordList','finalTotalAmount', 'finalTotalDiscount','finalTotalRefaralAmount', 'finalTotalSubtotal','finalreferelCommission', 'fromDate', 'toDate', 'referelName'));
+        //return $pdf->stream();
+        return $pdf->download('ReferenceWiseReport.pdf');
+    }
+
+
 }
