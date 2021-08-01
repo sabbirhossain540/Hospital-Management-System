@@ -109,7 +109,8 @@
             let doctor_id = $("#doctor_id").val();
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
-            window.location.href = "{{ url('generatePdfReferenceWiseReport')}}/"+fromDate+"/"+toDate+"/"+doctor_id;
+            let type = $("#reportType").val();
+            window.location.href = "{{ url('generatePdfDoctorWiseReport')}}/"+fromDate+"/"+toDate+"/"+doctor_id+"/"+type;
         });
 
         $(".generate-report").click(function(event){
