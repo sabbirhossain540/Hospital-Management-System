@@ -7,6 +7,7 @@ use App\InvoiceDetails;
 //use Barryvdh\DomPDF\PDF;
 use App\References;
 use App\Services;
+use App\User;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -172,6 +173,51 @@ class ReportController extends Controller
         $pdf = PDF::loadView('admin.report.referenceWiseReportPdf', compact('recordList','finalTotalAmount', 'finalTotalDiscount','finalTotalRefaralAmount', 'finalTotalSubtotal','finalreferelCommission', 'fromDate', 'toDate', 'referelName'));
         //return $pdf->stream();
         return $pdf->download('ReferenceWiseReport.pdf');
+    }
+
+
+    //Doctor Wise Report
+    public function getDoctorWiseReport(){
+        $doctorList = User::with('Specialist')->where('role','doctor')->orderBy('id','DESC')->get();
+        return view('admin.report.doctorWiseReport', compact('doctorList'));
+    }
+
+    public function generateDoctorWiseReport($fromDate, $toDate, $doctor_id, $type){
+
+        if($type == 'invoice'){
+            $recordList = Invoice::with('invoiceDetails', 'getReference', 'getPatient', 'getDoctor')
+                ->where('doctor_id', $doctor_id)
+                ->where('created_at', '>=', $fromDate)
+                ->where('created_at', '<=', $toDate)
+                ->orderBy('created_at', 'DESC')
+                ->get();
+            foreach($recordList as $record){
+                $subtotal = 0;
+                $discountAmount = 0;
+                $totalAmount = 0;
+                foreach($record->invoiceDetails as $ids){
+                    $subtotal = $subtotal + $ids->subtotal;
+                    $discount = $ids->subtotal * $ids->discount / 100;
+                    $discountAmount = $discountAmount + $discount;
+                    $totalAmount = $totalAmount + $ids->total;
+                }
+
+                $referenceAmount = $totalAmount * $record->getReference->comission / 100;
+
+                $record['subtotal'] = floor($subtotal);
+                $record['discount'] = floor($discountAmount);
+                $record['total'] = floor($totalAmount);
+                $record['referalParcentage'] = $record->getReference->comission;
+                $record['referalAmount'] = floor($referenceAmount);
+            }
+        }else{
+            return "Sales";
+        }
+
+        //dd($recordList);
+
+
+        return $recordList;
     }
 
 
