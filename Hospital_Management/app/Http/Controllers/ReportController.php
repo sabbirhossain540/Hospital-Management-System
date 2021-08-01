@@ -211,11 +211,10 @@ class ReportController extends Controller
                 $record['referalAmount'] = floor($referenceAmount);
             }
         }else{
-            return 'sales';
-            //$recordList = InvoiceDetails::
+            $recordList = InvoiceDetails::with('getServiceName')->whereHas('getInvoiceInfo', function ($query) use ($doctor_id) {
+                $query->where('doctor_id', '=', $doctor_id);
+            })->get();
         }
-
-        //dd($recordList);
 
 
         return $recordList;
