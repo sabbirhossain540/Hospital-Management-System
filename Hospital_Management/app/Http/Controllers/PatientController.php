@@ -6,6 +6,7 @@ use App\Patient;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class PatientController extends Controller
 {
@@ -42,7 +43,7 @@ class PatientController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'unique:users',
+            //'email' => 'unique:users',
             'birth_day' => 'required',
             'mobile_no' => 'required|min:11'
         ]);
@@ -128,11 +129,13 @@ class PatientController extends Controller
      * @param $request
      */
     public function dataInsert($modelName, $request){
+        $years = Carbon::parse($request->birth_day)->age;
         $modelName->name = $request->name;
         $modelName->email = $request->email;
         $modelName->mobile_no = $request->mobile_no;
         $modelName->gander = $request->gander;
         $modelName->date_of_birth = $request->birth_day;
+        $modelName->age = $years;
         $modelName->address = $request->address;
         $modelName->save();
     }

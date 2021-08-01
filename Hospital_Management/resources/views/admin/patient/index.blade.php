@@ -23,6 +23,7 @@
 {{--                        <th>Password</th>--}}
                         <th>Mobile No</th>
                         <th>Gander</th>
+                        <th>Age</th>
                         <th>Date of birth</th>
                         <th>Address</th>
                         <th>Action</th>
@@ -37,6 +38,7 @@
 {{--                            <td>{{ $user->password_ref }}</td>--}}
                             <td>{{ $user->mobile_no }}</td>
                             <td>{{ $user->gander }}</td>
+                            <td>{{ $user->age }}</td>
                             <td>{{ $user->date_of_birth }}</td>
                             <td>{{ $user->address }}</td>
                             <td>

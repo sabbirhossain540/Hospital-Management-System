@@ -44,6 +44,11 @@
                         </tr>
                         <br>
                         <tr>
+                            <td>Age: </td>
+                            <td>{{ $userInfo->age }}</td>
+                        </tr>
+                        <br>
+                        <tr>
                             <td>Mobile No: </td>
                             <td>{{ $userInfo->mobile_no }}</td>
                         </tr>
