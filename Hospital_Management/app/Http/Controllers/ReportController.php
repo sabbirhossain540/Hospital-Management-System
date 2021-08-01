@@ -211,7 +211,8 @@ class ReportController extends Controller
                 $record['referalAmount'] = floor($referenceAmount);
             }
         }else{
-            return "Sales";
+            return 'sales';
+            //$recordList = InvoiceDetails::
         }
 
         //dd($recordList);
