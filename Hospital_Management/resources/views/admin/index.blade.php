@@ -19,7 +19,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Sales</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ $salesAmount }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ floor($salesAmount) }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
@@ -157,7 +157,7 @@
                         @foreach($invoiceMaster as $invoice)
                             <tr>
                                 <td>{{ $invoice->ic_date }}</td>
-                                <td>BCAD{{ $invoice->id }}</td>
+                                <td>{{ $invoice->iv_no }}</td>
                                 <td>{{ $invoice->getPatient->name }}</td>
                                 <td>{{ $invoice->getDoctor->name }}</td>
                                 <td>525</td>
