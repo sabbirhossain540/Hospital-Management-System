@@ -17,17 +17,21 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
+                        <th width="10%">SN</th>
+                        <th width="10%">Invoice No</th>
                         <th width="10%">Invoice Date</th>
-                        <th width="15%">Patient Name</th>
-                        <th width="15%">Doctor Name</th>
-                        <th width="15%">Refferal</th>
-                        <th width="15%">Remark</th>
+                        <th width="10%">Patient Name</th>
+                        <th width="10%">Doctor Name</th>
+                        <th width="10%">Refferal</th>
+                        <th width="10%">Remark</th>
                         <th width="20%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($invoiceList as $invoice)
+                    @foreach($invoiceList as $key=>$invoice)
                         <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>{{ $invoice->iv_no }}</td>
                             <td>{{ $invoice->ic_date }}</td>
                             <td>{{ $invoice->getPatient->name }}</td>
                             <td>{{ $invoice->getDoctor->name }}</td>

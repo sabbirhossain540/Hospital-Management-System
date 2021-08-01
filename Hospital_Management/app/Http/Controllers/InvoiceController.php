@@ -79,7 +79,11 @@ class InvoiceController extends Controller
             return true;
 
         }else{
+            $getInvoice = Invoice::latest()->first();
+            $ivNo = $getInvoice->id+1;
+            $ivno = "BCAD/".date("Y")."/".date('M')."/".$ivNo;
             $invoiceMaster = new Invoice();
+            $invoiceMaster->iv_no = $ivno;
             $invoiceMaster->pataint_id = $request->pataint_id;
             $invoiceMaster->doctor_id = $request->doctor_id;
             $invoiceMaster->reference_id = $request->reference_id;

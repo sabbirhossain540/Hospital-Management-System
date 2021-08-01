@@ -16,7 +16,7 @@
             <table class="table table-bordered">
                 <tr>
                     <td width="20%">Invoice No</td>
-                    <td>BCAD{{ $invoiceInfo->id }}</td>
+                    <td>{{ $invoiceInfo->iv_no }}</td>
                 </tr>
                 <tr>
                     <td>Invoice Date</td>
