@@ -263,23 +263,32 @@ class ReportController extends Controller
                 $refParcentage = $rec->referalParcentage;
             }
 
-            //dd($recordList);
-
             $pdf = PDF::loadView('admin.report.doctorWiseInvoiceReportPdf', compact('recordList','finalTotalAmount', 'finalDiscountAmount','finalRefaralAmount', 'finalSubtotalAmount','refParcentage', 'fromDate', 'toDate', 'doctorName'));
-            return $pdf->stream();
-            //return $pdf->download('ReferenceWiseReport.pdf');
+            //return $pdf->stream();
+            return $pdf->download('DoctorWiseInvoiceReport.pdf');
 
         }else{
             $recordList = InvoiceDetails::with('getServiceName')->whereHas('getInvoiceInfo', function ($query) use ($doctor_id) {
                 $query->where('doctor_id', '=', $doctor_id);
             })->get();
+
+            $totalQuantity = 0;
+            $totalSubtotal = 0;
+            $totalDiscount = 0;
+            $totalAmount = 0;
+
+            foreach($recordList as $list){
+                $totalQuantity = $totalQuantity + $list->quantity;
+                $totalSubtotal = $totalSubtotal + $list->subtotal;
+                $discountCalculation = $list->subtotal * $list->discount / 100;
+                $totalDiscount = $totalDiscount + $discountCalculation;
+                $totalAmount = $totalAmount + $list->total;
+            }
+
+            $pdf = PDF::loadView('admin.report.doctorWiseSalesReportPdf', compact('recordList','totalQuantity', 'totalSubtotal','totalDiscount', 'totalAmount', 'fromDate', 'toDate', 'doctorName'));
+            //return $pdf->stream();
+            return $pdf->download('DoctorWiseSalesReport.pdf');
         }
-
-        dd($recordList);
-
-//        $pdf = PDF::loadView('admin.report.referenceWiseReportPdf', compact('recordList','finalTotalAmount', 'finalTotalDiscount','finalTotalRefaralAmount', 'finalTotalSubtotal','finalreferelCommission', 'fromDate', 'toDate', 'referelName'));
-//        //return $pdf->stream();
-//        return $pdf->download('ReferenceWiseReport.pdf');
     }
 
 
