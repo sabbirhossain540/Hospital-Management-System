@@ -160,7 +160,7 @@
                                 <td>{{ $invoice->iv_no }}</td>
                                 <td>{{ $invoice->getPatient->name }}</td>
                                 <td>{{ $invoice->getDoctor->name }}</td>
-                                <td>525</td>
+                                <td>{{ $invoice->totalAmount }}</td>
                             </tr>
                         @endforeach
                         </tbody>

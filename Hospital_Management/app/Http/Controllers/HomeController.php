@@ -41,7 +41,13 @@ class HomeController extends Controller
 
         //Invoice
         $invoiceMaster = Invoice::with('invoiceDetails', 'getDoctor', 'getPatient')->take(5)->orderBy('created_at', 'DESC')->get();
-
+        foreach($invoiceMaster as $InDetails){
+            $totalAmount = 0;
+            foreach($InDetails->invoiceDetails as $list){
+                $totalAmount = $totalAmount + $list->total;
+            }
+            $InDetails['totalAmount'] = floor($totalAmount);
+        }
         return view('admin.index', compact('salesAmount', 'totalService', 'totalInvoice', 'totalUser', 'totalDoctor', 'totalPatient', 'invoiceMaster'));
     }
 }
