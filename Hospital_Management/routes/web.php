@@ -82,8 +82,8 @@ Route::get('/generatePdfReferenceWiseReport/{fromDate}/{toDate}/{referenceId}', 
 
 //Doctor Wise Sales Report
 Route::get('/getDoctorWiseReport', 'ReportController@getDoctorWiseReport')->name('getDoctorWiseReport');
-Route::get('/generateDoctorWiseReport/{fromDate}/{toDate}/{serviceId}/{type}', 'ReportController@generateDoctorWiseReport')->name('generateDoctorWiseReport');
-//Route::get('/generatePdfReferenceWiseReport/{fromDate}/{toDate}/{referenceId}', 'ReportController@generatePdfReferenceWiseReport')->name('generatePdfReferenceWiseReport');
+Route::get('/generateDoctorWiseReport/{fromDate}/{toDate}/{doctorId}/{type}', 'ReportController@generateDoctorWiseReport')->name('generateDoctorWiseReport');
+Route::get('/generatePdfDoctorWiseReport/{fromDate}/{toDate}/{doctorId}/{type}', 'ReportController@generatePdfDoctorWiseReport')->name('generatePdfDoctorWiseReport');
 
 
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');

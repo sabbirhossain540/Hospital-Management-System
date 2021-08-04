@@ -44,13 +44,23 @@
             <div class="table-responsive">
                 <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                     <thead>
-                    <tr>
+                    <tr class="forInvoice">
                         <th width="5%">SN</th>
                         <th width="10%">Date</th>
                         <th width="10%">IV No</th>
                         <th width="15%">Patient Name</th>
                         <th width="15%">Reference Name</th>
                         <th width="5%">Sub Total</th>
+                        <th width="10%">Discount</th>
+                        <th width="10%">Total</th>
+                    </tr>
+                    <tr class="forSales">
+                        <th width="5%">SN</th>
+                        <th width="10%">Date</th>
+                        <th width="15%">Service Name</th>
+                        <th width="10%">Price</th>
+                        <th width="10%">Quantity</th>
+                        <th width="10%">Subtotal</th>
                         <th width="10%">Discount</th>
                         <th width="10%">Total</th>
                     </tr>
@@ -99,7 +109,8 @@
             let doctor_id = $("#doctor_id").val();
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
-            window.location.href = "{{ url('generatePdfReferenceWiseReport')}}/"+fromDate+"/"+toDate+"/"+doctor_id;
+            let type = $("#reportType").val();
+            window.location.href = "{{ url('generatePdfDoctorWiseReport')}}/"+fromDate+"/"+toDate+"/"+doctor_id+"/"+type;
         });
 
         $(".generate-report").click(function(event){
@@ -115,31 +126,62 @@
                 url:"{{url('generateDoctorWiseReport')}}/"+fromDate+"/"+toDate+"/"+doctor_id+"/"+type,
                 success: function(data) {
                     console.log(data);
-                    let totalAmount = 0;
-                    let totalDiscount = 0;
-                    let totalRefaralAmount = 0
-                    let totalSubtotal = 0;
-                    let referelCommission = 0;
+                    if(type == 'sales'){
+                        $( ".forSale" ).show();
+                        $( ".forInvoice" ).hide();
+                        let totalAmount = 0;
+                        let totalQty = 0;
+                        let totalSubTotal = 0;
+                        let totalDiscount = 0
 
-                    for (var i=0; i<data.length; i++) {
-                        let referenceName = data[i].get_reference['name'];
-                        let patientName = data[i].get_patient['name'];
-                        let IVNO = "demo";
-                        let serial_no = i+1;
+                        for (var i=0; i<data.length; i++) {
+                            let serial_no = i+1;
+                            let discountCalculate = parseInt(data[i].subtotal) * parseInt(data[i].discount) / 100;
+                            totalAmount = totalAmount + parseInt(data[i].total);
+                            totalDiscount = totalDiscount + discountCalculate;
+                            totalQty = totalQty + parseInt(data[i].quantity);
+                            totalSubTotal = totalSubTotal + parseInt(data[i].subtotal);
 
-                        totalAmount = totalAmount + parseInt(data[i].total);
-                        totalDiscount = totalDiscount + parseInt(data[i].discount);
-                        totalRefaralAmount = totalRefaralAmount + parseInt(data[i].referalAmount);
-                        totalSubtotal = totalSubtotal + parseInt(data[i].subtotal);
-                        referelCommission = data[i].referalParcentage;
+                            let serviceName = data[i].get_service_name['name'];
 
-                        let formatedDate = formatDate(data[i].created_at);
-                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + IVNO + '</td><td>' + patientName + '</td><td>' + referenceName + '</td><td>' + data[i].subtotal + '</td><td>' + data[i].discount + '</td><td>' + data[i].total + '</td></tr>');
-                        $('#myTable').append(row);
+                            let formatedDate = formatDate(data[i].created_at);
+                            let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].subtotal + '</td><td>' + discountCalculate + '</td><td>' + data[i].total + '</td></tr>');
+                            $('#myTable').append(row);
+                        }
+                        let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: right;">Total</td><td>' + totalQty + '</td><td>' + totalSubTotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
+                        $('#myTable').append(finalRow);
+                    }else{
+                        $( ".forSale" ).hide();
+                        $( ".forInvoice" ).show();
+
+
+                        let totalAmount = 0;
+                        let totalDiscount = 0;
+                        let totalRefaralAmount = 0
+                        let totalSubtotal = 0;
+                        let referelCommission = 0;
+
+                        for (var i=0; i<data.length; i++) {
+                            let referenceName = data[i].get_reference['name'];
+                            let patientName = data[i].get_patient['name'];
+                            let IVNO = data[i].iv_no;
+                            let serial_no = i+1;
+
+                            totalAmount = totalAmount + parseInt(data[i].total);
+                            totalDiscount = totalDiscount + parseInt(data[i].discount);
+                            totalRefaralAmount = totalRefaralAmount + parseInt(data[i].referalAmount);
+                            totalSubtotal = totalSubtotal + parseInt(data[i].subtotal);
+                            referelCommission = data[i].referalParcentage;
+
+                            let formatedDate = formatDate(data[i].created_at);
+                            let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + IVNO + '</td><td>' + patientName + '</td><td>' + referenceName + '</td><td>' + data[i].subtotal + '</td><td>' + data[i].discount + '</td><td>' + data[i].total + '</td></tr>');
+                            $('#myTable').append(row);
+                        }
+
+                        let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="4"></td><td style="text-align: right;">Total</td><td>' + totalSubtotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
+                        $('#myTable').append(finalRow);
                     }
 
-                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="4"></td><td style="text-align: right;">Total</td><td>' + totalSubtotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
-                    $('#myTable').append(finalRow);
 
                     $( ".print-report" ).show();
 
