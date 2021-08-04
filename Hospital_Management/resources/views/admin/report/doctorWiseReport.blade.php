@@ -153,6 +153,8 @@
                     }else{
                         $( ".forSale" ).hide();
                         $( ".forInvoice" ).show();
+
+
                         let totalAmount = 0;
                         let totalDiscount = 0;
                         let totalRefaralAmount = 0

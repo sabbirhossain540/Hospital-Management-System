@@ -220,5 +220,67 @@ class ReportController extends Controller
         return $recordList;
     }
 
+    public function generatePdfDoctorWiseReport($fromDate, $toDate, $doctor_id, $type){
+        $doctorName = User::with('Specialist')->findOrFail($doctor_id);
+
+        if($type == 'invoice'){
+            $recordList = Invoice::with('invoiceDetails', 'getReference', 'getPatient', 'getDoctor')
+                ->where('doctor_id', $doctor_id)
+                ->where('created_at', '>=', $fromDate)
+                ->where('created_at', '<=', $toDate)
+                ->orderBy('created_at', 'DESC')
+                ->get();
+            foreach($recordList as $record){
+                $subtotal = 0;
+                $discountAmount = 0;
+                $totalAmount = 0;
+                foreach($record->invoiceDetails as $ids){
+                    $subtotal = $subtotal + $ids->subtotal;
+                    $discount = $ids->subtotal * $ids->discount / 100;
+                    $discountAmount = $discountAmount + $discount;
+                    $totalAmount = $totalAmount + $ids->total;
+                }
+
+                $referenceAmount = $totalAmount * $record->getReference->comission / 100;
+
+                $record['subtotal'] = floor($subtotal);
+                $record['discount'] = floor($discountAmount);
+                $record['total'] = floor($totalAmount);
+                $record['referalParcentage'] = $record->getReference->comission;
+                $record['referalAmount'] = floor($referenceAmount);
+            }
+
+            $finalTotalAmount = 0;
+            $finalSubtotalAmount = 0;
+            $finalDiscountAmount = 0;
+            $finalRefaralAmount = 0;
+            $refParcentage = 0;
+            foreach($recordList as $rec){
+                $finalTotalAmount = $finalTotalAmount + $rec->total;
+                $finalSubtotalAmount = $finalSubtotalAmount + $rec->subtotal;
+                $finalDiscountAmount = $finalDiscountAmount + $rec->discount;
+                $finalRefaralAmount = $finalRefaralAmount + $rec->referalAmount;
+                $refParcentage = $rec->referalParcentage;
+            }
+
+            //dd($recordList);
+
+            $pdf = PDF::loadView('admin.report.doctorWiseInvoiceReportPdf', compact('recordList','finalTotalAmount', 'finalDiscountAmount','finalRefaralAmount', 'finalSubtotalAmount','refParcentage', 'fromDate', 'toDate', 'doctorName'));
+            return $pdf->stream();
+            //return $pdf->download('ReferenceWiseReport.pdf');
+
+        }else{
+            $recordList = InvoiceDetails::with('getServiceName')->whereHas('getInvoiceInfo', function ($query) use ($doctor_id) {
+                $query->where('doctor_id', '=', $doctor_id);
+            })->get();
+        }
+
+        dd($recordList);
+
+//        $pdf = PDF::loadView('admin.report.referenceWiseReportPdf', compact('recordList','finalTotalAmount', 'finalTotalDiscount','finalTotalRefaralAmount', 'finalTotalSubtotal','finalreferelCommission', 'fromDate', 'toDate', 'referelName'));
+//        //return $pdf->stream();
+//        return $pdf->download('ReferenceWiseReport.pdf');
+    }
+
 
 }
