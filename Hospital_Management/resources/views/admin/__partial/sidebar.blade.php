@@ -24,6 +24,7 @@
     </div>
 
     <!-- Nav Item - Pages Collapse Menu -->
+    @if(Auth::user()->role == "admin")
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
            aria-expanded="true" aria-controls="collapseTwo">
@@ -50,23 +51,29 @@
             <span>Doctor List</span></a>
     </li>
 
+    @endif
+
     <li class="nav-item {{ request()->is('patientList*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('patientList.index') }}">
             <i class="fas fa-users"></i>
             <span>Patient List</span></a>
     </li>
 
+    @if(Auth::user()->role == "admin")
     <li class="nav-item {{ request()->is('services*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('services.index') }}">
             <i class="fab fa-servicestack"></i>
             <span>Service List</span></a>
     </li>
+    @endif
 
+    @if(Auth::user()->role == "admin")
     <li class="nav-item {{ request()->is('references*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('references.index') }}">
             <i class="fas fa-hands-helping"></i>
             <span>Reference List</span></a>
     </li>
+    @endif
 
     <li class="nav-item {{ request()->is('invoices*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('invoices.index') }}">
@@ -74,8 +81,8 @@
             <span>Sales Invoice</span></a>
     </li>
 
-
     <!-- Nav Item - Utilities Collapse Menu -->
+    @if(Auth::user()->role == "admin")
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
            aria-expanded="true" aria-controls="collapseUtilities">
@@ -93,6 +100,7 @@
             </div>
         </div>
     </li>
+    @endif
 
 
 
