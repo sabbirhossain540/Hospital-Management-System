@@ -18,7 +18,7 @@
                     <thead>
                     <tr>
                         <th width="10%">SN</th>
-                        <th width="10%">Invoice No</th>
+                        <th width="10%" class="sorting_desc">Invoice No</th>
                         <th width="10%">Invoice Date</th>
                         <th width="10%">Patient Name</th>
                         <th width="10%">Doctor Name</th>

@@ -119,14 +119,21 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getReference')->where('id', $id)->first();
+
         $totalAmount = 0;
         $totalQuantity = 0;
+        $tSubtotal = 0;
+        $totalDiscountAmount = 0;
         foreach($invoiceInfo->invoiceDetails as $invoiceList){
-            $totalAmount = $totalAmount + $invoiceList->total;
+            $totalAmount = $totalAmount + floor($invoiceList->total);
             $totalQuantity = $totalQuantity + $invoiceList->quantity;
+            $tSubtotal = $tSubtotal + floor($invoiceList->subtotal);
+            $disCalculate = $invoiceList->subtotal * $invoiceList->discount / 100;
+            $totalDiscountAmount = $totalDiscountAmount + floor($disCalculate);
+            $invoiceList['disAmount'] = floor($disCalculate);
         }
 
-        return view('admin.invoice.show', compact('invoiceInfo', 'totalAmount', 'totalQuantity'));
+        return view('admin.invoice.show', compact('invoiceInfo', 'totalAmount', 'totalQuantity', 'tSubtotal', 'totalDiscountAmount'));
     }
 
     /**

@@ -15,28 +15,22 @@
         <div class="card-body">
             <table class="table table-bordered">
                 <tr>
-                    <td width="20%">Invoice No</td>
-                    <td>{{ $invoiceInfo->iv_no }}</td>
+                    <td width="20%" class="text-right"><strong>Invoice No</strong></td>
+                    <td width="30%">{{ $invoiceInfo->iv_no }}</td>
+                    <td width="20%" class="text-right"><strong>Invoice Date</strong></td>
+                    <td width="30%">{{ $invoiceInfo->ic_date }}</td>
                 </tr>
                 <tr>
-                    <td>Invoice Date</td>
-                    <td>{{ $invoiceInfo->ic_date }}</td>
+                    <td width="20%" class="text-right"><strong>Patient Name</strong></td>
+                    <td width="30%">{{ $invoiceInfo->getPatient->name }}</td>
+                    <td width="20%" class="text-right"><strong>Doctor Name</strong></td>
+                    <td width="30%">{{ $invoiceInfo->getDoctor->name }}</td>
                 </tr>
                 <tr>
-                    <td>Patient Name</td>
-                    <td>{{ $invoiceInfo->getPatient->name }}</td>
-                </tr>
-                <tr>
-                    <td>Doctor Name</td>
-                    <td>{{ $invoiceInfo->getDoctor->name }}</td>
-                </tr>
-                <tr>
-                    <td>Reference</td>
-                    <td>{{ $invoiceInfo->getReference->name }}</td>
-                </tr>
-                <tr>
-                    <td>Remark</td>
-                    <td>{{ $invoiceInfo->remark }}</td>
+                    <td width="20%" class="text-right"><strong>Reference</strong></td>
+                    <td width="30%">{{ $invoiceInfo->getReference->name }}</td>
+                    <td width="20%" class="text-right"><strong>Remark</strong></td>
+                    <td width="30%">{{ $invoiceInfo->remark }}</td>
                 </tr>
             </table>
 
@@ -48,6 +42,8 @@
                         <th width="15%">Service Name</th>
                         <th width="15%">Price</th>
                         <th width="15%">Quantity</th>
+                        <th width="15%">Sub Total</th>
+                        <th width="15%">Discount</th>
                         <th width="15%">Total</th>
                     </tr>
                     </thead>
@@ -59,11 +55,15 @@
                             <td>{{ $invoice->getServiceName->name }}</td>
                             <td>{{ $invoice->price }}</td>
                             <td>{{ $invoice->quantity }}</td>
+                            <td>{{ $invoice->subtotal }}</td>
+                            <td>{{ $invoice->disAmount }} ({{ $invoice->discount }}%)</td>
                             <td>{{ $invoice->total }}</td>
                         </tr>
                     @endforeach
                         <tr>
                             <td colspan="4" align="right">Total</td>
+                            <td>{{ $tSubtotal }}</td>
+                            <td>{{ $totalDiscountAmount }}</td>
                             <td>{{ $totalAmount }}</td>
                         </tr>
                     </tbody>
