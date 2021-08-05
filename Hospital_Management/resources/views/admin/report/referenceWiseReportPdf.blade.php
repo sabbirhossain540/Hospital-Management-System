@@ -23,7 +23,7 @@
         <tr style="border: 1px solid black;">
             <td style="text-align: center;">{{ $key+1 }}</td>
             <td style="text-align: center;">{{ $list->created_at->format('d/m/Y') }}</td>
-            <td style="text-align: center;">Demo</td>
+            <td style="text-align: center;">{{ $list->iv_no }}</td>
             <td style="text-align: center;">{{ $list->getPatient->name }}</td>
             <td style="text-align: center;">{{ $list->getDoctor->name }}</td>
             <td style="text-align: center;">{{ $list->subtotal }}</td>

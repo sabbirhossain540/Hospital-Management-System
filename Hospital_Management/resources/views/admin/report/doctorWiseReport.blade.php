@@ -35,7 +35,7 @@
                 </div>
                 <div class="order-4 p-2 bd-highlight">
                     <button type="submit" class="btn btn-success generate-report" disabled>Report</button>
-                    <button type="submit" class="btn btn-info print-report">Print</button>
+{{--                    <button type="submit" class="btn btn-info print-report">Print</button>--}}
                     <button type="submit" class="btn btn-warning generate-pdf-report" disabled>PDF</button>
                 </div>
             </div>

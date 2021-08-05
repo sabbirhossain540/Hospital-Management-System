@@ -20,7 +20,7 @@
                 </div>
                 <div class="order-3 p-2 bd-highlight">
                     <button type="submit" class="btn btn-success generate-report" disabled>Generate Report</button>
-                    <button type="submit" class="btn btn-info print-report">Print Report</button>
+{{--                    <button type="submit" class="btn btn-info print-report">Print Report</button>--}}
                     <button type="submit" class="btn btn-warning generate-pdf-report" disabled>Generate PDF</button>
                 </div>
             </div>

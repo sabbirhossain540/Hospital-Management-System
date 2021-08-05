@@ -28,7 +28,7 @@
                 </div>
                 <div class="order-4 p-2 bd-highlight">
                     <button type="submit" class="btn btn-success generate-report" disabled>Generate Report</button>
-                    <button type="submit" class="btn btn-info print-report">Print Report</button>
+{{--                    <button type="submit" class="btn btn-info print-report">Print Report</button>--}}
                     <button type="submit" class="btn btn-warning generate-pdf-report" disabled>Generate PDF</button>
                 </div>
             </div>
@@ -118,7 +118,7 @@
                     for (var i=0; i<data.length; i++) {
                         let doctorName = data[i].get_doctor['name'];
                         let patientName = data[i].get_patient['name'];
-                        let IVNO = "demo";
+                        let IVNO = data[i].iv_no;
                         let serial_no = i+1;
 
                         totalAmount = totalAmount + parseInt(data[i].total);
