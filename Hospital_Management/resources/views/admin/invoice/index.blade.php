@@ -79,6 +79,12 @@
     </form>
 
     <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [[ 1, "desc" ]]
+            });
+        });
+
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
             form.action = '/deleteInvoice/'+id

@@ -290,6 +290,7 @@
                     $('#service_name').val(data.name);
                     $('#quantity').val(1);
                     $('#total').val(data.price);
+                    $('#subTotal').val(data.price);
                     $('#id').val(data.id);
                 }
             });
