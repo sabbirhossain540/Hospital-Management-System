@@ -252,7 +252,8 @@ class ReportController extends Controller
         }else{
             $recordList = InvoiceDetails::with('getServiceName')->whereHas('getInvoiceInfo', function ($query) use ($doctor_id) {
                 $query->where('doctor_id', '=', $doctor_id);
-            })->get();
+            })->where('created_at', '>=', $fromDate)
+                ->where('created_at', '<=', $toDate)->get();
         }
 
 
@@ -313,7 +314,8 @@ class ReportController extends Controller
         }else{
             $recordList = InvoiceDetails::with('getServiceName')->whereHas('getInvoiceInfo', function ($query) use ($doctor_id) {
                 $query->where('doctor_id', '=', $doctor_id);
-            })->get();
+            })->where('created_at', '>=', $fromDate)
+                ->where('created_at', '<=', $toDate)->get();
 
             $totalQuantity = 0;
             $totalSubtotal = 0;
