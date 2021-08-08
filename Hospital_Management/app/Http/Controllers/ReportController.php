@@ -31,12 +31,18 @@ class ReportController extends Controller
 
         $totalAmount = 0;
         $totalQuantity = 0;
+        $totalSubTotal = 0;
+        $totalDiscount = 0;
         foreach($invoiceList as $list){
-            $totalAmount = $totalAmount + $list->price;
+            $totalSubTotal = $totalSubTotal + $list->subtotal;
+            $discountAmount = $list->subtotal * $list->discount / 100;
+            $totalDiscount = $totalDiscount + floor($discountAmount);
+            $totalAmount = $totalAmount + $list->total;
             $totalQuantity = $totalQuantity + $list->quantity;
+            $list['discountAmount'] = floor($discountAmount);
         }
 
-        $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'fromDate', 'originalToDate'));
+        $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'totalSubTotal', 'totalDiscount', 'fromDate', 'originalToDate'));
         //return $pdf->stream();
         return $pdf->download('SalesReport.pdf');
     }

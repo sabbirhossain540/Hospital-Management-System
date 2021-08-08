@@ -31,10 +31,12 @@
                     <thead>
                     <tr>
                         <th width="5%">SN</th>
-                        <th width="10%">Sales Date</th>
+                        <th width="15%">Sales Date</th>
                         <th width="25%">Service Name</th>
                         <th width="15%">Price</th>
                         <th width="10%">Quantity</th>
+                        <th width="10%">Subtotal</th>
+                        <th width="10%">Discount</th>
                         <th width="10%">Total</th>
                     </tr>
                     </thead>
@@ -96,17 +98,22 @@
                     console.log(data);
                     let totalAmount = 0;
                     let totalQuantity = 0;
+                    let totalSubTotal = 0;
+                    let totalDiscount = 0;
                     for (var i=0; i<data.length; i++) {
                         let serviceName = data[i].get_service_name['name'];
                         let serial_no = i+1;
-                        totalAmount = totalAmount + parseInt(data[i].price);
+                        totalAmount = totalAmount + parseInt(data[i].total);
                         totalQuantity = totalQuantity + parseInt(data[i].quantity);
+                        totalSubTotal = totalSubTotal + parseInt(data[i].subtotal);
+                        let discountAmount = parseInt(data[i].subtotal) * parseInt(data[i].discount) / 100;
+                        totalDiscount = totalDiscount + discountAmount;
                         let formatedDate = formatDate(data[i].created_at);
-                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].total + '</td></tr>');
+                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].subtotal + '</td><td>' + discountAmount +'('+data[i].discount+'%)' + '</td><td>' + data[i].total + '</td></tr>');
                         $('#myTable').append(row);
                     }
 
-                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalAmount + '</td></tr>');
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalSubTotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
                     $('#myTable').append(finalRow);
 
                     $( ".print-report" ).show();
