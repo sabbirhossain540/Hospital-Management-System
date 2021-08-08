@@ -10,6 +10,7 @@ use App\TempSales;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
@@ -20,7 +21,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        $invoiceList = Invoice::with('getPatient', 'getDoctor', 'getReference')->get();
+        $invoiceList = Invoice::with('getPatient', 'getDoctor', 'getReference', 'getCreatedUser')->get();
+        //dd($invoiceList->getCreatedUser()->name);
         return view('admin.invoice.index', compact('invoiceList'));
     }
 
@@ -46,7 +48,7 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->invoice_details);
+
         if($request->id != ''){
             $invoiceMaster = Invoice::findOrFail($request->id);
             $invoiceMaster->pataint_id = $request->pataint_id;
@@ -89,6 +91,7 @@ class InvoiceController extends Controller
             $invoiceMaster->reference_id = $request->reference_id;
             $invoiceMaster->ic_date = $request->ic_date;
             $invoiceMaster->remark = $request->remark;
+            $invoiceMaster->created_user = Auth::user()->id;
             $invoiceMaster->save();
 
             $size = count($request->invoice_details);

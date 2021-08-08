@@ -21,4 +21,8 @@ class Invoice extends Model
     public function invoiceDetails(){
         return $this->hasMany(InvoiceDetails::class, 'invoice_id', 'id');
     }
+
+    public function getCreatedUser(){
+        return $this->hasOne(User::class, 'id', 'created_user');
+    }
 }

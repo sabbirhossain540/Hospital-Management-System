@@ -17,13 +17,16 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th width="10%">SN</th>
+                        <th width="5%">SN</th>
                         <th width="10%" class="sorting_desc">Invoice No</th>
                         <th width="10%">Invoice Date</th>
                         <th width="10%">Patient Name</th>
                         <th width="10%">Doctor Name</th>
                         <th width="10%">Refferal</th>
                         <th width="10%">Remark</th>
+                        @if(Auth::user()->role == "admin")
+                        <th width="5%">Created By</th>
+                        @endif
                         <th width="20%">Action</th>
                     </tr>
                     </thead>
@@ -37,6 +40,9 @@
                             <td>{{ $invoice->getDoctor->name }}</td>
                             <td>{{ $invoice->getReference->name }}</td>
                             <td>{{ $invoice->remark }}</td>
+                            @if(Auth::user()->role == "admin")
+                            <td>{{ $invoice->getCreatedUser['name'] }}</td>
+                            @endif
                             <td>
                                 <a href="{{route('invoices.show',$invoice->id)}}" class="btn btn-info btn-sm">View</a>
                                 <a href="{{route('invoices.edit',$invoice->id)}}" class="btn btn-primary btn-sm">Edit</a>
