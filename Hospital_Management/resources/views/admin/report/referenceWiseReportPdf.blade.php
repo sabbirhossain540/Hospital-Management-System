@@ -1,7 +1,7 @@
 <h1 style="text-align: center;">Boshundhara Clinic and Digonestic center</h1>
 <h3 style="text-align: center;">Reference Wise Report</h3>
 <h4 style="text-align: center;">Reference Name: {{ $referelName->name }} ({{ $referelName->code }})</h4>
-<h4 style="text-align: center;">Date: {{ $fromDate }} -- {{ $toDate }}</h4>
+<h4 style="text-align: center;">Date: {{ $fromDate }} -- {{ $originalToDate }}</h4>
 
 <table width="100%">
     <thead style="border: 1px solid black">

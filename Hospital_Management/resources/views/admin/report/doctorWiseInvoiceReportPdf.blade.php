@@ -1,7 +1,7 @@
 <h1 style="text-align: center;">Boshundhara Clinic and Digonestic center</h1>
 <h3 style="text-align: center;">Doctor Wise Invoice Report</h3>
 <h4 style="text-align: center;">Doctor Name: {{ $doctorName->name }} ({{ $doctorName->Specialist->name }})</h4>
-<h4 style="text-align: center;">Date: {{ $fromDate }} -- {{ $toDate }}</h4>
+<h4 style="text-align: center;">Date: {{ $fromDate }} -- {{ $originalToDate }}</h4>
 
 <table width="100%">
     <thead style="border: 1px solid black">
