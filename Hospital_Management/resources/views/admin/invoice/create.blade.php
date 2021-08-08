@@ -24,7 +24,7 @@
 {{--                            @method('PUT')--}}
 {{--                        @endif--}}
                         <div class="row mb-3">
-                            <div class="col">
+                            <div class="col-md-6">
                                 <label for="pn">Patient Name</label>
                                 <select name="pataint_id" id="pataint_id" class="form-control search-option" required>
                                     <option value="">Select Patient Name</option>
@@ -36,7 +36,7 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col">
+                            <div class="col-md-6">
                                 <label for="pn">Doctor Name</label>
                                 <select name="doctor_id" id="doctor_id" class="form-control search-option" required>
                                     <option value="">Select Doctor Name</option>
@@ -56,7 +56,7 @@
                                 <select name="reference_id" id="reference_id" class="search-option form-control">
                                     <option value="">Select reference no</option>
                                     @foreach($referenceList as $reference)
-                                        <option value="{{ $reference->id }}">{{ $reference->name }}</option>
+                                        <option value="{{ $reference->id }}">{{ $reference->code }}</option>
                                     @endforeach
                                 </select>
                                 @error('reference_id')
