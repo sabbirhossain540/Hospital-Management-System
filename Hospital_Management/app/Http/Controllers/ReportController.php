@@ -104,12 +104,18 @@ class ReportController extends Controller
         //dd($invoiceList);
         $totalAmount = 0;
         $totalQuantity = 0;
+        $totalSubTotal = 0;
+        $totalDiscount = 0;
         foreach($invoiceList as $list){
             $totalAmount = $totalAmount + $list->price;
             $totalQuantity = $totalQuantity + $list->quantity;
+            $totalSubTotal = $totalSubTotal + $list->subtotal;
+            $discountAmount = $list->subtotal * $list->discount / 100;
+            $totalDiscount = $totalDiscount + floor($discountAmount);
+            $list['discountAmount'] = floor($discountAmount);
         }
 
-        $pdf = PDF::loadView('admin.report.serviceWiseSalesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'fromDate', 'originalToDate', 'serviceName'));
+        $pdf = PDF::loadView('admin.report.serviceWiseSalesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'totalSubTotal', 'totalDiscount', 'fromDate', 'originalToDate', 'serviceName'));
         //return $pdf->stream();
         return $pdf->download('ServiceWiseSalesReport.pdf');
     }

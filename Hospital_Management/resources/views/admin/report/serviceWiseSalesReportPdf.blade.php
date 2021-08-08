@@ -17,6 +17,8 @@
         <th style="border-right: 1px solid black">Sales Date</th>
         <th style="border-right: 1px solid black">Price</th>
         <th style="border-right: 1px solid black">Quantity</th>
+        <th style="border-right: 1px solid black">Subtotal</th>
+        <th style="border-right: 1px solid black">Discount(%)</th>
         <th>Total</th>
     </tr>
     </thead>
@@ -27,6 +29,8 @@
             <td style="text-align: center;">{{ $list->created_at->format('d/m/Y') }}</td>
             <td style="text-align: center;">{{ $list->price }}</td>
             <td style="text-align: center;">{{ $list->quantity }}</td>
+            <td style="text-align: center;">{{ $list->subtotal }}</td>
+            <td style="text-align: center;">{{ $list->discountAmount }}({{ $list->discount }})</td>
             <td style="text-align: center;">{{ $list->total }}</td>
         </tr>
     @endforeach
@@ -35,7 +39,9 @@
         <td colspan="2"></td>
         <td style="text-align: center; font-weight: bold;">Total</td>
         <td style="text-align: center; font-weight: bold;">{{ $totalQuantity }}</td>
-        <td style="text-align: center; font-weight: bold;">{{ $totalAmount }}</td>
+        <td style="text-align: center; font-weight: bold;">{{ $totalSubTotal }}</td>
+        <td style="text-align: center; font-weight: bold;">{{ floor($totalDiscount) }}</td>
+        <td style="text-align: center; font-weight: bold;">{{ floor($totalAmount) }}</td>
     </tr>
 
     </tbody>
