@@ -1,5 +1,12 @@
-<h1 style="text-align: center;">Boshundhara Clinic and Digonestic center</h1>
-<h3 style="text-align: center;">Sales Report</h3>
+<table>
+    <tr>
+        <td colspan="5"><img src="{{ public_path('img/report.webp') }}" style="border-radius: 45px; text-align: center;" alt="logo" width="90" height="90"></td>
+        <td><h1 style="text-align: center;">Boshundhara Clinic and Digonestic center</h1></td>
+    </tr>
+</table>
+
+<h3 style="text-align: center;margin-top: -10px;"><span style="border: 2px solid black;padding: 10px; border-radius: 10px !important;">Sales Report</span></h3>
+
 <h4 style="text-align: center;">Date Range: {{ $fromDate }} -- {{ $originalToDate }}</h4>
 
 <table width="100%">

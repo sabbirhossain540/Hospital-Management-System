@@ -1,5 +1,12 @@
-<h1 style="text-align: center;">Boshundhara Clinic and Digonestic center</h1>
-<h3 style="text-align: center;">Service Wise Sales Report</h3>
+
+<table>
+    <tr>
+        <td colspan="5"><img src="{{ public_path('img/report.webp') }}" style="border-radius: 45px; text-align: center;" alt="logo" width="90" height="90"></td>
+        <td><h1 style="text-align: center;">Boshundhara Clinic and Digonestic center</h1></td>
+    </tr>
+</table>
+<h3 style="text-align: center;margin-top: -10px;"><span style="border: 2px solid black;padding: 10px;">Service Wise Sales Report</span></h3>
+
 <h4 style="text-align: center;">Service Name: {{ $serviceName->name }}</h4>
 <h4 style="text-align: center;">Date: {{ $fromDate }} -- {{ $originalToDate }}</h4>
 

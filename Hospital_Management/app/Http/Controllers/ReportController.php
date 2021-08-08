@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\App;
 
 class ReportController extends Controller
 {
+    public function __construct()
+    {
+        set_time_limit(8000000);
+    }
+
     public function generatePdfSalesReport($fromDate, $toDate){
         $originalToDate = $toDate;
         if(date('Y-m-d') == $toDate){
