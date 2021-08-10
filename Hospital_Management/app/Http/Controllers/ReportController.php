@@ -18,7 +18,7 @@ class ReportController extends Controller
 {
     public function __construct()
     {
-        set_time_limit(8000000);
+        //set_time_limit(8000000);
     }
 
     public function generatePdfSalesReport($fromDate, $toDate){
