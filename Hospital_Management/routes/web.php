@@ -88,6 +88,9 @@ Route::get('/generatePdfDoctorWiseReport/{fromDate}/{toDate}/{doctorId}/{type}',
 
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 
+
+Route::get('/test', 'ReportController@test')->name('test');
+
 //
 
 
