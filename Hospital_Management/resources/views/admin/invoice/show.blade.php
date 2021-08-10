@@ -27,8 +27,8 @@
                     <td width="30%">{{ $invoiceInfo->getDoctor->name }}</td>
                 </tr>
                 <tr>
-                    <td width="20%" class="text-right"><strong>Reference</strong></td>
-                    <td width="30%">{{ $invoiceInfo->getReference->name }}</td>
+                    <td width="20%" class="text-right"><strong>Age</strong></td>
+                    <td width="30%">{{ $invoiceInfo->getPatient->age }}</td>
                     <td width="20%" class="text-right"><strong>Remark</strong></td>
                     <td width="30%">{{ $invoiceInfo->remark }}</td>
                 </tr>

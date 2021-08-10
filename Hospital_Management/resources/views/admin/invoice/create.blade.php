@@ -291,6 +291,7 @@
                     $('#quantity').val(1);
                     $('#total').val(data.price);
                     $('#subTotal').val(data.price);
+                    $('#discount').val(0);
                     $('#id').val(data.id);
                 }
             });
