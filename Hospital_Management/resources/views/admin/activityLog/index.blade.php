@@ -38,4 +38,12 @@
         </div>
     </div>
 
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [[ 1, "desc" ]]
+            });
+        });
+    </script>
+
 @endsection

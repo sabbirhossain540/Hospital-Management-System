@@ -8,11 +8,12 @@
                     <h6 class="m-0 font-weight-bold text-primary">Invoice Details</h6>
                 </div>
                 <div class="col-md-2" style="margin-left: 65px;">
+                    <button onclick="printDiv()" class="btn btn-warning btn-sm">Print</button>
                     <a href="{{route('invoices.index')}}" class="btn btn-primary btn-sm">Back</a>
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body" class="printScrent">
             <table class="table table-bordered">
                 <tr>
                     <td width="20%" class="text-right"><strong>Invoice No</strong></td>
@@ -71,6 +72,34 @@
 
         </div>
     </div>
+
+
+        <script>
+            function printDiv()
+            {
+                var printContents = document.getElementById('#printScrent').innerHTML;
+                var originalContents = document.body.innerHTML;
+
+                document.body.innerHTML = printContents;
+
+                window.print();
+
+                document.body.innerHTML = originalContents;
+
+                // var divToPrint=document.getElementById('#printScrent');
+                //
+                // var newWin=window.open('','Print-Window');
+                //
+                // newWin.document.open();
+                //
+                // newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+                //
+                // newWin.document.close();
+                //
+                // setTimeout(function(){newWin.close();},10);
+
+            }
+        </script>
 
 
 @endsection
