@@ -79,6 +79,11 @@
     </form>
 
     <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [[ 0, "desc" ]]
+            });
+        });
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
             form.action = '/deletePatient/'+id
