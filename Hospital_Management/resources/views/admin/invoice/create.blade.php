@@ -279,6 +279,7 @@
         function handleItem(){
             $('#serviceModal').modal('show')
         }
+
         function getProductDetails(){
             var service_id = $("#service_id").val();
             $.ajax({
