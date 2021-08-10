@@ -42,28 +42,36 @@
 
 
             <div class="table-responsive">
-                <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                <table class="table table-bordered forInvoice" id="myTableForInvoice" width="100%" cellspacing="0">
                     <thead>
-                    <tr class="forInvoice">
-                        <th width="5%">SN</th>
-                        <th width="10%">Date</th>
-                        <th width="10%">IV No</th>
-                        <th width="15%">Patient Name</th>
-                        <th width="15%">Reference Name</th>
-                        <th width="5%">Sub Total</th>
-                        <th width="10%">Discount</th>
-                        <th width="10%">Total</th>
-                    </tr>
-                    <tr class="forSales">
-                        <th width="5%">SN</th>
-                        <th width="10%">Date</th>
-                        <th width="15%">Service Name</th>
-                        <th width="10%">Price</th>
-                        <th width="10%">Quantity</th>
-                        <th width="10%">Subtotal</th>
-                        <th width="10%">Discount</th>
-                        <th width="10%">Total</th>
-                    </tr>
+                        <tr>
+                            <th width="5%">SN</th>
+                            <th width="10%">Date</th>
+                            <th width="10%">IV No</th>
+                            <th width="15%">Patient Name</th>
+                            <th width="15%">Reference Name</th>
+                            <th width="10%">Sub Total</th>
+                            <th width="10%">Discount</th>
+                            <th width="5%">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+                <table class="table table-bordered forSales" id="myTableForSales" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th width="5%">SN</th>
+                            <th width="10%">Date</th>
+                            <th width="15%">Service Name</th>
+                            <th width="10%">Price</th>
+                            <th width="10%">Quantity</th>
+                            <th width="10%">Subtotal</th>
+                            <th width="10%">Discount</th>
+                            <th width="10%">Total</th>
+                        </tr>
                     </thead>
                     <tbody>
 
@@ -80,11 +88,13 @@
 
     <script>
         $( document ).ready(function() {
-            $( "#myTable" ).hide();
-            $( ".print-report" ).hide();
+            $( "#myTableForInvoice" ).hide();
+            $( "#myTableForSales" ).hide();
+            //$( ".print-report" ).hide();
             flatpickr("#fromDate");
             flatpickr("#toDate");
         });
+
 
         // $('.print-report').click(function(){
         //     window.print();
@@ -119,7 +129,8 @@
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
             let type = $("#reportType").val();
-            $( "#myTable" ).show();
+            $( "#myTableForInvoice" ).hide();
+            $( "#myTableForSales" ).hide();
 
             $.ajax({
                 type:"GET",
@@ -127,8 +138,7 @@
                 success: function(data) {
                     console.log(data);
                     if(type == 'sales'){
-                        $( ".forSale" ).show();
-                        $( ".forInvoice" ).hide();
+                        $( "#myTableForSales" ).show();
                         let totalAmount = 0;
                         let totalQty = 0;
                         let totalSubTotal = 0;
@@ -146,15 +156,12 @@
 
                             let formatedDate = formatDate(data[i].created_at);
                             let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].subtotal + '</td><td>' + discountCalculate + '</td><td>' + data[i].total + '</td></tr>');
-                            $('#myTable').append(row);
+                            $('#myTableForSales').append(row);
                         }
                         let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: right;">Total</td><td>' + totalQty + '</td><td>' + totalSubTotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
-                        $('#myTable').append(finalRow);
+                        $('#myTableForSales').append(finalRow);
                     }else{
-                        $( ".forSale" ).hide();
-                        $( ".forInvoice" ).show();
-
-
+                        $( "#myTableForInvoice" ).show();
                         let totalAmount = 0;
                         let totalDiscount = 0;
                         let totalRefaralAmount = 0
@@ -175,11 +182,11 @@
 
                             let formatedDate = formatDate(data[i].created_at);
                             let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + IVNO + '</td><td>' + patientName + '</td><td>' + referenceName + '</td><td>' + data[i].subtotal + '</td><td>' + data[i].discount + '</td><td>' + data[i].total + '</td></tr>');
-                            $('#myTable').append(row);
+                            $('#myTableForInvoice').append(row);
                         }
 
                         let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="4"></td><td style="text-align: right;">Total</td><td>' + totalSubtotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
-                        $('#myTable').append(finalRow);
+                        $('#myTableForInvoice').append(finalRow);
                     }
 
 
