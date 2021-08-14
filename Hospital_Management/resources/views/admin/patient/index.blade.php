@@ -17,6 +17,7 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
+                        <th>SN</th>
                         <th>Name</th>
 {{--                        <th>Email</th>--}}
 {{--                        <th>Username</th>--}}
@@ -30,8 +31,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($userlist as $user)
+                    @foreach($userlist as $key=>$user)
                         <tr>
+                            <td>{{ $key+1 }}</td>
                             <td>{{ $user->name }}</td>
 {{--                            <td>{{ $user->email }}</td>--}}
 {{--                            <td>{{ $user->username }}</td>--}}
