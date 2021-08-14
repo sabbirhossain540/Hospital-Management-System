@@ -36,7 +36,7 @@
                                 <td>{{ $user->role }}</td>
                                 <td>
                                     <a href="{{route('editUser',['id'=> $user->id ])}}" class="btn btn-primary btn-sm">Edit</a>
-                                    <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $user->id }})">Delete</button>
+                                    @if($user->role != "admin")<button class="btn btn-danger btn-sm" onclick="handleDelete({{ $user->id }})">Delete</button>@endif
                                 </td>
                             </tr>
                         @endforeach
