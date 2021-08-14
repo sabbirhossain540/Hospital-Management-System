@@ -16,6 +16,7 @@
         <td><h2 class="text-center">Boshundhara Clinic and Digonestic center</h2></td>
     </tr>
 </table>
+<h4 class="text-center mb-3" style="margin-top: -25px;">INVOICE</h4>
 <table class="table table-bordered">
     <tr>
         <td width="20%" class="text-right"><strong>Invoice No</strong></td>
