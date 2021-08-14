@@ -54,6 +54,7 @@ Route::resource('references','ReferencesController');
 Route::post('/deleteReference/{id}', 'ReferencesController@destroy')->name('deleteReference');
 
 Route::resource('invoices','InvoiceController');
+Route::get('/printInvoice/{id}', 'InvoiceController@printInvoice')->name('printInvoice');
 
 
 

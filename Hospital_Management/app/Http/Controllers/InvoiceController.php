@@ -8,9 +8,11 @@ use App\References;
 use App\Services;
 use App\TempSales;
 use App\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
 class InvoiceController extends Controller
 {
@@ -22,6 +24,10 @@ class InvoiceController extends Controller
     public function index()
     {
         $invoiceList = Invoice::with('getPatient', 'getDoctor', 'getReference', 'getCreatedUser')->get();
+        foreach($invoiceList as $list){
+            $list['formated_ic_date'] = Carbon::parse($list->ic_date);
+        }
+
         //dd($invoiceList->getCreatedUser()->name);
         return view('admin.invoice.index', compact('invoiceList'));
     }
@@ -122,6 +128,7 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getReference')->where('id', $id)->first();
+        $invoiceInfo['formated_ic_date'] = Carbon::parse($invoiceInfo->ic_date);
 
         $totalAmount = 0;
         $totalQuantity = 0;
@@ -192,6 +199,28 @@ class InvoiceController extends Controller
     public function getServiceInfo($id){
         $serviceInfo = Services::where('id',$id)->first();
         return $serviceInfo;
+    }
+
+
+    public function printInvoice($id){
+        $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getReference')->where('id', $id)->first();
+        $invoiceInfo['formated_ic_date'] = Carbon::parse($invoiceInfo->ic_date);
+
+        $totalAmount = 0;
+        $totalQuantity = 0;
+        $tSubtotal = 0;
+        $totalDiscountAmount = 0;
+        foreach($invoiceInfo->invoiceDetails as $invoiceList){
+            $totalAmount = $totalAmount + floor($invoiceList->total);
+            $totalQuantity = $totalQuantity + $invoiceList->quantity;
+            $tSubtotal = $tSubtotal + floor($invoiceList->subtotal);
+            $disCalculate = $invoiceList->subtotal * $invoiceList->discount / 100;
+            $totalDiscountAmount = $totalDiscountAmount + floor($disCalculate);
+            $invoiceList['disAmount'] = floor($disCalculate);
+        }
+
+        $pdf = PDF::loadView('admin.invoice.printInvoice', compact('invoiceInfo', 'totalAmount', 'totalQuantity', 'tSubtotal', 'totalDiscountAmount'));
+        return $pdf->stream();
     }
 
 

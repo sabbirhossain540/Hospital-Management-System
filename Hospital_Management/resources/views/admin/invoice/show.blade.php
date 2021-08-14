@@ -8,7 +8,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Invoice Details</h6>
                 </div>
                 <div class="col-md-2" style="margin-left: 65px;">
-                    <button onclick="printDiv()" class="btn btn-warning btn-sm">Print</button>
+                    <a target="_blank" class="btn btn-warning btn-sm" href="{{route('printInvoice', $invoiceInfo->id)}}">Print</a>
                     <a href="{{route('invoices.index')}}" class="btn btn-primary btn-sm">Back</a>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                     <td width="20%" class="text-right"><strong>Invoice No</strong></td>
                     <td width="30%">{{ $invoiceInfo->iv_no }}</td>
                     <td width="20%" class="text-right"><strong>Invoice Date</strong></td>
-                    <td width="30%">{{ $invoiceInfo->ic_date }}</td>
+                    <td width="30%">{{ date_format($invoiceInfo->formated_ic_date,'jS M, Y') }}</td>
                 </tr>
                 <tr>
                     <td width="20%" class="text-right"><strong>Patient Name</strong></td>

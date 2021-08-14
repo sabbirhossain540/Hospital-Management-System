@@ -35,7 +35,7 @@
                         <tr>
                             <td>{{ $key+1 }}</td>
                             <td>{{ $invoice->iv_no }}</td>
-                            <td>{{ $invoice->ic_date }}</td>
+                            <td>{{ date_format($invoice->formated_ic_date,'d-m-y') }}</td>
                             <td>{{ $invoice->getPatient->name }}</td>
                             <td>{{ $invoice->getDoctor->name }}</td>
                             <td>{{ $invoice->getReference->name }}</td>
