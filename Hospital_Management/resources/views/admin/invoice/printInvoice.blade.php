@@ -13,8 +13,9 @@
 <table class="mb-5">
     <tr>
         <td colspan="5"><img src="{{ public_path('img/report.webp') }}" style="border-radius: 45px; text-align: center;" alt="logo" width="100" height="100"></td>
-        <td><h2 class="text-center">Boshundhara Clinic and Digonestic center</h2></td>
+        <td><h2 class="text-center">Boshundhara Clinic and Digonestic center</h2><br><p class="text-center" style="margin-top: -35px;">Hospital Road, Chapai Nawabganj Sadar</p></td>
     </tr>
+    <tr></tr>
 </table>
 <h4 class="text-center mb-3" style="margin-top: -25px;">INVOICE</h4>
 <table class="table table-bordered">
