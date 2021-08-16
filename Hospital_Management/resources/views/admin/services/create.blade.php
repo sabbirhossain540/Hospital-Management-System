@@ -41,9 +41,9 @@
                                 @enderror
                             </div>
                             <div class="col">
-                                <label for="mcn">Unit</label>
-                                <input type="text" name="unit" id="unit" class="form-control" placeholder="Enter service unit" @if(isset($serviceInfo)) value="{{ $serviceInfo->unit }}" @else value="{{ old('unit') }} @endif">
-                                @error('unit')
+                                <label for="mcn">Room No</label>
+                                <input type="text" name="room_no" id="room_no" class="form-control" placeholder="Enter Room No" @if(isset($serviceInfo)) value="{{ $serviceInfo->room_no }}" @else value="{{ old('unit') }} @endif">
+                                @error('room_no')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

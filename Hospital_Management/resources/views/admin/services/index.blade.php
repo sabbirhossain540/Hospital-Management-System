@@ -19,7 +19,7 @@
                     <tr>
                         <th width="35%">Name</th>
                         <th width="20%">Price</th>
-                        <th width="20%">Unit</th>
+                        <th width="20%">Room No</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -28,7 +28,7 @@
                         <tr>
                             <td>{{ $service->name }}</td>
                             <td>{{ $service->price }}</td>
-                            <td>{{ $service->unit }}</td>
+                            <td>{{ $service->room_no }}</td>
                             <td>
                                 <a href="{{route('services.edit',$service->id)}}" class="btn btn-primary btn-sm">Edit</a>
                                 <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $service->id }})">Delete</button>
@@ -64,6 +64,12 @@
     </form>
 
     <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [[ 0, "desc" ]]
+            });
+        });
+
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
             form.action = '/deleteService/'+id

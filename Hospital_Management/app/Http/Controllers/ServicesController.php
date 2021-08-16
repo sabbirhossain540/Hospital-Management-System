@@ -46,7 +46,7 @@ class ServicesController extends Controller
         $services = new Services();
         $services->name = $request->name;
         $services->price = $request->price;
-        $services->unit = $request->unit;
+        $services->room_no = $request->room_no;
         $services->save();
 
         session()->flash('success', $request->name.' created successfully');
@@ -86,7 +86,7 @@ class ServicesController extends Controller
 
         $serviceInfo->name = $request->name;
         $serviceInfo->price = $request->price;
-        $serviceInfo->unit = $request->unit;
+        $serviceInfo->room_no = $request->room_no;
         $serviceInfo->save();
         $this->activity_log("updated service. { name:".$serviceInfo->name." id:".$serviceInfo->id." }", "update");
         session()->flash('success', $serviceInfo->name.' service updated successfully');
