@@ -17,19 +17,21 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Mobile No</th>
-                        <th>Gander</th>
-                        <th>Qualification</th>
-                        <th>Action</th>
+                        <th width="5%">SN</th>
+                        <th width="20%">Name</th>
+                        <th width="15%">Email</th>
+                        <th width="10%">Username</th>
+                        <th width="10%">Password</th>
+                        <th width="10%">Mobile No</th>
+                        <th width="5%">Gander</th>
+                        <th width="5%">Qualification</th>
+                        <th width="20%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($userlist as $user)
+                    @foreach($userlist as $key=>$user)
                         <tr>
+                            <td>{{ $key+1 }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->username }}</td>
@@ -75,6 +77,12 @@
     </form>
 
     <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [[ 0, "desc" ]]
+            });
+        });
+
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
             form.action = '/deleteDoctor/'+id
