@@ -18,7 +18,7 @@
     <tr></tr>
 </table>
 <h4 class="text-center mb-3" style="margin-top: -25px;">INVOICE</h4>
-<table class="table table-bordered">
+<table class="table table-bordered table-sm">
     <tr>
         <td width="20%" class="text-right"><strong>Invoice No</strong></td>
         <td width="30%">{{ $invoiceInfo->iv_no }}</td>
@@ -40,7 +40,7 @@
 </table>
 
 <div class="table-responsive mt-3">
-    <table class="table table-bordered" width="100%" cellspacing="0">
+    <table class="table table-bordered table-sm" width="100%" cellspacing="0">
         <thead>
         <tr>
             <th width="10%">SN</th>
