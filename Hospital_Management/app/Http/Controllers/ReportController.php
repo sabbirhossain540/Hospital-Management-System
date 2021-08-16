@@ -81,7 +81,7 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $recordList = InvoiceDetails::with('getServiceName')
+        $recordList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getDoctor')
             ->where('service_id', $serviceId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
@@ -98,7 +98,7 @@ class ReportController extends Controller
         }
         $serviceName = Services::findOrFail($serviceId);
 
-        $invoiceList = InvoiceDetails::with('getServiceName')
+        $invoiceList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getDoctor')
             ->where('service_id', $serviceId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
@@ -110,7 +110,7 @@ class ReportController extends Controller
         $totalSubTotal = 0;
         $totalDiscount = 0;
         foreach($invoiceList as $list){
-            $totalAmount = $totalAmount + $list->price;
+            $totalAmount = $totalAmount + $list->total;
             $totalQuantity = $totalQuantity + $list->quantity;
             $totalSubTotal = $totalSubTotal + $list->subtotal;
             $discountAmount = $list->subtotal * $list->discount / 100;

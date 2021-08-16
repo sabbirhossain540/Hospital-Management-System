@@ -13,7 +13,7 @@
 <table>
     <tr>
         <td colspan="5"><img src="{{ public_path('img/report.webp') }}" style="border-radius: 45px; text-align: center;" alt="logo" width="100" height="100"></td>
-        <td><h2 class="text-center">Boshundhara Clinic and Digonestic center</h2><br><p class="text-center" style="margin-top: -35px;">Hospital Road, Chapai Nawabganj Sadar</p><p class="text-center" style="margin-top: -20px;margin-bottom: 30px;">Mobile no: 01771-256625, 01761-242121 (Reception)<br> 01320-788677 (Manager)</p></td>
+        <td><h2 class="text-center">Boshundhara Clinic and Digonestic center</h2></td>
     </tr>
 </table>
 
@@ -26,6 +26,7 @@
     <tr>
         <th class="text-center" scope="col">SN</th>
         <th class="text-center" scope="col">Sales Date</th>
+        <th class="text-center" scope="col">Ref. Doctor</th>
         <th class="text-center" scope="col">Price</th>
         <th class="text-center" scope="col">Quantity</th>
         <th class="text-center" scope="col">Subtotal</th>
@@ -38,6 +39,7 @@
         <tr>
             <td class="text-center">{{ $key+1 }}</td>
             <td class="text-center">{{ $list->created_at->format('d/m/Y') }}</td>
+            <td class="text-center">{{ $list->getInvoiceInfo->getDoctor->name}}</td>
             <td class="text-center">{{ $list->price }}</td>
             <td class="text-center">{{ $list->quantity }}</td>
             <td class="text-center">{{ $list->subtotal }}</td>
@@ -47,7 +49,7 @@
     @endforeach
 
     <tr>
-        <td colspan="2"></td>
+        <td colspan="3"></td>
         <td style="text-align: center; font-weight: bold;">Total</td>
         <td class="text-center">{{ $totalQuantity }}</td>
         <td class="text-center">{{ $totalSubTotal }}</td>
