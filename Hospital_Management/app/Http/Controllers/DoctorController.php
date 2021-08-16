@@ -8,6 +8,7 @@ use App\SpecialistArea;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DoctorController extends Controller
 {
@@ -48,9 +49,14 @@ class DoctorController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'username' => 'required|unique:users',
-            'mobile_no' => 'required|min:11'
+            'mobile_no' => 'required|min:11',
+            'educational_qualification' => 'required',
+            'specialist' => 'required',
+            'institute_name' => 'required',
         ]);
+
+
+        $genUser = Str::random(11);
 
         $temp_password = rand(10000000,99999999);
 
@@ -58,6 +64,7 @@ class DoctorController extends Controller
         $user->password = Hash::make(trim($temp_password));
         $user->password_ref = trim($temp_password);
         $user->role = 'doctor';
+        $user->username = trim($genUser);
         $this->dataInsert($user,$request);
 
         session()->flash('success', 'Doctor created successfully');
@@ -126,7 +133,7 @@ class DoctorController extends Controller
     public function dataInsert($modelName, $request){
         $modelName->name = $request->name;
         $modelName->email = $request->email;
-        $modelName->username = $request->username;
+        //$modelName->username = $request->username;
         $modelName->mobile_no = $request->mobile_no;
         $modelName->gander = $request->gander;
         $modelName->date_of_birth = $request->birth_day;

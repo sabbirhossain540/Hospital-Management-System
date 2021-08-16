@@ -22,12 +22,12 @@
                         <th width="10%">Invoice Date</th>
                         <th width="10%">Patient Name</th>
                         <th width="10%">Doctor Name</th>
-                        <th width="10%">Refferal</th>
+                        <th width="5%">Refferal</th>
                         <th width="10%">Remark</th>
                         @if(Auth::user()->role == "admin")
                         <th width="5%">Created By</th>
                         @endif
-                        <th width="20%">Action</th>
+                        <th width="25%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,6 +45,7 @@
                             @endif
                             <td>
                                 <a href="{{route('invoices.show',$invoice->id)}}" class="btn btn-info btn-sm">View</a>
+                                <a target="_blank" class="btn btn-warning btn-sm" href="{{route('printInvoice', $invoice->id)}}">Print</a>
                                 <a href="{{route('invoices.edit',$invoice->id)}}" class="btn btn-primary btn-sm">Edit</a>
                                 <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $invoice->id }})">Delete</button>
                             </td>

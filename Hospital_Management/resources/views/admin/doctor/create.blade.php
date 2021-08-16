@@ -36,7 +36,7 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="Usename">Username</label>
-                                <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" value="{{ old('username') }}" required>
+                                <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" value="{{ old('username') }}">
                                 @error('username')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -53,7 +53,7 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="gander">Gander</label>
-                                <select name="gander" id="gander" class="form-control">
+                                <select name="gander" id="gander" class="form-control" required>
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
@@ -61,15 +61,15 @@
                             </div>
                             <div class="col">
                                 <label for="dateOfBirth">Date Of Birth</label>
-                                <input type="date" id="birth_day" name="birth_day" class="form-control" placeholder="Birth Day">
+                                <input type="date" id="birth_day" name="birth_day" class="form-control" placeholder="Birth Day" required>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="eq">Educational Qualification</label>
-                                <select name="educational_qualification" id="educational_qualification" class="form-control">
-                                    <option>Select educational qualification</option>
+                                <select name="educational_qualification" id="educational_qualification" class="form-control" required>
+                                    <option value="">Select educational qualification</option>
                                     @foreach($qualificationList as $ql)
                                         <option value="{{ $ql->id }}">{{ $ql->name }}</option>
                                     @endforeach
@@ -77,8 +77,8 @@
                             </div>
                             <div class="col">
                                 <label for="Specialist">Specialist</label>
-                                <select name="specialist" id="specialist" class="form-control">
-                                    <option>Select specialist area</option>
+                                <select name="specialist" id="specialist" class="form-control" required>
+                                    <option value="">Select specialist area</option>
                                     @foreach($specialistAreaList as $sa)
                                         <option value="{{ $sa->id }}">{{ $sa->name }}</option>
                                     @endforeach
@@ -89,8 +89,8 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="mcn">Medical College Name</label>
-                                <select name="institute_name" id="institute_name" class="form-control">
-                                    <option>Select college name</option>
+                                <select name="institute_name" id="institute_name" class="form-control" required>
+                                    <option value="">Select college name</option>
                                     @foreach($collegeList as $cl)
                                         <option value="{{ $cl->id }}">{{ $cl->name }}</option>
                                     @endforeach
