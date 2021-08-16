@@ -22,7 +22,7 @@ class ReportController extends Controller
     }
 
     public function generatePdfSalesReport($fromDate, $toDate){
-        $originalToDate = Carbon::parse($toDate)->format('d-m-y');
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
@@ -43,7 +43,7 @@ class ReportController extends Controller
             $list['discountAmount'] = floor($discountAmount);
         }
 
-        $fromDate = Carbon::parse($fromDate)->format('d-m-y');
+        $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
 
         $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'totalSubTotal', 'totalDiscount', 'fromDate', 'originalToDate'));
         //return $pdf->stream();
@@ -92,7 +92,7 @@ class ReportController extends Controller
     }
 
     public function generatePdfServiceWiseSalesReport($fromDate, $toDate, $serviceId){
-        $originalToDate = Carbon::parse($toDate)->format('d-m-y');;
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');;
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
@@ -118,7 +118,7 @@ class ReportController extends Controller
             $list['discountAmount'] = floor($discountAmount);
         }
 
-        $fromDate = Carbon::parse($fromDate)->format('d-m-y');
+        $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
 
         $pdf = PDF::loadView('admin.report.serviceWiseSalesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'totalSubTotal', 'totalDiscount', 'fromDate', 'originalToDate', 'serviceName'));
         //return $pdf->stream();
@@ -167,7 +167,7 @@ class ReportController extends Controller
 
 
     public function generatePdfReferenceWiseReport($fromDate, $toDate, $referenceId){
-        $originalToDate = Carbon::parse($toDate)->format('d-m-y');
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
@@ -212,7 +212,7 @@ class ReportController extends Controller
             $finalreferelCommission = $record->getReference->comission;
         }
 
-        $fromDate = Carbon::parse($fromDate)->format('d-m-y');
+        $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
 
         $pdf = PDF::loadView('admin.report.referenceWiseReportPdf', compact('recordList','finalTotalAmount', 'finalTotalDiscount','finalTotalRefaralAmount', 'finalTotalSubtotal','finalreferelCommission', 'fromDate', 'originalToDate', 'referelName'));
         //return $pdf->stream();
@@ -268,7 +268,7 @@ class ReportController extends Controller
     }
 
     public function generatePdfDoctorWiseReport($fromDate, $toDate, $doctor_id, $type){
-        $originalToDate = Carbon::parse($toDate)->format('d-m-y');
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
@@ -336,7 +336,7 @@ class ReportController extends Controller
                 $totalDiscount = $totalDiscount + $discountCalculation;
                 $totalAmount = $totalAmount + $list->total;
             }
-            $fromDate = Carbon::parse($fromDate)->format('d-m-y');
+            $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
             $pdf = PDF::loadView('admin.report.doctorWiseSalesReportPdf', compact('recordList','totalQuantity', 'totalSubtotal','totalDiscount', 'totalAmount', 'fromDate', 'originalToDate', 'doctorName'));
             //return $pdf->stream();
             return $pdf->download('DoctorWiseSalesReport.pdf');
