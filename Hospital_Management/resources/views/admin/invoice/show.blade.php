@@ -39,13 +39,13 @@
                 <table class="table table-bordered" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th width="10%">SN</th>
-                        <th width="15%">Service Name</th>
-                        <th width="15%">Price</th>
-                        <th width="15%">Quantity</th>
-                        <th width="15%">Sub Total</th>
-                        <th width="15%">Discount</th>
-                        <th width="15%">Total</th>
+                        <th width="5%">SN</th>
+                        <th width="70%">Service Name</th>
+                        <th width="25%">Price</th>
+{{--                        <th width="15%">Quantity</th>--}}
+{{--                        <th width="15%">Sub Total</th>--}}
+{{--                        <th width="15%">Discount</th>--}}
+{{--                        <th width="15%">Total</th>--}}
                     </tr>
                     </thead>
                     <tbody>
@@ -55,18 +55,22 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $invoice->getServiceName->name }}</td>
                             <td>{{ $invoice->price }}</td>
-                            <td>{{ $invoice->quantity }}</td>
-                            <td>{{ $invoice->subtotal }}</td>
-                            <td>{{ $invoice->disAmount }} ({{ $invoice->discount }}%)</td>
-                            <td>{{ $invoice->total }}</td>
+{{--                            <td>{{ $invoice->quantity }}</td>--}}
+{{--                            <td>{{ $invoice->subtotal }}</td>--}}
+{{--                            <td>{{ $invoice->disAmount }} ({{ $invoice->discount }}%)</td>--}}
+{{--                            <td>{{ $invoice->total }}</td>--}}
                         </tr>
                     @endforeach
                         <tr>
-                            <td colspan="4" align="right">Total</td>
-                            <td>{{ $tSubtotal }}</td>
-                            <td>{{ $totalDiscountAmount }}</td>
-                            <td>{{ $totalAmount }}</td>
+                            <td colspan="2" align="right">Sub total <br> +VAT TK. <br> -Discount TK. <br>Net Payble <br> Advanced Tk <br> Due TK</td>
+                            <td>{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}</td>
+{{--                            <td>{{ $totalDiscountAmount }}</td>--}}
+{{--                            <td>{{ $totalAmount }}</td>--}}
                         </tr>
+{{--                    <tr>--}}
+{{--                        <td colspan="6" class="text-right">sdfvdsvds</td>--}}
+{{--                        <td>sds</td>--}}
+{{--                    </tr>--}}
                     </tbody>
                 </table>
 

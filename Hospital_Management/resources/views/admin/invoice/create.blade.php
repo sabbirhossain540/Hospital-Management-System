@@ -251,12 +251,30 @@
         });
         function showDataOnGrid(){
             console.log(arr);
+            let totalSubTotal = 0;
+            let totalDiscountAmount = 0;
+            let totalPayble = 0;
             for (var i=0; i<arr.length; i++) {
+                totalSubTotal = totalSubTotal + parseInt(arr[i].subTotal);
+                var discounted_price = (parseInt(arr[i].subTotal) * parseInt(arr[i].discount) / 100);
+                totalDiscountAmount = totalDiscountAmount + discounted_price;
+                totalPayble = totalPayble + parseInt(arr[i].total);
                 var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].discount + '</td><td>' + arr[i].subTotal + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 //var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 $('#myTable').append(row);
             }
+
+            let rose = $('<tr class="rowTrack"><td class="text-right" colspan="4">Subtotal <br> +VAT TK, <br> -Discount TK <br> Payble TK. <br> Paid <br> Due Amount</td>' +
+                '<td colspan="2" class="text-center">'+totalSubTotal+'<br>0 <br>'+Math.floor(totalDiscountAmount)+'<br>'+totalPayble+'<br> <input type="number" name="paidAmount" id="paidAmount" onkeyup="calculatePaidAmount()" style="width: 75px;text-align: center;"> <br><input type="number" name="dueAmount" id="dueAmount" readonly style="width: 75px;text-align: center;"></td></tr>');
+            $('#myTable').append(rose);
+            $('#dueAmount').val(totalPayble);
         }
+
+        function calculatePaidAmount(){
+
+        }
+
+
         function handleDelete(id){
             $('.rowTrack').remove();
             arr = arr.filter(item => item.id != id);
