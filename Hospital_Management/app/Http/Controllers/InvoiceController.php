@@ -62,6 +62,8 @@ class InvoiceController extends Controller
             $invoiceMaster->reference_id = $request->reference_id;
             $invoiceMaster->ic_date = $request->ic_date;
             $invoiceMaster->remark = $request->remark;
+            $invoiceMaster->paidAmount = $request->paidAmount;
+            $invoiceMaster->dueAmount = $request->dueAmount;
             $invoiceMaster->save();
 
             $invoiceDetails = InvoiceDetails::where('invoice_id', $request->id)->get();
@@ -97,6 +99,8 @@ class InvoiceController extends Controller
             $invoiceMaster->reference_id = $request->reference_id;
             $invoiceMaster->ic_date = $request->ic_date;
             $invoiceMaster->remark = $request->remark;
+            $invoiceMaster->paidAmount = $request->paidAmount;
+            $invoiceMaster->dueAmount = $request->dueAmount;
             $invoiceMaster->created_user = Auth::user()->id;
             $invoiceMaster->save();
 

@@ -65,7 +65,7 @@
                             </div>
                             <div class="col">
                                 <label for="date">Invoice Date</label>
-                                <input type="text" name="ic_date" id="ic_date" class="form-control flatPickerCustom" placeholder="Invoice Date">
+                                <input type="text" name="ic_date" id="ic_date" class="form-control flatPickerCustom" value="{{ date("Y-m-d") }}" placeholder="Invoice Date">
                                 @error('ic_date')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -227,6 +227,9 @@
             let reference_id   = $("#reference_id").val();
             let ic_date   = $("#ic_date").val();
             let remark   = $("#remark").val();
+            let paidAmount   = $("#paidAmount").val();
+            let dueAmount   = $("#dueAmount").val();
+
             $.ajax({
                 url: "{{route('invoices.store')}}",
                 type:"POST",
@@ -236,6 +239,8 @@
                     reference_id:reference_id,
                     ic_date:ic_date,
                     remark:remark,
+                    paidAmount:paidAmount,
+                    dueAmount:dueAmount,
                     invoice_details: arr,
                     _token: _token
                 },

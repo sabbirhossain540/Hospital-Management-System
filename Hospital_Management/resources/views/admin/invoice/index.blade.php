@@ -22,8 +22,8 @@
                         <th width="10%">Invoice Date</th>
                         <th width="10%">Patient Name</th>
                         <th width="10%">Doctor Name</th>
-                        <th width="5%">Refferal</th>
-                        <th width="10%">Remark</th>
+                        <th width="5%">Paid Amount</th>
+                        <th width="10%">Dues</th>
                         @if(Auth::user()->role == "admin")
                         <th width="5%">Created By</th>
                         @endif
@@ -38,8 +38,8 @@
                             <td>{{ date_format($invoice->formated_ic_date,'d-m-y') }}</td>
                             <td>{{ $invoice->getPatient->name }}</td>
                             <td>{{ $invoice->getDoctor->name }}</td>
-                            <td>{{ $invoice->getReference->name }}</td>
-                            <td>{{ $invoice->remark }}</td>
+                            <td>{{ $invoice->paidAmount }}</td>
+                            <td>{{ $invoice->dueAmount }}</td>
                             @if(Auth::user()->role == "admin")
                             <td>{{ $invoice->getCreatedUser['name'] }}</td>
                             @endif
