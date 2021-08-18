@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="card-body" class="printScrent">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-sm text-dark">
                 <tr>
                     <td width="20%" class="text-right"><strong>Invoice No</strong></td>
                     <td width="30%">{{ $invoiceInfo->iv_no }}</td>
@@ -22,21 +22,26 @@
                     <td width="30%">{{ date_format($invoiceInfo->formated_ic_date,'jS M, Y') }}</td>
                 </tr>
                 <tr>
+
                     <td width="20%" class="text-right"><strong>Patient Name</strong></td>
                     <td width="30%">{{ $invoiceInfo->getPatient->name }}</td>
-                    <td width="20%" class="text-right"><strong>Doctor Name</strong></td>
-                    <td width="30%">{{ $invoiceInfo->getDoctor->name }}</td>
+                    <td width="20%" class="text-right"><strong>Sex</strong></td>
+                    <td width="30%">{{ $invoiceInfo->getPatient->gander }}</td>
                 </tr>
                 <tr>
                     <td width="20%" class="text-right"><strong>Age</strong></td>
                     <td width="30%">{{ $invoiceInfo->getPatient->age }}</td>
-                    <td width="20%" class="text-right"><strong>Remark</strong></td>
-                    <td width="30%">{{ $invoiceInfo->remark }}</td>
+                    <td width="20%" class="text-right"><strong>Phone no</strong></td>
+                    <td width="30%">{{ $invoiceInfo->getPatient->mobile_no }}</td>
+                </tr>
+                <tr>
+                    <td width="20%" class="text-right"><strong>Ref. By:</strong></td>
+                    <td colspan="3">Dr. {{ $invoiceInfo->getDoctor->name }} ({{ $invoiceInfo->getDoctor->Specialist->name }})</td>
                 </tr>
             </table>
 
             <div class="table-responsive">
-                <table class="table table-bordered" width="100%" cellspacing="0">
+                <table class="table table-bordered table-sm text-dark" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <th width="5%">SN</th>
@@ -62,8 +67,8 @@
                         </tr>
                     @endforeach
                         <tr>
-                            <td colspan="2" align="right">Sub total <br> +VAT TK. <br> -Discount TK. <br>Net Payble <br> Advanced Tk <br> Due TK</td>
-                            <td>{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}</td>
+                            <td colspan="2" align="right" class="text-dark">Sub total <br> +VAT TK. <br> -Discount TK. <br>Net Payble <br> Advanced Tk <br> Due TK</td>
+                            <td class="text-dark">{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
 {{--                            <td>{{ $totalDiscountAmount }}</td>--}}
 {{--                            <td>{{ $totalAmount }}</td>--}}
                         </tr>

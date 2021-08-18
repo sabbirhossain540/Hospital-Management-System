@@ -131,7 +131,8 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getReference')->where('id', $id)->first();
+        $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getDoctor.Specialist', 'getReference')->where('id', $id)->first();
+        //dd($invoiceInfo);
         $invoiceInfo['formated_ic_date'] = Carbon::parse($invoiceInfo->ic_date);
 
         $totalAmount = 0;
