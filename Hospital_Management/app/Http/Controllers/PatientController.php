@@ -44,7 +44,7 @@ class PatientController extends Controller
         $this->validate($request, [
             'name' => 'required',
             //'email' => 'unique:users',
-            'birth_day' => 'required',
+            'age' => 'required',
             'mobile_no' => 'required|min:11'
         ]);
 
@@ -135,7 +135,7 @@ class PatientController extends Controller
         $modelName->mobile_no = $request->mobile_no;
         $modelName->gander = $request->gander;
         $modelName->date_of_birth = $request->birth_day;
-        $modelName->age = $years;
+        $modelName->age = $request->age;
         $modelName->address = $request->address;
         $modelName->save();
     }

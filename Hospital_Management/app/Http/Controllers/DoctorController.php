@@ -49,7 +49,6 @@ class DoctorController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'mobile_no' => 'required|min:11',
             'educational_qualification' => 'required',
             'specialist' => 'required',
             'institute_name' => 'required',
@@ -114,8 +113,6 @@ class DoctorController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'email' => 'required',
-            'username' => 'required',
-            'mobile_no' => 'required|min:11'
         ]);
 
         $user->password = Hash::make(trim($request->password));

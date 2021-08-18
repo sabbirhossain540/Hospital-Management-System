@@ -43,7 +43,7 @@
                             </div>
                             <div class="col">
                                 <label for="mobile_no">Mobile No</label>
-                                <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Enter mobile No" value="{{ old('mobile_no') }}" required>
+                                <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Enter mobile No" value="{{ old('mobile_no') }}">
                                 @error('mobile_no')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -53,7 +53,7 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="gander">Gander</label>
-                                <select name="gander" id="gander" class="form-control" required>
+                                <select name="gander" id="gander" class="form-control">
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
@@ -61,7 +61,7 @@
                             </div>
                             <div class="col">
                                 <label for="dateOfBirth">Date Of Birth</label>
-                                <input type="date" id="birth_day" name="birth_day" class="form-control" placeholder="Birth Day" required>
+                                <input type="date" id="birth_day" name="birth_day" class="form-control" placeholder="Birth Day">
                             </div>
                         </div>
 

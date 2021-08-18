@@ -37,18 +37,18 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="Usename">Username</label>
-                                <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" value="{{ $userInfo->username }}" required>
+                                <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" value="{{ $userInfo->username }}">
                                 @error('username')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="col">
                                 <label for="Password">Password</label>
-                                <input type="text" name="password" id="password" class="form-control" placeholder="Enter password" value="{{ $userInfo->password_ref }}" required>
+                                <input type="text" name="password" id="password" class="form-control" placeholder="Enter password" value="{{ $userInfo->password_ref }}" >
                             </div>
                             <div class="col">
                                 <label for="mobile_no">Mobile No</label>
-                                <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Enter mobile No" value="{{ $userInfo->mobile_no }}" required>
+                                <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Enter mobile No" value="{{ $userInfo->mobile_no }}">
                                 @error('mobile_no')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror

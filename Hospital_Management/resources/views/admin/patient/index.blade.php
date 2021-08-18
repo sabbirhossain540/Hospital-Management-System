@@ -25,7 +25,7 @@
                         <th>Mobile No</th>
                         <th>Gander</th>
                         <th>Age</th>
-                        <th>Date of birth</th>
+{{--                        <th>Date of birth</th>--}}
                         <th>Address</th>
                         <th>Action</th>
                     </tr>
@@ -41,7 +41,7 @@
                             <td>{{ $user->mobile_no }}</td>
                             <td>{{ $user->gander }}</td>
                             <td>{{ $user->age }}</td>
-                            <td>{{ $user->date_of_birth }}</td>
+{{--                            <td>{{ $user->date_of_birth }}</td>--}}
                             <td>{{ $user->address }}</td>
                             <td>
                                 <a href="{{route('patientList.show',$user->id)}}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>

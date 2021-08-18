@@ -52,8 +52,8 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label for="dateOfBirth">Date Of Birth</label>
-                                <input type="date" id="birth_day" name="birth_day" class="form-control" placeholder="Birth Day" value="{{ $userInfo->date_of_birth }}">
+                                <label for="age">Age</label>
+                                <input type="text" id="age" name="age" class="form-control" placeholder="Age" value="{{ $userInfo->age }}">
                             </div>
                         </div>
 
