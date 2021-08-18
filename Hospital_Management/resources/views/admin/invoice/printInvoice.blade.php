@@ -26,16 +26,21 @@
         <td width="30%">{{ date_format($invoiceInfo->formated_ic_date,'jS M, Y') }}</td>
     </tr>
     <tr>
+
         <td width="20%" class="text-right"><strong>Patient Name</strong></td>
         <td width="30%">{{ $invoiceInfo->getPatient->name }}</td>
-        <td width="20%" class="text-right"><strong>Doctor Name</strong></td>
-        <td width="30%">{{ $invoiceInfo->getDoctor->name }}</td>
+        <td width="20%" class="text-right"><strong>Sex</strong></td>
+        <td width="30%">{{ $invoiceInfo->getPatient->gander }}</td>
     </tr>
     <tr>
         <td width="20%" class="text-right"><strong>Age</strong></td>
         <td width="30%">{{ $invoiceInfo->getPatient->age }}</td>
-        <td width="20%" class="text-right"><strong>Remark</strong></td>
-        <td width="30%">{{ $invoiceInfo->remark }}</td>
+        <td width="20%" class="text-right"><strong>Phone no</strong></td>
+        <td width="30%">{{ $invoiceInfo->getPatient->mobile_no }}</td>
+    </tr>
+    <tr>
+        <td width="20%" class="text-right"><strong>Ref. By:</strong></td>
+        <td colspan="3">Dr. {{ $invoiceInfo->getDoctor->name }} ({{ $invoiceInfo->getDoctor->Specialist->name }})</td>
     </tr>
 </table>
 
@@ -44,12 +49,12 @@
         <thead>
         <tr>
             <th width="10%">SN</th>
-            <th width="25%">Service Name</th>
-            <th width="10%">Price</th>
-            <th width="10%">Quantity</th>
-            <th width="15%">Sub Total</th>
-            <th width="15%">Discount</th>
-            <th width="15%">Total</th>
+            <th width="70%">Service Name</th>
+            <th width="20%">Price</th>
+{{--            <th width="10%">Quantity</th>--}}
+{{--            <th width="15%">Sub Total</th>--}}
+{{--            <th width="15%">Discount</th>--}}
+{{--            <th width="15%">Total</th>--}}
         </tr>
         </thead>
         <tbody>
@@ -59,20 +64,46 @@
                 <td>{{ $key+1 }}</td>
                 <td>{{ $invoice->getServiceName->name }}</td>
                 <td>{{ $invoice->price }}</td>
-                <td>{{ $invoice->quantity }}</td>
-                <td>{{ $invoice->subtotal }}</td>
-                <td>{{ $invoice->disAmount }} ({{ $invoice->discount }}%)</td>
-                <td>{{ floor($invoice->total) }}</td>
+{{--                <td>{{ $invoice->quantity }}</td>--}}
+{{--                <td>{{ $invoice->subtotal }}</td>--}}
+{{--                <td>{{ $invoice->disAmount }} ({{ $invoice->discount }}%)</td>--}}
+{{--                <td>{{ floor($invoice->total) }}</td>--}}
             </tr>
         @endforeach
         <tr>
-            <td colspan="4" align="right">Total</td>
-            <td>{{ $tSubtotal }}</td>
-            <td>{{ $totalDiscountAmount }}</td>
-            <td>{{ $totalAmount }}</td>
+            <td colspan="2" align="right" class="text-dark">Sub total <br> +VAT <br> -Discount <br>Net Payble <br> Paid <br> Due</td>
+            <td class="text-dark">{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
+            {{--                            <td>{{ $totalDiscountAmount }}</td>--}}
+            {{--                            <td>{{ $totalAmount }}</td>--}}
         </tr>
+{{--        <tr>--}}
+{{--            <td colspan="4" align="right">Total</td>--}}
+{{--            <td>{{ $tSubtotal }}</td>--}}
+{{--            <td>{{ $totalDiscountAmount }}</td>--}}
+{{--            <td>{{ $totalAmount }}</td>--}}
+{{--        </tr>--}}
         </tbody>
     </table>
+
+    <h7>Room No:
+            @foreach($invoiceInfo->invoiceDetails as $key=>$tfo)
+                <span style="font-weight: bold;">{{ $tfo->getServiceName->name }}({{$tfo->getServiceName->room_no}}),</span>
+        @endforeach
+    </h7>
+
+    <table class=" mt-5" width="100%" cellspacing="0">
+        <tbody>
+            <tr>
+                <td width="60%" class="text-right">Signature:</td>
+                <td width="40%">_______________________</td>
+            </tr>
+            <tr>
+                <td width="60%" class="text-right">Bill Officer:</td>
+                <td width="40%"><strong>@if(!empty($invoiceInfo->getCreatedUser->name)){{ $invoiceInfo->getCreatedUser->name }}@endif</strong> </td>
+            </tr>
+        </tbody>
+    </table>
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
