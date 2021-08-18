@@ -26,8 +26,8 @@
                                 @enderror
                             </div>
                             <div class="col">
-                                <label for="Email">Email</label>
-                                <input type="text" name="email" id="email" class="form-control" placeholder="Enter email" value="{{ $userInfo->email }}" required>
+                                <label for="Email">Email (Optional)</label>
+                                <input type="text" name="email" id="email" class="form-control" placeholder="Enter email" value="{{ $userInfo->email }}">
                                 @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
