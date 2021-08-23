@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\MedicalCollege;
 use App\SpecialistArea;
+use App\User;
 use Illuminate\Http\Request;
 
 class SpecialistAreaController extends Controller
@@ -95,11 +97,18 @@ class SpecialistAreaController extends Controller
      */
     public function destroy($id)
     {
-        $saList = SpecialistArea::findOrFail($id);
-        $this->activity_log("deleted specialist area { name:".$saList->name." id:".$saList->id." }", "destroy");
-        $saList->delete();
-        session()->flash('success', 'Special Area deleted successfully');
-        return redirect()->route('specialistArea.index');
+        $userInfo = User::where('doctor_specialist', $id)->get();
+        if(count($userInfo) > 0){
+            session()->flash('warning', 'You can not delete this option. Because a user already use this option');
+            return redirect()->route('specialistArea.index');
+        }else{
+            $saList = SpecialistArea::findOrFail($id);
+            $this->activity_log("deleted specialist area { name:".$saList->name." id:".$saList->id." }", "destroy");
+            $saList->delete();
+            session()->flash('success', 'Special Area deleted successfully');
+            return redirect()->route('specialistArea.index');
+        }
+
     }
 
     public function activity_log($log_details, $fn){
