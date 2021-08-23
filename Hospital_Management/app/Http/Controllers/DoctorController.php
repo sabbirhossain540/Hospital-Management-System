@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EducationalQualification;
+use App\Invoice;
 use App\MedicalCollege;
 use App\SpecialistArea;
 use App\User;
@@ -150,11 +151,18 @@ class DoctorController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $this->activity_log("delete doctor. { name:".$user->name." id:".$user->id." }", "delete");
-        $user->delete();
-        session()->flash('success', 'Doctor deleted successfully');
-        return redirect()->route('doctorList.index');
+        $invoiceInfo = Invoice::where('doctor_id', $id)->get();
+        if(count($invoiceInfo) > 0){
+            session()->flash('warning', 'You can not delete this doctor. Because an invoice already created using this doctor');
+            return redirect()->route('doctorList.index');
+        }else{
+            $user = User::findOrFail($id);
+            $this->activity_log("delete doctor. { name:".$user->name." id:".$user->id." }", "delete");
+            $user->delete();
+            session()->flash('success', 'Doctor deleted successfully');
+            return redirect()->route('doctorList.index');
+        }
+
     }
 
     public function activity_log($log_details, $fn){
