@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\EducationalQualification;
+use App\MedicalCollege;
+use App\User;
 use Illuminate\Http\Request;
 
 class EducationalQualificationController extends Controller
@@ -95,11 +97,19 @@ class EducationalQualificationController extends Controller
      */
     public function destroy($id)
     {
-        $eduQualification = EducationalQualification::findOrFail($id);
-        $this->activity_log("deleted educational qualification { name:".$eduQualification->name." id:".$eduQualification->id." }", "destroy");
-        $eduQualification->delete();
-        session()->flash('success', 'Educational Qualification deleted successfully');
-        return redirect()->route('educationalQualification.index');
+        $userInfo = User::where('degree', $id)->get();
+        if(count($userInfo) > 0){
+            session()->flash('warning', 'You can not delete this degree. Because a user already use this degree');
+            return redirect()->route('educationalQualification.index');
+        }else{
+            $eduQualification = EducationalQualification::findOrFail($id);
+            $this->activity_log("deleted educational qualification { name:".$eduQualification->name." id:".$eduQualification->id." }", "destroy");
+            $eduQualification->delete();
+            session()->flash('success', 'Educational Qualification deleted successfully');
+            return redirect()->route('educationalQualification.index');
+        }
+
+
     }
 
     public function activity_log($log_details, $fn){
