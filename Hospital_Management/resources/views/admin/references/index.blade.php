@@ -17,7 +17,8 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th width="25%">Name</th>
+                        <th width="5%">SN</th>
+                        <th width="20%">Name</th>
                         <th width="10%">Code</th>
                         <th width="15%">Mobile No</th>
                         <th width="25%">Address</th>
@@ -26,8 +27,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($referenceList as $reference)
+                    @foreach($referenceList as $key=>$reference)
                         <tr>
+                            <td>{{ $key+1 }}</td>
                             <td>{{ $reference->name }}</td>
                             <td>{{ $reference->code }}</td>
                             <td>{{ $reference->mobile_no }}</td>
@@ -68,6 +70,12 @@
     </form>
 
     <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [[ 0, "desc" ]]
+            });
+        });
+
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
             form.action = '/deleteReference/'+id

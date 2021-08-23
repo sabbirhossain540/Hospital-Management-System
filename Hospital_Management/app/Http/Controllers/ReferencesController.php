@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoice;
 use App\References;
 use Illuminate\Http\Request;
 
@@ -112,11 +113,18 @@ class ReferencesController extends Controller
      */
     public function destroy($id)
     {
-        $referenceInfo = References::findOrFail($id);
-        $this->activity_log("deleted reference { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "destroy");
-        $referenceInfo->delete();
-        session()->flash('success', 'Reference deleted successfully');
-        return redirect()->route('references.index');
+        $invoiceInfo = Invoice::where('reference_id', $id)->get();
+        if(count($invoiceInfo) > 0){
+            session()->flash('warning', 'You can not delete this reference. Because an invoice already created using this reference');
+            return redirect()->route('references.index');
+        }else{
+            $referenceInfo = References::findOrFail($id);
+            $this->activity_log("deleted reference { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "destroy");
+            $referenceInfo->delete();
+            session()->flash('success', 'Reference deleted successfully');
+            return redirect()->route('references.index');
+        }
+
     }
 
     public function activity_log($log_details, $fn){
