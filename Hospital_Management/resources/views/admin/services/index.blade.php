@@ -17,15 +17,17 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th width="35%">Name</th>
+                        <th width="5%">SN</th>
+                        <th width="30%">Name</th>
                         <th width="20%">Price</th>
                         <th width="20%">Room No</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($serviceList as $service)
+                    @foreach($serviceList as $key=>$service)
                         <tr>
+                            <td>{{ $key+1 }}</td>
                             <td>{{ $service->name }}</td>
                             <td>{{ $service->price }}</td>
                             <td>{{ $service->room_no }}</td>

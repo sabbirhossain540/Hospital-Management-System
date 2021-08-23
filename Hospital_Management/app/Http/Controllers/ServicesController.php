@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\InvoiceDetails;
 use App\Services;
 use Illuminate\Http\Request;
 
@@ -102,11 +103,19 @@ class ServicesController extends Controller
      */
     public function destroy($id)
     {
-        $medicalCollege = Services::findOrFail($id);
-        $this->activity_log("deleted service { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
-        $medicalCollege->delete();
-        session()->flash('success', 'Service deleted successfully');
-        return redirect()->route('services.index');
+        $invoiceDetails = InvoiceDetails::where('service_id', $id)->get();
+        if(count($invoiceDetails) > 0){
+            session()->flash('warning', 'You can not delete this service. Because an invoice already created using this service');
+            return redirect()->route('services.index');
+        }else{
+            $medicalCollege = Services::findOrFail($id);
+            $this->activity_log("deleted service { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
+            $medicalCollege->delete();
+            session()->flash('success', 'Service deleted successfully');
+            return redirect()->route('services.index');
+        }
+
+
     }
 
     public function activity_log($log_details, $fn){
