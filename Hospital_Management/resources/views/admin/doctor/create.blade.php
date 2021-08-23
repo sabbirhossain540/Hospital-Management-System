@@ -25,8 +25,8 @@
                                 @enderror
                             </div>
                             <div class="col">
-                                <label for="Email">Email</label>
-                                <input type="text" name="email" id="email" class="form-control" placeholder="Enter email" value="{{ old('email') }}" required>
+                                <label for="Email">Email (Optional)</label>
+                                <input type="text" name="email" id="email" class="form-control" placeholder="Enter email" value="{{ old('email') }}" >
                                 @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -35,7 +35,7 @@
 
                         <div class="row mb-3">
                             <div class="col">
-                                <label for="Usename">Username</label>
+                                <label for="Usename">Username (Optional)</label>
                                 <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" value="{{ old('username') }}">
                                 @error('username')
                                 <span class="text-danger">{{ $message }}</span>

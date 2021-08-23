@@ -20,12 +20,12 @@
                         <th width="5%">SN</th>
                         <th width="20%">Name</th>
                         <th width="15%">Email</th>
-                        <th width="10%">Username</th>
+{{--                        <th width="10%">Username</th>--}}
                         <th width="10%">Password</th>
                         <th width="10%">Mobile No</th>
                         <th width="5%">Gander</th>
                         <th width="5%">Qualification</th>
-                        <th width="20%">Action</th>
+                        <th width="30%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,7 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->username }}</td>
+{{--                            <td>{{ $user->username }}</td>--}}
                             <td>{{ $user->password_ref }}</td>
                             <td>{{ $user->mobile_no }}</td>
                             <td>{{ $user->gander }}</td>

@@ -49,7 +49,7 @@ class DoctorController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required|email|unique:users',
+            //'email' => 'required|email|unique:users',
             'educational_qualification' => 'required',
             'specialist' => 'required',
             'institute_name' => 'required',
@@ -113,7 +113,7 @@ class DoctorController extends Controller
         $user = User::findOrFail($id);
         $this->validate($request, [
             'name' => 'required',
-            'email' => 'required',
+            //'email' => 'required',
         ]);
 
         $user->password = Hash::make(trim($request->password));
@@ -130,7 +130,12 @@ class DoctorController extends Controller
      */
     public function dataInsert($modelName, $request){
         $modelName->name = $request->name;
-        $modelName->email = $request->email;
+        if($request->email != ''){
+            $modelName->email = $request->email;
+        }else{
+            $modelName->email = "bcadc".$request->mobile_no.rand(1,9)."@basundhara.com";
+        }
+
         //$modelName->username = $request->username;
         $modelName->mobile_no = $request->mobile_no;
         $modelName->gander = $request->gander;
