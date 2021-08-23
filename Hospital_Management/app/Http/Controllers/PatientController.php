@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoice;
 use App\Patient;
 use App\User;
 use Illuminate\Http\Request;
@@ -148,11 +149,17 @@ class PatientController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $this->activity_log("delete patient. { name:".$user->name." id:".$user->id." }", "delete");
-        $user->delete();
-        session()->flash('success', 'Patient deleted successfully');
-        return redirect()->route('patientList.index');
+        $invoiceInfo = Invoice::where('pataint_id', $id)->get();
+        if(count($invoiceInfo) > 0){
+            session()->flash('warning', 'You can not delete this patient. Because an invoice already created using this patient');
+            return redirect()->route('patientList.index');
+        }else{
+            $user = User::findOrFail($id);
+            $this->activity_log("delete patient. { name:".$user->name." id:".$user->id." }", "delete");
+            $user->delete();
+            session()->flash('success', 'Patient deleted successfully');
+            return redirect()->route('patientList.index');
+        }
     }
 
     public function activity_log($log_details, $fn){
