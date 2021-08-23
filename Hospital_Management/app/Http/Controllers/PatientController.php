@@ -87,8 +87,12 @@ class PatientController extends Controller
     public function show($id)
     {
         $userInfo = User::where('id',$id)->first();
+        $invoiceList = Invoice::with( 'getDoctor')->where('pataint_id', $id)->orderBy('id','DESC')->get();
+        foreach($invoiceList as $list){
+            $list['formated_ic_date'] = \Illuminate\Support\Carbon::parse($list->ic_date);
+        }
         $this->activity_log("show patient details. { name:".$userInfo->name." id:".$userInfo->id." }", "show");
-        return view('admin.patient.show',compact(array('userInfo')));
+        return view('admin.patient.show',compact(array('userInfo', 'invoiceList')));
     }
 
     /**

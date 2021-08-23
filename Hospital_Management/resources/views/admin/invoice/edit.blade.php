@@ -32,7 +32,7 @@
                             <select name="doctor_id" id="doctor_id" class="form-control" required>
                                 <option value="">Select Doctor Name</option>
                                 @foreach($doctorList as $doctor)
-                                    <option @if($doctor->id == $invoiceList->doctor_id) selected @endif value="{{ $doctor->id }}">{{ $doctor->name }} ({{ $doctor->Specialist->name }})</option>
+                                    <option @if($doctor->id == $invoiceList->doctor_id) selected @endif value="{{ $doctor->id }}">{{ $doctor->name }} (@if(!empty($doctor->Specialist->name)){{ $doctor->Specialist->name }}@endif)</option>
                                 @endforeach
                             </select>
                             @error('doctor_id')

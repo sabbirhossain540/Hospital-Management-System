@@ -41,6 +41,7 @@ class InvoiceController extends Controller
     {
         $patientList = User::where('role', 'patient')->get();
         $doctorList = User::where('role', 'doctor')->with('Specialist')->get();
+        //dd($doctorList);
         $referenceList = References::all();
         $serviceList = Services::all();
         return view('admin.invoice.create', compact('patientList', 'doctorList', 'referenceList', 'serviceList'));

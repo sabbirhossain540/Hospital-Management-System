@@ -65,6 +65,36 @@
                 </div>
 
             </div>
+            <h5 class="text-center mt-5 mb-3">Invoice List</h5>
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th width="5%">SN</th>
+                        <th width="15%" class="sorting_desc">Invoice No</th>
+                        <th width="20%">Invoice Date</th>
+                        <th width="20%">Ref. Doctor</th>
+                        <th width="10%">Paid Amount</th>
+                        <th width="10%">Dues</th>
+                        <th width="20%">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($invoiceList as $key=>$invoice)
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>{{ $invoice->iv_no }}</td>
+                            <td>{{ date_format($invoice->formated_ic_date,'d-m-y') }}</td>
+                            <td>@if(!empty($invoice->getDoctor->name)){{ $invoice->getDoctor->name }}@endif</td>
+                            <td>{{ $invoice->paidAmount }}</td>
+                            <td>{{ $invoice->dueAmount }}</td>
+                            <td><a target="_blank" class="btn btn-warning btn-sm" href="{{route('printInvoice', $invoice->id)}}">Invoice Print</a></td>
+                        </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
