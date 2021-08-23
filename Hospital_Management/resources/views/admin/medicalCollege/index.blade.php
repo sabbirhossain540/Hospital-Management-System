@@ -17,13 +17,15 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
+                        <th width="5%">SN</th>
                         <th width="75%">Name</th>
-                        <th>Action</th>
+                        <th width="20%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($collegeList as $college)
+                    @foreach($collegeList as $key=>$college)
                         <tr>
+                            <td>{{ $key+1 }}</td>
                             <td>{{ $college->name }}</td>
                             <td>
                                 <a href="{{route('medicalCollege.edit',$college->id)}}" class="btn btn-primary btn-sm">Edit</a>
@@ -60,6 +62,12 @@
     </form>
 
     <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                "order": [[ 0, "desc" ]]
+            });
+        });
+
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
             form.action = '/deleteCollege/'+id
