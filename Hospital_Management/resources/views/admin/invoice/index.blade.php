@@ -36,8 +36,8 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $invoice->iv_no }}</td>
                             <td>{{ date_format($invoice->formated_ic_date,'d-m-y') }}</td>
-                            <td>{{ $invoice->getPatient->name }}</td>
-                            <td>{{ $invoice->getDoctor->name }}</td>
+                            <td>@if(!empty($invoice->getPatient->name)){{ $invoice->getPatient->name }}@endif</td>
+                            <td>@if(!empty($invoice->getDoctor->name)){{ $invoice->getDoctor->name }}@endif</td>
                             <td>{{ $invoice->paidAmount }}</td>
                             <td>{{ $invoice->dueAmount }}</td>
                             @if(Auth::user()->role == "admin")

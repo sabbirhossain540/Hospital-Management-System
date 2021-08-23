@@ -28,19 +28,19 @@
     <tr>
 
         <td width="20%" class="text-right"><strong>Patient Name</strong></td>
-        <td width="30%">{{ $invoiceInfo->getPatient->name }}</td>
+        <td width="30%">@if(!empty($invoiceInfo->getPatient->name)){{ $invoiceInfo->getPatient->name }}@endif</td>
         <td width="20%" class="text-right"><strong>Sex</strong></td>
-        <td width="30%">{{ $invoiceInfo->getPatient->gander }}</td>
+        <td width="30%">@if(!empty($invoiceInfo->getPatient->gander)){{ $invoiceInfo->getPatient->gander }}@endif</td>
     </tr>
     <tr>
         <td width="20%" class="text-right"><strong>Age</strong></td>
-        <td width="30%">{{ $invoiceInfo->getPatient->age }}</td>
+        <td width="30%">@if(!empty($invoiceInfo->getPatient->age)){{ $invoiceInfo->getPatient->age }}@endif</td>
         <td width="20%" class="text-right"><strong>Phone no</strong></td>
-        <td width="30%">{{ $invoiceInfo->getPatient->mobile_no }}</td>
+        <td width="30%">@if(!empty($invoiceInfo->getPatient->mobile_no)){{ $invoiceInfo->getPatient->mobile_no }}@endif</td>
     </tr>
     <tr>
         <td width="20%" class="text-right"><strong>Ref. By:</strong></td>
-        <td colspan="3">Dr. {{ $invoiceInfo->getDoctor->name }} ({{ $invoiceInfo->getDoctor->Specialist->name }})</td>
+        <td colspan="3">@if(!empty($invoiceInfo->getDoctor->name)){{ $invoiceInfo->getDoctor->name }}@endif @if(!empty($invoiceInfo->getDoctor->Specialist->name))({{ $invoiceInfo->getDoctor->Specialist->name }})@endif</td>
     </tr>
 </table>
 
@@ -62,7 +62,7 @@
         @foreach($invoiceInfo->invoiceDetails as $key=>$invoice)
             <tr>
                 <td>{{ $key+1 }}</td>
-                <td>{{ $invoice->getServiceName->name }}</td>
+                <td>@if(!empty($invoice->getServiceName->name)){{ $invoice->getServiceName->name }}@endif</td>
                 <td>{{ $invoice->price }}</td>
 {{--                <td>{{ $invoice->quantity }}</td>--}}
 {{--                <td>{{ $invoice->subtotal }}</td>--}}
@@ -87,11 +87,11 @@
 
     <h7>Room No:
             @foreach($invoiceInfo->invoiceDetails as $key=>$tfo)
-                <span style="font-weight: bold;">{{ $tfo->getServiceName->name }}({{$tfo->getServiceName->room_no}}),</span>
+                <span style="font-weight: bold;">@if(!empty($tfo->getServiceName->name)){{ $tfo->getServiceName->name }}@endif @if(!empty($tfo->getServiceName->room_no))({{$tfo->getServiceName->room_no}}),@endif</span>
         @endforeach
     </h7>
 
-    <table class=" mt-5" width="100%" cellspacing="0">
+    <table style="margin-top: 60px;" width="100%" cellspacing="0">
         <tbody>
             <tr>
                 <td width="60%" class="text-right">Signature:</td>

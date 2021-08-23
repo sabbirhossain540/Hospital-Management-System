@@ -158,8 +158,8 @@
                             <tr>
                                 <td>{{ $invoice->ic_date }}</td>
                                 <td>{{ $invoice->iv_no }}</td>
-                                <td>{{ $invoice->getPatient->name }}</td>
-                                <td>{{ $invoice->getDoctor->name }}</td>
+                                <td>@if(!empty($invoice->getPatient->name)){{ $invoice->getPatient->name }}@endif</td>
+                                <td>@if(!empty($invoice->getDoctor->name)){{ $invoice->getDoctor->name }}@endif</td>
                                 <td>{{ $invoice->totalAmount }}</td>
                             </tr>
                         @endforeach

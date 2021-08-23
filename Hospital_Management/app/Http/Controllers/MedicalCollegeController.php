@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\MedicalCollege;
+use App\User;
 use Illuminate\Http\Request;
 
 class MedicalCollegeController extends Controller
@@ -95,11 +96,19 @@ class MedicalCollegeController extends Controller
      */
     public function destroy($id)
     {
-        $medicalCollege = MedicalCollege::findOrFail($id);
-        $this->activity_log("deleted medical college { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
-        $medicalCollege->delete();
-        session()->flash('success', 'Medical College deleted successfully');
-        return redirect()->route('medicalCollege.index');
+        $userInfo = User::where('institute_name', $id)->get();
+        if(count($userInfo) > 0){
+            session()->flash('warning', 'You can not delete this college. Because a user already use this college');
+            return redirect()->route('medicalCollege.index');
+        }else{
+            $medicalCollege = MedicalCollege::findOrFail($id);
+            $this->activity_log("deleted medical college { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
+            $medicalCollege->delete();
+            session()->flash('success', 'Medical College deleted successfully');
+            return redirect()->route('medicalCollege.index');
+        }
+
+
     }
 
     public function activity_log($log_details, $fn){
