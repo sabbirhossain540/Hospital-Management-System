@@ -40,8 +40,8 @@
                 <td class="text-center">{{ $key+1 }}</td>
                 <td class="text-center">{{ $list->created_at->format('d/m/Y') }}</td>
                 <td class="text-center">{{ $list->iv_no }}</td>
-                <td class="text-center">{{ $list->getPatient->name }}</td>
-                <td class="text-center">{{ $list->getReference->name }}</td>
+                <td class="text-center">@if(!empty($list->getPatient->name)){{ $list->getPatient->name }}@endif</td>
+                <td class="text-center">@if(!empty($list->getReference->name)){{ $list->getReference->name }}@endif</td>
                 <td class="text-center">{{ $list->subtotal }}</td>
                 <td class="text-center">{{ $list->discount }}</td>
                 <td class="text-center">{{ $list->total }}</td>

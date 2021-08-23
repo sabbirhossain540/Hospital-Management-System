@@ -39,7 +39,7 @@
             <tr>
                 <td>{{ $key+1 }}</td>
                 <td>{{ $list->created_at->format('d/m/Y') }}</td>
-                <td>{{ $list->getServiceName->name }}</td>
+                <td>@if(!empty($list->getServiceName->name)){{ $list->getServiceName->name }}@endif</td>
                 <td class="text-center">{{ $list->price }}</td>
                 <td class="text-center">{{ $list->quantity }}</td>
                 <td class="text-center">{{ $list->subtotal }}</td>
