@@ -13,7 +13,7 @@
 <table class="mb-5">
     <tr>
         <td colspan="5"><img src="{{ public_path('img/report.webp') }}" style="border-radius: 45px; text-align: center;" alt="logo" width="100" height="100"></td>
-        <td><h2 class="text-center">Boshundhara Clinic and Digonestic center</h2><br><p class="text-center" style="margin-top: -35px;">Hospital Road, Chapai Nawabganj Sadar</p><p class="text-center" style="margin-top: -20px;">Mobile no: 01771-256625, 01761-242121 (Reception)<br> 01320-788677 (Manager)</p></td>
+        <td><h2 class="text-center">Bashundhara clinic & Diagnostic center</h2><br><p class="text-center" style="margin-top: -35px;">Hospital Road, Chapai Nawabganj Sadar</p><p class="text-center" style="margin-top: -20px;">Mobile no: 01771-256625, 01761-242121 (Reception)<br> 01320-788677 (Manager)</p></td>
     </tr>
     <tr></tr>
 </table>
@@ -49,7 +49,7 @@
         <thead>
         <tr>
             <th width="10%">SN</th>
-            <th width="70%">Service Name</th>
+            <th width="70%" colspan="2">Service Name</th>
             <th width="20%">Price</th>
 {{--            <th width="10%">Quantity</th>--}}
 {{--            <th width="15%">Sub Total</th>--}}
@@ -62,7 +62,7 @@
         @foreach($invoiceInfo->invoiceDetails as $key=>$invoice)
             <tr>
                 <td>{{ $key+1 }}</td>
-                <td>@if(!empty($invoice->getServiceName->name)){{ $invoice->getServiceName->name }}@endif</td>
+                <td colspan="2">@if(!empty($invoice->getServiceName->name)){{ $invoice->getServiceName->name }}@endif</td>
                 <td>{{ $invoice->price }}</td>
 {{--                <td>{{ $invoice->quantity }}</td>--}}
 {{--                <td>{{ $invoice->subtotal }}</td>--}}
@@ -71,7 +71,8 @@
             </tr>
         @endforeach
         <tr>
-            <td colspan="2" align="right" class="text-dark">Sub total <br> +VAT <br> -Discount <br>Net Payble <br> Paid <br> Due</td>
+            <td colspan="2">@if($invoiceInfo->dueAmount == 0)<h2 class="mt-5 text-center" style="border: 2px solid black; border-radius: 20px;">Full Paid</h2>@endif</td>
+            <td  align="right" class="text-dark">Sub total <br> +VAT <br> -Discount <br>Net Payble <br> Paid <br> Due</td>
             <td class="text-dark">{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
             {{--                            <td>{{ $totalDiscountAmount }}</td>--}}
             {{--                            <td>{{ $totalAmount }}</td>--}}
@@ -85,9 +86,10 @@
         </tbody>
     </table>
 
-    <h7>Room No:
+    <h7><span style="font-weight: bold;">Room No:</span> <br>
             @foreach($invoiceInfo->invoiceDetails as $key=>$tfo)
-                <span style="font-weight: bold;">@if(!empty($tfo->getServiceName->name)){{ $tfo->getServiceName->name }}@endif @if(!empty($tfo->getServiceName->room_no))({{$tfo->getServiceName->room_no}}),@endif</span>
+                <span>* @if(!empty($tfo->getServiceName->name)){{ $tfo->getServiceName->name }}@endif @if(!empty($tfo->getServiceName->room_no))({{$tfo->getServiceName->room_no}})@endif</span>
+            <br>
         @endforeach
     </h7>
 
