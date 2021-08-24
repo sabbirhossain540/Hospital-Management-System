@@ -200,6 +200,8 @@
     <script>
         let arr = []
         $( document ).ready(function() {
+            let pAmount = "{{$invoiceList->paidAmount}}";
+            let dAmount = "{{$invoiceList->dueAmount}}";
             @foreach($invoiceList->invoiceDetails as $invoiceList)
             arr.push({
                 "id": "{{ $invoiceList->getServiceName->id }}",
@@ -215,6 +217,9 @@
             calculatePrice();
             showDataOnGrid();
 
+            $('#paidAmount').val(pAmount);
+            $('#dueAmount').val(dAmount);
+
         });
         $(".main-form-submit").click(function(event){
             event.preventDefault();
@@ -225,6 +230,8 @@
             let ic_date   = $("#ic_date").val();
             let remark   = $("#remark").val();
             let id = $("#invoiceId").val();
+            let paidAmount   = $("#paidAmount").val();
+            let dueAmount   = $("#dueAmount").val();
             $.ajax({
                 url: "{{route('invoices.store')}}",
                 type:"POST",
@@ -235,6 +242,8 @@
                     reference_id:reference_id,
                     ic_date:ic_date,
                     remark:remark,
+                    paidAmount:paidAmount,
+                    dueAmount:dueAmount,
                     invoice_details: arr,
                     _token: _token
                 },
@@ -249,12 +258,43 @@
             });
         });
         function showDataOnGrid(){
+            let totalSubTotal = 0;
+            let totalDiscountAmount = 0;
+            let totalPayble = 0;
             for (var i=0; i<arr.length; i++) {
+                totalSubTotal = totalSubTotal + parseInt(arr[i].subTotal);
+                var discounted_price = (parseInt(arr[i].subTotal) * parseInt(arr[i].discount) / 100);
+                totalDiscountAmount = totalDiscountAmount + discounted_price;
+                totalPayble = totalPayble + parseInt(arr[i].total);
                 var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].subTotal + '</td><td>' + arr[i].discount + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 //var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 $('#myTable').append(row);
             }
+            let rose = $('<tr class="rowTrack"><td class="text-right" colspan="4">Subtotal <br> +VAT TK, <br> -Discount TK <br> Payble TK. <br> Paid <br> Due Amount</td>' +
+                '<td colspan="2" class="text-center">'+totalSubTotal+'<br>0 <br>'+Math.floor(totalDiscountAmount)+'<br>'+totalPayble+'<br> <input type="number" name="paidAmount" id="paidAmount" onkeyup="calculatePaidAmount('+totalPayble+')" style="width: 80px;text-align: center;border-radius: 10px;outline: none;"> <br><input type="number" name="dueAmount" id="dueAmount" readonly style="width: 80px;text-align: center;border-radius: 10px;outline: none;"></td></tr>');
+            $('#myTable').append(rose);
+            //$('#paidAmount').val(0);
+            $('#dueAmount').val(totalPayble);
         }
+
+
+        function calculatePaidAmount(payble){
+            let paidAmount = $("#paidAmount").val();
+            if(paidAmount == ''){
+                $('#paidAmount').val(0);
+            }
+
+            let remainingAmount = parseInt(payble) - parseInt(paidAmount);
+            $('#dueAmount').val(remainingAmount);
+
+            if(paidAmount == ''){
+                $('#dueAmount').val(payble);
+            }
+
+        }
+
+
+
         function handleDelete(id){
             $('.rowTrack').remove();
             arr = arr.filter(item => item.id != id);
