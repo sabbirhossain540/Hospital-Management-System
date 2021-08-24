@@ -255,7 +255,7 @@
             });
         });
         function showDataOnGrid(){
-            console.log(arr);
+
             let totalSubTotal = 0;
             let totalDiscountAmount = 0;
             let totalPayble = 0;
@@ -272,13 +272,23 @@
             let rose = $('<tr class="rowTrack"><td class="text-right" colspan="4">Subtotal <br> +VAT TK, <br> -Discount TK <br> Payble TK. <br> Paid <br> Due Amount</td>' +
                 '<td colspan="2" class="text-center">'+totalSubTotal+'<br>0 <br>'+Math.floor(totalDiscountAmount)+'<br>'+totalPayble+'<br> <input type="number" name="paidAmount" id="paidAmount" onkeyup="calculatePaidAmount('+totalPayble+')" style="width: 80px;text-align: center;border-radius: 10px;outline: none;"> <br><input type="number" name="dueAmount" id="dueAmount" readonly style="width: 80px;text-align: center;border-radius: 10px;outline: none;"></td></tr>');
             $('#myTable').append(rose);
+            $('#paidAmount').val(0);
             $('#dueAmount').val(totalPayble);
         }
 
         function calculatePaidAmount(payble){
             let paidAmount = $("#paidAmount").val();
+            if(paidAmount == ''){
+                $('#paidAmount').val(0);
+            }
+
             let remainingAmount = parseInt(payble) - parseInt(paidAmount);
              $('#dueAmount').val(remainingAmount);
+
+            if(paidAmount == ''){
+                $('#dueAmount').val(payble);
+            }
+
         }
 
 
