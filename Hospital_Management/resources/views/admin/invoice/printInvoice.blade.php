@@ -8,17 +8,22 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>Print Invoice</title>
+    <style>
+        .custom_font_size{
+            font-size: 12px;
+        }
+    </style>
 </head>
-<body>
-<table class="mb-5">
-    <tr>
-        <td colspan="5"><img src="{{ public_path('img/report.webp') }}" style="border-radius: 45px; text-align: center;" alt="logo" width="100" height="100"></td>
-        <td><h2 class="text-center">Bashundhara clinic & Diagnostic center</h2><br><p class="text-center" style="margin-top: -35px;">Hospital Road, Chapai Nawabganj Sadar</p><p class="text-center" style="margin-top: -20px;">Mobile no: 01771-256625, 01761-242121 (Reception)<br> 01320-788677 (Manager)</p></td>
-    </tr>
-    <tr></tr>
-</table>
-<h4 class="text-center mb-3" style="margin-top: -25px;">INVOICE</h4>
-<table class="table table-bordered table-sm">
+<body style="margin-top: 70px; margin-bottom: 30px; margin-left: 0px; margin-right: 0px;">
+{{--<table class="mb-5">--}}
+{{--    <tr>--}}
+{{--        <td colspan="5"><img src="{{ public_path('img/report.webp') }}" style="border-radius: 45px; text-align: center;" alt="logo" width="100" height="100"></td>--}}
+{{--        <td><h2 class="text-center">Bashundhara clinic & Diagnostic center</h2><br><p class="text-center" style="margin-top: -35px;">Hospital Road, Chapai Nawabganj Sadar</p><p class="text-center" style="margin-top: -20px;">Mobile no: 01771-256625, 01761-242121 (Reception)<br> 01320-788677 (Manager)</p></td>--}}
+{{--    </tr>--}}
+{{--    <tr></tr>--}}
+{{--</table>--}}
+{{--<h4 class="text-center mb-3" style="margin-top: -25px;">INVOICE</h4>--}}
+<table class="table table-bordered table-sm custom_font_size">
     <tr>
         <td width="20%" class="text-right"><strong>Invoice No</strong></td>
         <td width="30%">{{ $invoiceInfo->iv_no }}</td>
@@ -44,7 +49,7 @@
     </tr>
 </table>
 
-<div class="table-responsive mt-3">
+<div class="table-responsive mt-3 custom_font_size">
     <table class="table table-bordered table-sm" width="100%" cellspacing="0">
         <thead>
         <tr>
@@ -86,14 +91,14 @@
         </tbody>
     </table>
 
-    <h7><span style="font-weight: bold;">Room No:</span> <br>
+    <h7 style="font-size: 12px;"><span style="font-weight: bold;">Room No:</span> <br>
             @foreach($invoiceInfo->invoiceDetails as $key=>$tfo)
                 <span>* @if(!empty($tfo->getServiceName->name)){{ $tfo->getServiceName->name }}@endif @if(!empty($tfo->getServiceName->room_no))({{$tfo->getServiceName->room_no}})@endif</span>
             <br>
         @endforeach
     </h7>
 
-    <table style="margin-top: 60px;" width="100%" cellspacing="0">
+    <table style="margin-top: 60px;" class="custom_font_size" width="100%" cellspacing="0">
         <tbody>
             <tr>
                 <td width="60%" class="text-right">Signature:</td>

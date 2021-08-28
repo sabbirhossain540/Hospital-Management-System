@@ -225,7 +225,8 @@ class InvoiceController extends Controller
             $invoiceList['disAmount'] = floor($disCalculate);
         }
 
-        $pdf = PDF::loadView('admin.invoice.printInvoice', compact('invoiceInfo', 'totalAmount', 'totalQuantity', 'tSubtotal', 'totalDiscountAmount'));
+        $customPaper = array(0,0,380,576);
+        $pdf = PDF::loadView('admin.invoice.printInvoice', compact('invoiceInfo', 'totalAmount', 'totalQuantity', 'tSubtotal', 'totalDiscountAmount'))->setPaper($customPaper, 'portrait');;
         return $pdf->stream();
     }
 
