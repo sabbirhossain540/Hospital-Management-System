@@ -33,10 +33,11 @@
                         <th width="5%">SN</th>
                         <th width="15%">Sales Date</th>
                         <th width="25%">Service Name</th>
-                        <th width="15%">Price</th>
-                        <th width="10%">Quantity</th>
+                        <th width="15%">Refarence</th>
+                        <th width="10%">Price</th>
+                        <th width="5%">Quantity</th>
                         <th width="10%">Subtotal</th>
-                        <th width="10%">Discount</th>
+                        <th width="5%">Discount</th>
                         <th width="10%">Total</th>
                     </tr>
                     </thead>
@@ -95,13 +96,14 @@
                 type:"GET",
                 url:"{{url('generateSalesReport')}}/"+fromDate+"/"+toDate,
                 success: function(data) {
-                    console.log(data);
+                    //console.log(data);
                     let totalAmount = 0;
                     let totalQuantity = 0;
                     let totalSubTotal = 0;
                     let totalDiscount = 0;
                     for (var i=0; i<data.length; i++) {
                         let serviceName = data[i].get_service_name['name'];
+                        let refName = data[i].get_invoice_info.get_reference['name'];
                         let serial_no = i+1;
                         totalAmount = totalAmount + parseInt(data[i].total);
                         totalQuantity = totalQuantity + parseInt(data[i].quantity);
@@ -109,7 +111,7 @@
                         let discountAmount = parseInt(data[i].subtotal) * parseInt(data[i].discount) / 100;
                         totalDiscount = totalDiscount + discountAmount;
                         let formatedDate = formatDate(data[i].created_at);
-                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].subtotal + '</td><td>' + discountAmount +'('+data[i].discount+'%)' + '</td><td>' + data[i].total + '</td></tr>');
+                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + refName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].subtotal + '</td><td>' + discountAmount +'('+data[i].discount+'%)' + '</td><td>' + data[i].total + '</td></tr>');
                         $('#myTable').append(row);
                     }
 

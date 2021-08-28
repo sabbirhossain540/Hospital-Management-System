@@ -27,6 +27,7 @@
         <th class="text-center" scope="col">SN</th>
         <th class="text-center" scope="col">Sales Date</th>
         <th class="text-center" scope="col">Service Name</th>
+        <th class="text-center" scope="col">Ref Name</th>
         <th class="text-center" scope="col">Price</th>
         <th class="text-center" scope="col">Quantity</th>
         <th class="text-center" scope="col">Sub Total</th>
@@ -40,6 +41,8 @@
                 <td>{{ $key+1 }}</td>
                 <td>{{ $list->created_at->format('d/m/Y') }}</td>
                 <td>@if(!empty($list->getServiceName->name)){{ $list->getServiceName->name }}@endif</td>
+{{--                <td>{{ $list->getInvoiceInfo->getReference->name }}</td>--}}
+                <td>@if(!empty($list->getInvoiceInfo->getReference->name)){{ $list->getInvoiceInfo->getReference->name }}@endif</td>
                 <td class="text-center">{{ $list->price }}</td>
                 <td class="text-center">{{ $list->quantity }}</td>
                 <td class="text-center">{{ $list->subtotal }}</td>
@@ -48,7 +51,7 @@
             </tr>
         @endforeach
             <tr>
-                <td colspan="3"></td>
+                <td colspan="4"></td>
                 <td>Total</td>
                 <td class="text-center">{{ $totalQuantity }}</td>
                 <td class="text-center">{{ $totalSubTotal }}</td>
