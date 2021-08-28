@@ -55,6 +55,10 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'doctor_id' => 'required',
+            'pataint_id' => 'required',
+        ]);
 
         if($request->id != ''){
             $invoiceMaster = Invoice::findOrFail($request->id);
