@@ -10,11 +10,11 @@
     <title>Print Invoice</title>
     <style>
         .custom_font_size{
-            font-size: 12px;
+            font-size: 11px;
         }
     </style>
 </head>
-<body style="margin-top: 70px; margin-bottom: 30px; margin-left: 0px; margin-right: 0px;">
+<body style="margin: 95px 0px 35px 0px;">
 {{--<table class="mb-5">--}}
 {{--    <tr>--}}
 {{--        <td colspan="5"><img src="{{ public_path('img/report.webp') }}" style="border-radius: 45px; text-align: center;" alt="logo" width="100" height="100"></td>--}}
@@ -91,26 +91,22 @@
         </tbody>
     </table>
 
-    <h7 style="font-size: 12px;"><span style="font-weight: bold;">Room No:</span> <br>
-            @foreach($invoiceInfo->invoiceDetails as $key=>$tfo)
-                <span>* @if(!empty($tfo->getServiceName->name)){{ $tfo->getServiceName->name }}@endif @if(!empty($tfo->getServiceName->room_no))({{$tfo->getServiceName->room_no}})@endif</span>
-            <br>
-        @endforeach
-    </h7>
-
-    <table style="margin-top: 60px;" class="custom_font_size" width="100%" cellspacing="0">
-        <tbody>
-            <tr>
-                <td width="60%" class="text-right">Signature:</td>
-                <td width="40%">_______________________</td>
-            </tr>
-            <tr>
-                <td width="60%" class="text-right">Bill Officer:</td>
-                <td width="40%"><strong>@if(!empty($invoiceInfo->getCreatedUser->name)){{ $invoiceInfo->getCreatedUser->name }}@endif</strong> </td>
-            </tr>
-        </tbody>
+    <table width="100%">
+        <tr>
+            <td width="50%">
+                <h7 style="font-size: 11px;"><span style="font-weight: bold;">Room No:</span> <br>
+                    @foreach($invoiceInfo->invoiceDetails as $key=>$tfo)
+                        <span>* @if(!empty($tfo->getServiceName->name)){{ $tfo->getServiceName->name }}@endif @if(!empty($tfo->getServiceName->room_no))({{$tfo->getServiceName->room_no}})@endif</span>
+                        <br>
+                    @endforeach
+                </h7>
+            </td>
+            <td width="50%">
+                <p class="mt-5">Signature: _________________</p>
+                <p style="margin-top: -15px;">Bill Officer: <strong>@if(!empty($invoiceInfo->getCreatedUser->name)){{ $invoiceInfo->getCreatedUser->name }}@endif</strong></p>
+            </td>
+        </tr>
     </table>
-
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
