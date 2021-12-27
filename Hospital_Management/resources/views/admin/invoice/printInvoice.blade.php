@@ -54,8 +54,11 @@
         <thead>
         <tr>
             <th width="10%">SN</th>
-            <th width="70%" colspan="2">Service Name</th>
+            <th width="50%" colspan="3">Service Name</th>
+            <th width="20%" >Room No</th>
             <th width="20%">Price</th>
+
+
 {{--            <th width="10%">Quantity</th>--}}
 {{--            <th width="15%">Sub Total</th>--}}
 {{--            <th width="15%">Discount</th>--}}
@@ -65,9 +68,11 @@
         <tbody>
 
         @foreach($invoiceInfo->invoiceDetails as $key=>$invoice)
+
             <tr>
                 <td>{{ $key+1 }}</td>
-                <td colspan="2">@if(!empty($invoice->getServiceName->name)){{ $invoice->getServiceName->name }}@endif</td>
+                <td colspan="3">@if(!empty($invoice->getServiceName->name)){{ $invoice->getServiceName->name }}@endif</td>
+                <td>@if(!empty($invoice->getServiceName->room_no))({{$invoice->getServiceName->room_no}})@endif</td>
                 <td>{{ $invoice->price }}</td>
 {{--                <td>{{ $invoice->quantity }}</td>--}}
 {{--                <td>{{ $invoice->subtotal }}</td>--}}
@@ -76,7 +81,7 @@
             </tr>
         @endforeach
         <tr>
-            <td colspan="2">@if($invoiceInfo->dueAmount == 0)<h2 class="mt-5 text-center" style="border: 2px solid black; border-radius: 20px;">Full Paid</h2>@endif</td>
+            <td colspan="4">@if($invoiceInfo->dueAmount == 0)<h2 class="mt-5 text-center" style="border: 2px solid black; border-radius: 20px;">Full Paid</h2>@endif</td>
             <td  align="right" class="text-dark">Sub total <br> +VAT <br> -Discount <br>Net Payble <br> Paid <br> Due</td>
             <td class="text-dark">{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
             {{--                            <td>{{ $totalDiscountAmount }}</td>--}}
@@ -91,22 +96,22 @@
         </tbody>
     </table>
 
-    <table width="100%">
-        <tr>
-            <td width="50%">
-                <h7 style="font-size: 11px;"><span style="font-weight: bold;">Room No:</span> <br>
-                    @foreach($invoiceInfo->invoiceDetails as $key=>$tfo)
-                        <span>* @if(!empty($tfo->getServiceName->name)){{ $tfo->getServiceName->name }}@endif @if(!empty($tfo->getServiceName->room_no))({{$tfo->getServiceName->room_no}})@endif</span>
-                        <br>
-                    @endforeach
-                </h7>
-            </td>
-            <td width="50%">
-                <p class="mt-5">Signature: _________________</p>
-                <p style="margin-top: -15px;">Bill Officer: <strong>@if(!empty($invoiceInfo->getCreatedUser->name)){{ $invoiceInfo->getCreatedUser->name }}@endif</strong></p>
-            </td>
-        </tr>
-    </table>
+{{--    <table width="100%">--}}
+{{--        <tr>--}}
+{{--            <td width="50%">--}}
+{{--                <h7 style="font-size: 11px;"><span style="font-weight: bold;">Room No:</span> <br>--}}
+{{--                    @foreach($invoiceInfo->invoiceDetails as $key=>$tfo)--}}
+{{--                        <span>* @if(!empty($tfo->getServiceName->name)){{ $tfo->getServiceName->name }}@endif @if(!empty($tfo->getServiceName->room_no))({{$tfo->getServiceName->room_no}})@endif</span>--}}
+{{--                        <br>--}}
+{{--                    @endforeach--}}
+{{--                </h7>--}}
+{{--            </td>--}}
+{{--            <td width="50%">--}}
+{{--                <p class="mt-5">Signature: _________________</p>--}}
+{{--                <p style="margin-top: -15px;">Bill Officer: <strong>@if(!empty($invoiceInfo->getCreatedUser->name)){{ $invoiceInfo->getCreatedUser->name }}@endif</strong></p>--}}
+{{--            </td>--}}
+{{--        </tr>--}}
+{{--    </table>--}}
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
