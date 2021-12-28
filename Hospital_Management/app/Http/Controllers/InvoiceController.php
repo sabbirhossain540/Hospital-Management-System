@@ -205,12 +205,19 @@ class InvoiceController extends Controller
         return redirect()->route('invoices.index');
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getServiceInfo($id){
         $serviceInfo = Services::where('id',$id)->first();
         return $serviceInfo;
     }
 
-
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function printInvoice($id){
         $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getCreatedUser','getPatient', 'getDoctor', 'getDoctor.Specialist', 'getReference')->where('id', $id)->first();
         //dd($invoiceInfo);
