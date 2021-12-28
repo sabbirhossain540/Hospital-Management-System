@@ -36,6 +36,7 @@
                 <a class="collapse-item" href="{{ route('medicalCollege.index') }}">Medical College Name</a>
                 <a class="collapse-item" href="{{ route('educationalQualification.index') }}">Educational Qualification</a>
                 <a class="collapse-item" href="{{ route('specialistArea.index') }}">Specialist Area</a>
+                <a class="collapse-item" href="{{ route('expenseCategory.index') }}">Expense Category</a>
             </div>
         </div>
     </li>
