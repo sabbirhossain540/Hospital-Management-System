@@ -25,8 +25,8 @@
 
                             <div class="col">
                                 <label for="remark">Comments</label>
-                                <input type="text" name="remark" id="remark" class="form-control">
-                                @error('remark')
+                                <input type="text" name="comments" id="comments" class="form-control">
+                                @error('comments')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -68,7 +68,7 @@
                             <div class="col-10 p-2"></div>
                             <div class="col-2 p-2">
                                 <a href="{{route('expenses.index')}}" class="btn btn-danger btn-sm">Cancel</a>
-                                <button type="submit" class="btn btn-success btn-sm main-form-submit">@if(isset($referenceInfo)) Update @else Save @endif</button>
+                                <button type="submit" class="btn btn-success btn-sm main-form-submit">Save</button>
                             </div>
                         </div>
                     </form>
@@ -151,34 +151,24 @@
         $(".main-form-submit").click(function(event){
             event.preventDefault();
             let _token   = $("#csrf-token").val();
-            let pataint_id   = $("#pataint_id").val();
-            let doctor_id   = $("#doctor_id").val();
-            let reference_id   = $("#reference_id").val();
-            let ic_date   = $("#ic_date").val();
-            let remark   = $("#remark").val();
-            let paidAmount   = $("#paidAmount").val();
-            let dueAmount   = $("#dueAmount").val();
+            let exp_date   = $("#exp_date").val();
+            let comments   = $("#comments").val();
 
             $.ajax({
-                url: "{{route('invoices.store')}}",
+                url: "{{route('expenses.store')}}",
                 type:"POST",
                 data:{
-                    pataint_id:pataint_id,
-                    doctor_id:doctor_id,
-                    reference_id:reference_id,
-                    ic_date:ic_date,
-                    remark:remark,
-                    paidAmount:paidAmount,
-                    dueAmount:dueAmount,
-                    invoice_details: arr,
+                    exp_date:exp_date,
+                    comments:comments,
+                    expense_details: arr,
                     _token: _token
                 },
                 success:function(response){
                     Swal.fire({
-                        title: 'Invoice Created Successfully',
+                        title: 'Expense Created Successfully',
                         confirmButtonText: `OK`,
                     }).then((result) => {
-                        window.location.href = "{{ route('invoices.index')}}";
+                        window.location.href = "{{ route('expenses.index')}}";
                     });
                 },
             });

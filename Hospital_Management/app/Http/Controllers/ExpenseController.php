@@ -44,7 +44,39 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         //
+//        $getExpense = Expense::latest()->first();
+//        if($getExpense != ''){
+//            $expNo = $getExpense->id+1;
+//        }else{
+//            $expNo = 1;
+//        }
+//
+//        $exNo = "BCADC/".date("Y")."/".date('M')."/".$expNo."/Exp";
+//        $expMaster = new Expense();
+//        $expMaster->exp_no = $exNo;
+//        $expMaster->comments = $ivno;
+//        $expMaster->amount = $ivno;
+//        $expMaster->exp_date = $ivno;
+//        $expMaster->created_user = Auth::user()->id;
+//        $expMaster->save();
+//
+//        $size = count($request->invoice_details);
+//
+//        for($i = 0; $i < $size ; $i++){
+//            $invoiceDetails = new ExpenseDetails();
+//            $invoiceDetails->invoice_id = $invoiceMaster->id;
+//            $invoiceDetails->service_id = $request->invoice_details[$i]['service_id'];
+//            $invoiceDetails->price = $request->invoice_details[$i]['price'];
+//            $invoiceDetails->quantity = $request->invoice_details[$i]['quantity'];
+//            $invoiceDetails->subtotal = $request->invoice_details[$i]['subTotal'];
+//            $invoiceDetails->discount = $request->invoice_details[$i]['discount'];
+//            $invoiceDetails->total = $request->invoice_details[$i]['total'];
+//            $invoiceDetails->save();
+//        }
+//
+//        return true;
     }
 
     /**
