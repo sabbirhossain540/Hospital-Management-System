@@ -7,6 +7,7 @@ use App\Expense;
 use App\ExpenseDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\ExpenceCategory;
 
 class ExpenseController extends Controller
 {
@@ -31,7 +32,8 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        dd("Here");
+        $expenseList = ExpenceCategory::all();
+        return view('admin.expense.create', compact('expenseList'));
     }
 
     /**
@@ -88,5 +90,10 @@ class ExpenseController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getExpenseCategoryInfo($id){
+        $ExpenseCategory = ExpenceCategory::where('id',$id)->first();
+        return $ExpenseCategory;
     }
 }

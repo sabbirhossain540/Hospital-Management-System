@@ -60,6 +60,9 @@ Route::resource('invoices','InvoiceController');
 Route::get('/printInvoice/{id}', 'InvoiceController@printInvoice')->name('printInvoice');
 
 Route::resource('expenses','ExpenseController');
+Route::get('/getExpenseCategoryInfo/{id}', 'ExpenseController@getExpenseCategoryInfo')->name('getExpenseCategoryInfo');
+
+
 
 Route::get('/getServiceInfo/{id}', 'InvoiceController@getServiceInfo')->name('getServiceInfo');
 Route::post('/postServiceInfo', 'InvoiceController@postServiceInfo')->name('postServiceInfo');

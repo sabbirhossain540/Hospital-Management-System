@@ -8,7 +8,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Expense List</h6>
                 </div>
                 <div class="col-md-2" style="margin-left: 65px;">
-                    <a href="{{route('expenses.create')}}" class="btn btn-primary btn-sm pl-10">Create Expense</a>
+                    <a href="{{route('expenses.create')}}" class="btn btn-primary btn-sm pl-9">Create Expense</a>
                 </div>
             </div>
         </div>
