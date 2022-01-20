@@ -124,8 +124,8 @@ class InvoiceController extends Controller
                 $pat_id = $user->id;
             }else{
                 $pat_id = $request->pataint_id;
-            }
 
+}
 
             $getInvoice = Invoice::latest()->first();
 

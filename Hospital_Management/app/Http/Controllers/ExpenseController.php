@@ -90,7 +90,10 @@ class ExpenseController extends Controller
      */
     public function show($id)
     {
-        //
+        $expanseList = Expense::with('expenseDetails', 'expenseDetails.getExpCategoryName', 'getCreatedUser')->where('id', $id)->first();
+        $expanseList['formated_exp_date'] = Carbon::parse($expanseList->exp_date);
+        //dd($expanseList);
+        return view('admin.expense.show', compact( 'expanseList'));
     }
 
     /**
@@ -101,7 +104,9 @@ class ExpenseController extends Controller
      */
     public function edit($id)
     {
-        //
+        $expenseCategoryList = ExpenceCategory::all();
+        $expanseList = Expense::with('expenseDetails', 'expenseDetails.getExpCategoryName')->where('id', $id)->first();
+        return view('admin.expense.edit', compact('expenseCategoryList', 'expanseList'));
     }
 
     /**
