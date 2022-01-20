@@ -129,7 +129,16 @@ class ExpenseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $expanseInfo = Expense::findOrFail($id);
+        $expanseDetails = ExpenseDetails::where('exp_id', $expanseInfo->id)->get();
+        foreach($expanseDetails as $edetails)
+        {
+            $edetails->delete();
+        }
+
+        $expanseInfo->delete();
+        session()->flash('success', 'Expense Voucher deleted successfully');
+        return redirect()->route('expenses.index');
     }
 
     public function getExpenseCategoryInfo($id){

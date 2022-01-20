@@ -60,6 +60,7 @@ Route::resource('invoices','InvoiceController');
 Route::get('/printInvoice/{id}', 'InvoiceController@printInvoice')->name('printInvoice');
 
 Route::resource('expenses','ExpenseController');
+Route::post('/deleteExpense/{id}', 'ExpenseController@destroy')->name('deleteExpense');
 Route::get('/getExpenseCategoryInfo/{id}', 'ExpenseController@getExpenseCategoryInfo')->name('getExpenseCategoryInfo');
 
 

@@ -61,7 +61,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4>Are you sure want to delete this Invoice?</h4>
+                        <h4>Are you sure want to delete this Expense Voucher?</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -84,7 +84,7 @@
 
         function handleDelete(id){
             var form = document.getElementById('deleteForm')
-            form.action = '/deleteInvoice/'+id
+            form.action = '/deleteExpense/'+id
             $('#deleteModal').modal('show')
         }
     </script>
