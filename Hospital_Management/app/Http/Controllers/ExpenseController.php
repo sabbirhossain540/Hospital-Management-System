@@ -50,7 +50,6 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->all());
 
         $getExpense = Expense::latest()->first();
         if($getExpense != ''){

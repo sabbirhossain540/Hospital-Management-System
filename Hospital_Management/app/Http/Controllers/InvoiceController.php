@@ -128,10 +128,17 @@ class InvoiceController extends Controller
 
 
             $getInvoice = Invoice::latest()->first();
-            $ivNo = $getInvoice->id+1;
-            $ivno = "BCADC/".date("Y")."/".date('M')."/".$ivNo;
+
+            if($getInvoice != ''){
+                $ivNo = $getInvoice->id+1;
+            }else{
+                $ivNo = 1;
+            }
+
+
+            $ivNo = "BCADC/INV/".date("y").date('m').date('d').$ivNo;
             $invoiceMaster = new Invoice();
-            $invoiceMaster->iv_no = $ivno;
+            $invoiceMaster->iv_no = $ivNo;
             $invoiceMaster->pataint_id = $pat_id;
             $invoiceMaster->doctor_id = $request->doctor_id;
             $invoiceMaster->reference_id = $request->reference_id;
@@ -201,7 +208,6 @@ class InvoiceController extends Controller
         $referenceList = References::all();
         $serviceList = Services::all();
         $invoiceList = Invoice::with('invoiceDetails', 'invoiceDetails.getServiceName')->where('id', $id)->first();
-        //dd($invoiceList);
         return view('admin.invoice.edit', compact('invoiceList', 'patientList', 'doctorList', 'referenceList', 'serviceList'));
 
     }
