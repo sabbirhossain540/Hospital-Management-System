@@ -146,7 +146,7 @@
             //showDataOnGrid();
             flatpickr("#exp_date");
         });
-
+        let totalAmount = 0;
         let arr = []
         $(".main-form-submit").click(function(event){
             event.preventDefault();
@@ -160,6 +160,7 @@
                 data:{
                     exp_date:exp_date,
                     comments:comments,
+                    totalAmount:totalAmount,
                     expense_details: arr,
                     _token: _token
                 },
@@ -185,6 +186,7 @@
 
             let rose = $('<tr class="rowTrack"><td class="text-right" colspan="2">Total Amount</td>' +
                 '<td class="text-left">'+totalPayble+'</td></tr>');
+            totalAmount = totalPayble;
             $('#myTable').append(rose);
             $('#paidAmount').val(0);
             $('#dueAmount').val(totalPayble);
@@ -235,6 +237,7 @@
             let exp_amount   = $("#exp_amount").val();
             let exp_comment   = $("#exp_comment").val();
             let expCategory_name   = $("#expCategory_name").val();
+
             let id   = $("#id").val();
             let expenseData = {
                 "id": id,
