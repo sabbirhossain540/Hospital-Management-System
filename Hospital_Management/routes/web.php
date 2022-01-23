@@ -44,6 +44,9 @@ Route::post('/deleteQualification/{id}', 'EducationalQualificationController@des
 Route::resource('specialistArea','SpecialistAreaController');
 Route::post('/deleteSA/{id}', 'SpecialistAreaController@destroy')->name('deleteQualification');
 
+Route::resource('expenseCategory','ExpenceCategoryController');
+Route::post('/deleteExpCategory/{id}', 'ExpenceCategoryController@destroy')->name('deleteExpCategory');
+
 Route::resource('patientList','PatientController');
 Route::post('/deletePatient/{id}', 'PatientController@destroy')->name('deletePatient');
 
@@ -55,6 +58,11 @@ Route::post('/deleteReference/{id}', 'ReferencesController@destroy')->name('dele
 
 Route::resource('invoices','InvoiceController');
 Route::get('/printInvoice/{id}', 'InvoiceController@printInvoice')->name('printInvoice');
+
+Route::resource('expenses','ExpenseController');
+Route::post('/deleteExpense/{id}', 'ExpenseController@destroy')->name('deleteExpense');
+Route::get('/getExpenseCategoryInfo/{id}', 'ExpenseController@getExpenseCategoryInfo')->name('getExpenseCategoryInfo');
+Route::get('/printExpanse/{id}', 'ExpenseController@printExpanse')->name('printExpanse');
 
 
 

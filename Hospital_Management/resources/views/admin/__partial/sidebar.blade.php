@@ -36,6 +36,7 @@
                 <a class="collapse-item" href="{{ route('medicalCollege.index') }}">Medical College Name</a>
                 <a class="collapse-item" href="{{ route('educationalQualification.index') }}">Educational Qualification</a>
                 <a class="collapse-item" href="{{ route('specialistArea.index') }}">Specialist Area</a>
+                <a class="collapse-item" href="{{ route('expenseCategory.index') }}">Expense Category</a>
             </div>
         </div>
     </li>
@@ -74,6 +75,12 @@
             <span>Reference List</span></a>
     </li>
     @endif
+
+    <li class="nav-item {{ request()->is('expenses*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('expenses.index') }}">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>Expense List</span></a>
+    </li>
 
     <li class="nav-item {{ request()->is('invoices*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('invoices.index') }}">

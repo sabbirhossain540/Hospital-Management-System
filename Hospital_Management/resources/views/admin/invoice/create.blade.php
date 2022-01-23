@@ -1,6 +1,24 @@
 @extends('admin.layouts')
 
 @section("content")
+    <script>
+        $( document ).ready(function() {
+            $("#dwAddress").hide();
+            $("#dwNewPatientArea").hide();
+
+            $("#flexCheckDefault").click(function(){
+                if($("#flexCheckDefault").is( ":checked" ) == true){
+                    $("#dwPatient").hide();
+                    $("#dwAddress").show();
+                    $("#dwNewPatientArea").show();
+                }else{
+                    $("#dwPatient").show();
+                    $("#dwAddress").hide();
+                    $("#dwNewPatientArea").hide();
+                }
+            });
+        });
+    </script>
 
     <div class="row justify-content-md-center">
         <div class="col-md-10">
@@ -23,8 +41,50 @@
 {{--                        @if(isset($referenceInfo))--}}
 {{--                            @method('PUT')--}}
 {{--                        @endif--}}
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="flexCheckDefault" id="patientStatusCheck" name="patientStatusCheck">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    <strong>New Patient</strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3" id="dwNewPatientArea">
+                        <div class="col-md-6 mb-2">
+                            <label for="remark">Patient Name</label>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Enter patient fullname" value="{{ old('name') }}" required>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                            <label for="remark">Mobile No</label>
+                            <input type="text" name="mobile_no" id="mobile_no" class="form-control" placeholder="Enter mobile No" value="{{ old('mobile_no') }}" required>
+                        </div>
+
+                        <div class="col-md-6 ">
+                            <label for="gander">Gander</label>
+                            <select name="gander" id="gander" class="form-control">
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="age">Age</label>
+                            <input type="text" id="age" name="age" class="form-control" placeholder="Age">
+                        </div>
+                    </div>
+
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-6" id="dwAddress">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address" class="form-control" placeholder="Address">
+                            </div>
+
+                            <div class="col-md-6" id="dwPatient">
                                 <label for="pn">Patient Name</label>
                                 <select name="pataint_id" id="pataint_id" class="form-control search-option" required>
                                     <option value="">Select Patient Name</option>
@@ -199,9 +259,6 @@
                         </div>
 {{--                    </form>--}}
 
-
-
-
                 </div>
             </div>
         </div>
@@ -229,6 +286,18 @@
             let remark   = $("#remark").val();
             let paidAmount   = $("#paidAmount").val();
             let dueAmount   = $("#dueAmount").val();
+            let patientStatusCheck = 0;
+
+            if($("#flexCheckDefault").is( ":checked" ) == true){
+                patientStatusCheck   = 1;
+            }
+
+            let patientName   = $("#name").val();
+            let mobile_no   = $("#mobile_no").val();
+            let gander   = $("#gander").val();
+            let age   = $("#age").val();
+            let address   = $("#address").val();
+
 
             $.ajax({
                 url: "{{route('invoices.store')}}",
@@ -241,6 +310,12 @@
                     remark:remark,
                     paidAmount:paidAmount,
                     dueAmount:dueAmount,
+                    patientStatusCheck:patientStatusCheck,
+                    patientName:patientName,
+                    mobile_no:mobile_no,
+                    gander:gander,
+                    age:age,
+                    address:address,
                     invoice_details: arr,
                     _token: _token
                 },
