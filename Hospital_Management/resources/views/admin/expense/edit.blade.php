@@ -5,71 +5,37 @@
     <div class="row justify-content-md-center">
         <div class="col-md-10">
             <div class="card shadow mb-4">
+
                 <div class="card-header py-3">
                     <div class="d-flex flex-row">
                         <div class="col-md-10">
-                            <h6 class="m-0 font-weight-bold text-primary">Edit Invoice</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Edit Expense</h6>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="row mb-3">
                         <div class="col">
-                            <input type="hidden" name="invoiceId" id="invoiceId" value="{{ $invoiceList->id }}">
-                            <label for="pn">Patient Name</label>
-                            <select name="pataint_id" id="pataint_id" class="form-control" required>
-                                <option value="">Select Patient Name</option>
-                                @foreach($patientList as $patient)
-                                    <option @if($patient->id == $invoiceList->pataint_id) selected @endif value="{{ $patient->id }}">{{ $patient->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('pataint_id')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="col">
-                            <label for="pn">Doctor Name</label>
-                            <select name="doctor_id" id="doctor_id" class="form-control" required>
-                                <option value="">Select Doctor Name</option>
-                                @foreach($doctorList as $doctor)
-                                    <option @if($doctor->id == $invoiceList->doctor_id) selected @endif value="{{ $doctor->id }}">{{ $doctor->name }} (@if(!empty($doctor->Specialist->name)){{ $doctor->Specialist->name }}@endif)</option>
-                                @endforeach
-                            </select>
-                            @error('doctor_id')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <label for="rn">Reference No</label>
-                            <select name="reference_id" id="reference_id" class="form-control">
-                                <option value="">Select reference no</option>
-                                @foreach($referenceList as $reference)
-                                    <option @if($reference->id == $invoiceList->reference_id) selected @endif value="{{ $reference->id }}">{{ $reference->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('reference_id')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="col">
-                            <label for="date">Invoice Date</label>
-                            <input type="date" name="ic_date" id="ic_date" class="form-control" value="{{ $invoiceList->ic_date }}">
-                            @error('ic_date')
+                            <label for="date">Expense Date</label>
+                            <input type="text" name="exp_id" id="exp_id" value="{{ $expenseList->id  }}">
+                            <input type="text" name="exp_date" id="exp_date" class="form-control flatPickerCustom" value="@if($expenseList->exp_date){{ $expenseList->exp_date }} @else {{ date("Y-m-d") }}  @endif" placeholder="Invoice Date">
+                            @error('exp_date')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
 
                         <div class="col">
-                            <label for="remark">Remark</label>
-                            <input type="text" name="remark" id="remark" class="form-control" value="{{ $invoiceList->remark }}">
-                            @error('remark')
+                            <label for="remark">Comments</label>
+                            <input type="text" name="comments" id="comments" class="form-control" value="{{ $expenseList->comments }}">
+                            @error('comments')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                     </div>
+
+
+
+
 
 
                     <div class=" py-3">
@@ -77,8 +43,8 @@
                             <div class="col-md-10">
 
                             </div>
-                            <div class="col-md-2" style="margin-left: 65px;">
-                                <a class="btn btn-success btn-sm " onclick="handleItem()">Add Item</a>
+                            <div class="col-md-2" style="margin-left: 27px;">
+                                <a class="btn btn-success btn-sm " onclick="handleItem()">Add Expense</a>
                             </div>
                         </div>
                     </div>
@@ -87,12 +53,9 @@
                         <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th width="25%">Service Name</th>
-                                <th width="15%">Price</th>
-                                <th width="25%">Quantity</th>
-                                <th width="10%">Sub total</th>
-                                <th width="11%">Discount(%)</th>
-                                <th width="15%">Total</th>
+                                <th width="30%">Exp. Title</th>
+                                <th width="25%">Exp. Category</th>
+                                <th width="25%">Exp. Amount</th>
                                 <th width="20">Action</th>
                             </tr>
                             </thead>
@@ -105,89 +68,66 @@
                     <div class="d-flex flex-row mb-3">
                         <div class="col-10 p-2"></div>
                         <div class="col-2 p-2">
-                            <a href="{{route('invoices.index')}}" class="btn btn-danger btn-sm">Cancel</a>
-                            <button type="submit" class="btn btn-success btn-sm main-form-submit">@if(isset($referenceInfo)) Update @else Save @endif</button>
+                            <a href="{{route('expenses.index')}}" class="btn btn-danger btn-sm">Cancel</a>
+                            <button type="submit" class="btn btn-success btn-sm main-form-submit">Save</button>
                         </div>
                     </div>
+                    </form>
 
 
 
                     <!-- Modal -->
-                    {{--                    <form action="" method="POST" id="deleteForm">--}}
-                    {{--                        @csrf--}}
-                    <div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" style="margin-top: 90px;">
-                            <div class="modal-content" style="width: 500px;">
-                                <div class="modal-body">
-                                    <div class="row mb-2">
-                                        <div class="col">
-                                            <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
-                                            <input type="hidden" name="id" id="id">
-                                            <label for="pn">Item Name</label>
-                                            <input type="hidden" name="service_name" id="service_name" class="form-control" readonly>
-                                            <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
-                                                <option value="">Select a service</option>
-                                                @foreach($serviceList as $service)
-                                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('service_id')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                    <form action="" method="POST" id="deleteForm">
+                        @csrf
+                        <div class="modal fade" id="expDetailsModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" style="margin-top: 90px;">
+                                <div class="modal-content" style="width: 500px;">
+                                    <div class="modal-body">
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="id" id="id">
+                                                <label for="pn">Expense Details</label>
+                                                <input type="hidden" name="expCategory_name" id="expCategory_name" class="form-control" readonly>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row mb-2">
-                                        <div class="col">
-                                            <label for="price">Price</label>
-                                            <input type="text" name="price" id="price" class="form-control" placeholder="0" readonly>
-                                            @error('price')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <label for="exp_title">Title</label>
+                                                <input type="text" name="exp_title" id="exp_title" class="form-control" placeholder="Expense Title">
+                                            </div>
                                         </div>
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <label for="quantity">Exp. Category</label>
+                                                <select name="expense_id" id="expense_id" class="form-control" onchange="getExpenseDetails()" required>
+                                                    <option value="">Select Expense Category</option>
+                                                    @foreach($expenseCategoryList as $expense)
+                                                        <option value="{{ $expense->id }}">{{ $expense->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col">
+                                                <label for="exp_title">Amount</label>
+                                                <input type="number" name="exp_amount" id="exp_amount" class="form-control" placeholder="Expense Amount">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <div class="col">
+                                                <label for="total">Comments</label>
+                                                <textarea name="exp_comment" id="exp_comment" cols="30" rows="3" class="form-control"></textarea>
 
-                                        <div class="col">
-                                            <label for="quantity">Quantity</label>
-                                            <input type="number" name="quantity" id="quantity" class="form-control" placeholder="0" onkeyup="calculatePrice()">
-                                            @error('quantity')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row mb-2">
-                                        <div class="col">
-                                            <label for="discount">Discount(%)</label>
-                                            <input type="number" name="discount" id="discount" class="form-control" placeholder="0" onkeyup="calculatePrice()">
-                                            @error('discount')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="col">
-                                            <label for="total">Sub total</label>
-                                            <input type="text" name="subTotal" id="subTotal" class="form-control" placeholder="0" readonly>
-                                            @error('subtotal')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger btn-sm cancel-button" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-success btn-sm save-data">Save</button>
                                     </div>
-                                    <div class="row mb-2">
-                                        <div class="col">
-                                            <label for="total">Total</label>
-                                            <input type="text" name="total" id="total" class="form-control" placeholder="0" readonly>
-                                            @error('total')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger btn-sm cancel-button" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-success btn-sm save-data">Save</button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {{--                    </form>--}}
+                    </form>
 
 
 
@@ -198,100 +138,77 @@
     </div>
 
     <script>
-        let arr = []
-        $( document ).ready(function() {
-            let pAmount = "{{$invoiceList->paidAmount}}";
-            let dAmount = "{{$invoiceList->dueAmount}}";
-            @foreach($invoiceList->invoiceDetails as $invoiceList)
-            arr.push({
-                "id": "{{ $invoiceList->getServiceName->id }}",
-                "service_id": {{ $invoiceList->service_id }},
-                "price": {{ $invoiceList->price }},
-                "quantity": {{ $invoiceList->quantity }},
-                "subTotal": {{ $invoiceList->subtotal }},
-                "discount": {{ $invoiceList->discount }},
-                "total": {{ $invoiceList->total }},
-                "service_name":"{{ $invoiceList->getServiceName->name }}"
-            });
-            @endforeach
-            calculatePrice();
-            showDataOnGrid();
+        $(".search-option").select2({
+            tags: true
+        });
 
-            $('#paidAmount').val(pAmount);
-            $('#dueAmount').val(dAmount);
+        let totalAmount = 0;
+        let arr = []
+
+
+        $( document ).ready(function() {
+            flatpickr("#exp_date");
+
+            @foreach($expenseList->expenseDetails as $ed)
+                arr.push({
+                        "id": "{{ $ed->getExpCategoryName->id  }}",
+                        "exp_title": "{{ $ed->exp_title }}",
+                        "expense_id": "{{ $ed->id }}",
+                        "expCategory_name": "{{ $ed->getExpCategoryName->name  }}",
+                        "exp_amount": "{{ $ed->amount }}",
+                        "exp_comment": "{{ $ed->comments }}",
+                    });
+            @endforeach
+            showDataOnGrid()
 
         });
+
         $(".main-form-submit").click(function(event){
             event.preventDefault();
             let _token   = $("#csrf-token").val();
-            let pataint_id   = $("#pataint_id").val();
-            let doctor_id   = $("#doctor_id").val();
-            let reference_id   = $("#reference_id").val();
-            let ic_date   = $("#ic_date").val();
-            let remark   = $("#remark").val();
-            let id = $("#invoiceId").val();
-            let paidAmount   = $("#paidAmount").val();
-            let dueAmount   = $("#dueAmount").val();
+            let exp_date   = $("#exp_date").val();
+            let comments   = $("#comments").val();
+            let id = $("#exp_id").val();
+
             $.ajax({
-                url: "{{route('invoices.store')}}",
+                url: "{{route('expenses.store')}}",
                 type:"POST",
                 data:{
                     id:id,
-                    pataint_id:pataint_id,
-                    doctor_id:doctor_id,
-                    reference_id:reference_id,
-                    ic_date:ic_date,
-                    remark:remark,
-                    paidAmount:paidAmount,
-                    dueAmount:dueAmount,
-                    invoice_details: arr,
+                    exp_date:exp_date,
+                    comments:comments,
+                    totalAmount:totalAmount,
+                    expense_details: arr,
                     _token: _token
                 },
                 success:function(response){
                     Swal.fire({
-                        title: 'Invoice Updated Successfully',
+                        title: 'Expense Created Successfully',
                         confirmButtonText: `OK`,
                     }).then((result) => {
-                        window.location.href = "{{ route('invoices.index')}}";
+                        window.location.href = "{{ route('expenses.index')}}";
                     });
                 },
             });
         });
+
         function showDataOnGrid(){
-            let totalSubTotal = 0;
-            let totalDiscountAmount = 0;
+
             let totalPayble = 0;
             for (var i=0; i<arr.length; i++) {
-                totalSubTotal = totalSubTotal + parseInt(arr[i].subTotal);
-                var discounted_price = (parseInt(arr[i].subTotal) * parseInt(arr[i].discount) / 100);
-                totalDiscountAmount = totalDiscountAmount + discounted_price;
-                totalPayble = totalPayble + parseInt(arr[i].total);
-                var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].subTotal + '</td><td>' + arr[i].discount + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
-                //var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                totalPayble = totalPayble + parseInt(arr[i].exp_amount);
+                var row = $('<tr class="rowTrack"><td>' + arr[i].exp_title+ '</td><td>' + arr[i].expCategory_name + '</td><td>' + arr[i].exp_amount  + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 $('#myTable').append(row);
             }
-            let rose = $('<tr class="rowTrack"><td class="text-right" colspan="4">Subtotal <br> +VAT TK, <br> -Discount TK <br> Payble TK. <br> Paid <br> Due Amount</td>' +
-                '<td colspan="2" class="text-center">'+totalSubTotal+'<br>0 <br>'+Math.floor(totalDiscountAmount)+'<br>'+totalPayble+'<br> <input type="number" name="paidAmount" id="paidAmount" onkeyup="calculatePaidAmount('+totalPayble+')" style="width: 80px;text-align: center;border-radius: 10px;outline: none;"> <br><input type="number" name="dueAmount" id="dueAmount" readonly style="width: 80px;text-align: center;border-radius: 10px;outline: none;"></td></tr>');
+
+            let rose = $('<tr class="rowTrack"><td class="text-right" colspan="2">Total Amount</td>' +
+                '<td class="text-left">'+totalPayble+'</td></tr>');
+            totalAmount = totalPayble;
             $('#myTable').append(rose);
-            //$('#paidAmount').val(0);
+            $('#paidAmount').val(0);
             $('#dueAmount').val(totalPayble);
         }
 
-
-        function calculatePaidAmount(payble){
-            let paidAmount = $("#paidAmount").val();
-            if(paidAmount == ''){
-                $('#paidAmount').val(0);
-            }
-
-            let remainingAmount = parseInt(payble) - parseInt(paidAmount);
-            $('#dueAmount').val(remainingAmount);
-
-            if(paidAmount == ''){
-                $('#dueAmount').val(payble);
-            }
-
-        }
 
 
 
@@ -300,84 +217,60 @@
             arr = arr.filter(item => item.id != id);
             showDataOnGrid();
         }
-        function handleEdit(id){
-            $.ajax({
-                type:"GET",
-                url:"{{url('getTempServiceForEdit')}}/"+id,
-                success: function(data) {
-                    $('#serviceModal').modal('show')
-                    $('#id').val(data.id);
-                    $('#service_id').val(data.service_id);
-                    $('#price').val(data.price);
-                    $('#quantity').val(data.quantity);
-                    $('#total').val(data.total);
-                }
-            });
-        }
+
+
         function handleItem(){
-            $('#serviceModal').modal('show')
+            $('#expDetailsModal').modal('show')
         }
-        function getProductDetails(){
-            var service_id = $("#service_id").val();
+
+
+        function getExpenseDetails(){
+            var expense_id = $("#expense_id").val();
             $.ajax({
                 type:"GET",
-                url:"{{url('getServiceInfo')}}/"+service_id,
+                url:"{{url('getExpenseCategoryInfo')}}/"+expense_id,
                 success: function(data) {
-                    console.log(data);
-                    $('#price').val(data.price);
-                    $('#service_name').val(data.name);
-                    $('#quantity').val(1);
-                    $('#total').val(data.price);
-                    $('#subTotal').val(data.price);
-                    $('#discount').val(0);
+                    //console.log(data);
                     $('#id').val(data.id);
+                    $('#expCategory_name').val(data.name);
                 }
             });
         }
-        function calculatePrice(){
-            var price = $("#price").val();
-            var quantity = $("#quantity").val();
-            var discount = $("#discount").val();
-            var totalAmount = price * quantity;
-            var discounted_price = totalAmount - (totalAmount * discount / 100)
-            $('#subTotal').val(totalAmount);
-            $('#total').val(discounted_price);
-        }
+
         function formReset(){
-            $('#service_id').val('');
-            $('#price').val(0);
-            $('#quantity').val(0);
-            $('#total').val(0);
-            $('#subTotal').val(0);
-            $('#discount').val(0);
+            $('#exp_title').val('');
+            $('#expense_id').val('');
+            $('#exp_amount').val(0);
+            $('#exp_comment').val('');
+            $('#expCategory_name').val('');
+            $('#id').val();
         }
+
         $(".save-data").click(function(event){
             event.preventDefault();
             $('.rowTrack').remove();
-            let _token   = $("#csrf-token").val();
-            let service_id   = $("#service_id").val();
-            let price   = $("#price").val();
-            let quantity   = $("#quantity").val();
-            let subTotal   = $("#subTotal").val();
-            let discount   = $("#discount").val();
-            let total   = $("#total").val();
-            let service_name   = $("#service_name").val();
+            let exp_title   = $("#exp_title").val();
+            let expense_id   = $("#expense_id").val();
+            let exp_amount   = $("#exp_amount").val();
+            let exp_comment   = $("#exp_comment").val();
+            let expCategory_name   = $("#expCategory_name").val();
+
             let id   = $("#id").val();
-            let test = {
+            let expenseData = {
                 "id": id,
-                "service_id": service_id,
-                "price": price,
-                "quantity": quantity,
-                "discount": discount,
-                "subTotal": subTotal,
-                "total": total,
-                "service_name":service_name
+                "exp_title": exp_title,
+                "expense_id": expense_id,
+                "expCategory_name": expCategory_name,
+                "exp_amount": exp_amount,
+                "exp_comment": exp_comment
             }
-            arr.push(test);
+
+            arr.push(expenseData);
             showDataOnGrid();
             formReset();
             $('.cancel-button').click();
         });
+
     </script>
 
 

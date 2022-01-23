@@ -51,32 +51,60 @@ class ExpenseController extends Controller
     public function store(Request $request)
     {
 
-        $getExpense = Expense::latest()->first();
-        if($getExpense != ''){
-            $expNo = $getExpense->id+1;
+        if($request->id != ''){
+            $ExpenseMaster = Expense::findOrFail($request->id);
+            $ExpenseMaster->exp_date = $request->exp_date;
+            $ExpenseMaster->comments = $request->comments;
+            $ExpenseMaster->amount = $request->totalAmount;
+            $ExpenseMaster->save();
+
+            $expanseDetails = ExpenseDetails::where('exp_id', $request->id)->get();
+            foreach($expanseDetails as $edetails)
+            {
+                $edetails->delete();
+            }
+
+            $size = count($request->expense_details);
+
+            for($i = 0; $i < $size ; $i++){
+                $expanseDetails = new ExpenseDetails();
+                $expanseDetails->exp_title = $request->expense_details[$i]['exp_title'];
+                $expanseDetails->exp_id = $ExpenseMaster->id;
+                $expanseDetails->exp_category = $request->expense_details[$i]['expense_id'];
+                $expanseDetails->amount = $request->expense_details[$i]['exp_amount'];
+                $expanseDetails->comments = $request->expense_details[$i]['exp_comment'];
+                $expanseDetails->save();
+            }
+
         }else{
-            $expNo = 1;
-        }
+            $getExpense = Expense::latest()->first();
+            if($getExpense != ''){
+                $expNo = $getExpense->id+1;
+            }else{
+                $expNo = 1;
+            }
 
-        $expNo = "BCADC/Exp/".date("y").date('m').date('d').$expNo;
-        $expMaster = new Expense();
-        $expMaster->exp_no = $expNo;
-        $expMaster->comments = $request->comments;
-        $expMaster->amount = $request->totalAmount;
-        $expMaster->exp_date = $request->exp_date;
-        $expMaster->created_user = Auth::user()->id;
-        $expMaster->save();
+            $expNo = "BCADC/Exp/".date("y").date('m').date('d').$expNo;
+            $expMaster = new Expense();
+            $expMaster->exp_no = $expNo;
+            $expMaster->comments = $request->comments;
+            $expMaster->amount = $request->totalAmount;
+            $expMaster->exp_date = $request->exp_date;
+            $expMaster->created_user = Auth::user()->id;
+            $expMaster->save();
 
-        $size = count($request->expense_details);
+            $size = count($request->expense_details);
 
-        for($i = 0; $i < $size ; $i++){
-            $expanseDetails = new ExpenseDetails();
-            $expanseDetails->exp_title = $request->expense_details[$i]['exp_title'];
-            $expanseDetails->exp_id = $expMaster->id;
-            $expanseDetails->exp_category = $request->expense_details[$i]['expense_id'];
-            $expanseDetails->amount = $request->expense_details[$i]['exp_amount'];
-            $expanseDetails->comments = $request->expense_details[$i]['exp_comment'];
-            $expanseDetails->save();
+            for($i = 0; $i < $size ; $i++){
+                $expanseDetails = new ExpenseDetails();
+                $expanseDetails->exp_title = $request->expense_details[$i]['exp_title'];
+                $expanseDetails->exp_id = $expMaster->id;
+                $expanseDetails->exp_category = $request->expense_details[$i]['expense_id'];
+                $expanseDetails->amount = $request->expense_details[$i]['exp_amount'];
+                $expanseDetails->comments = $request->expense_details[$i]['exp_comment'];
+                $expanseDetails->save();
+            }
+
         }
 
         return true;
@@ -105,8 +133,9 @@ class ExpenseController extends Controller
     public function edit($id)
     {
         $expenseCategoryList = ExpenceCategory::all();
-        $expanseList = Expense::with('expenseDetails', 'expenseDetails.getExpCategoryName')->where('id', $id)->first();
-        return view('admin.expense.edit', compact('expenseCategoryList', 'expanseList'));
+        $expenseList = Expense::with('expenseDetails', 'expenseDetails.getExpCategoryName')->where('id', $id)->first();
+        //dd($expenseList);
+        return view('admin.expense.edit', compact('expenseCategoryList', 'expenseList'));
     }
 
     /**
