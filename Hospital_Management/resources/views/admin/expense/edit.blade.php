@@ -17,7 +17,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label for="date">Expense Date</label>
-                            <input type="text" name="exp_id" id="exp_id" value="{{ $expenseList->id  }}">
+                            <input type="hidden" name="exp_id" id="exp_id" value="{{ $expenseList->id  }}">
                             <input type="text" name="exp_date" id="exp_date" class="form-control flatPickerCustom" value="@if($expenseList->exp_date){{ $expenseList->exp_date }} @else {{ date("Y-m-d") }}  @endif" placeholder="Invoice Date">
                             @error('exp_date')
                             <span class="text-danger">{{ $message }}</span>
