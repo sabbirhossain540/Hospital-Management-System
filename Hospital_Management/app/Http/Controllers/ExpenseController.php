@@ -70,7 +70,7 @@ class ExpenseController extends Controller
                 $expanseDetails = new ExpenseDetails();
                 $expanseDetails->exp_title = $request->expense_details[$i]['exp_title'];
                 $expanseDetails->exp_id = $ExpenseMaster->id;
-                $expanseDetails->exp_category = $request->expense_details[$i]['expense_id'];
+                $expanseDetails->exp_category = $request->expense_details[$i]['id'];
                 $expanseDetails->amount = $request->expense_details[$i]['exp_amount'];
                 $expanseDetails->comments = $request->expense_details[$i]['exp_comment'];
                 $expanseDetails->save();
@@ -120,7 +120,6 @@ class ExpenseController extends Controller
     {
         $expanseList = Expense::with('expenseDetails', 'expenseDetails.getExpCategoryName', 'getCreatedUser')->where('id', $id)->first();
         $expanseList['formated_exp_date'] = Carbon::parse($expanseList->exp_date);
-        //dd($expanseList);
         return view('admin.expense.show', compact( 'expanseList'));
     }
 
@@ -134,7 +133,6 @@ class ExpenseController extends Controller
     {
         $expenseCategoryList = ExpenceCategory::all();
         $expenseList = Expense::with('expenseDetails', 'expenseDetails.getExpCategoryName')->where('id', $id)->first();
-        //dd($expenseList);
         return view('admin.expense.edit', compact('expenseCategoryList', 'expenseList'));
     }
 
