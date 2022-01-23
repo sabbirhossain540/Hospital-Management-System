@@ -41,7 +41,7 @@
                             @endif
                             <td>
                                 <a href="{{route('expenses.show',$expanse->id)}}" class="btn btn-info btn-sm">View</a>
-                                <a target="_blank" class="btn btn-warning btn-sm" href="{{route('printInvoice', $expanse->id)}}">Print</a>
+                                <a target="_blank" class="btn btn-warning btn-sm" href="{{route('printExpanse', $expanse->id)}}">Print</a>
                                 <a href="{{route('expenses.edit',$expanse->id)}}" class="btn btn-primary btn-sm">Edit</a>
                                 <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $expanse->id }})">Delete</button>
                             </td>

@@ -145,4 +145,11 @@ class ExpenseController extends Controller
         $ExpenseCategory = ExpenceCategory::where('id',$id)->first();
         return $ExpenseCategory;
     }
+
+    public function printExpanse($id){
+        $expanseList = Expense::with('expenseDetails', 'expenseDetails.getExpCategoryName', 'getCreatedUser')->where('id', $id)->first();
+        $expanseList['formated_exp_date'] = Carbon::parse($expanseList->exp_date);
+        $pdf = PDF::loadView('admin.expense.printExpanse', compact('expanseList'));
+        return $pdf->stream();
+    }
 }

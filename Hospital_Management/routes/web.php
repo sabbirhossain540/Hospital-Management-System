@@ -62,6 +62,7 @@ Route::get('/printInvoice/{id}', 'InvoiceController@printInvoice')->name('printI
 Route::resource('expenses','ExpenseController');
 Route::post('/deleteExpense/{id}', 'ExpenseController@destroy')->name('deleteExpense');
 Route::get('/getExpenseCategoryInfo/{id}', 'ExpenseController@getExpenseCategoryInfo')->name('getExpenseCategoryInfo');
+Route::get('/printExpanse/{id}', 'ExpenseController@printExpanse')->name('printExpanse');
 
 
 
