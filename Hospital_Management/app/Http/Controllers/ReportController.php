@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ExpenseDetails;
 use App\Invoice;
 use App\InvoiceDetails;
 //use Barryvdh\DomPDF\PDF;
@@ -341,6 +342,22 @@ class ReportController extends Controller
             //return $pdf->stream();
             return $pdf->download('DoctorWiseSalesReport.pdf');
         }
+    }
+
+
+    //Expense Report
+    public function getExpenseReport(){
+        return view('admin.report.expenseReport');
+    }
+
+    public function generateExpenseReport($fromDate, $toDate){
+        if(date('Y-m-d') == $toDate){
+            $toDate = Carbon::parse($toDate)->addDays(1);
+        }
+        $recordList = ExpenseDetails::with('getExpCategoryName')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+        return $recordList;
     }
 
 
