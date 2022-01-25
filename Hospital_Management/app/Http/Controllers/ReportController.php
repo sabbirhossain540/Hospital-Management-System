@@ -52,6 +52,7 @@ class ReportController extends Controller
     }
 
 
+
     public function getSalesReport(){
         return view('admin.report.salesReport');
     }
