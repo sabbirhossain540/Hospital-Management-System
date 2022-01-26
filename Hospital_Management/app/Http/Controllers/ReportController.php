@@ -355,7 +355,7 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $recordList = ExpenseDetails::with('getExpCategoryName')->where('created_at', '>=', $fromDate)
+        $recordList = ExpenseDetails::with('getExpCategoryName', 'getExpenseNo')->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->get();
         return $recordList;

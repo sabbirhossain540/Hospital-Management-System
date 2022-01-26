@@ -32,10 +32,11 @@
                     <tr>
                         <th width="5%">SN</th>
                         <th width="15%">Expense Date</th>
-                        <th width="25%">Title</th>
-                        <th width="15%">Category</th>
-                        <th width="10%">Comments</th>
-                        <th width="5%">Amount</th>
+                        <th width="20%">Exp. No</th>
+                        <th width="20%">Exp. Title</th>
+                        <th width="15%">Exp. Category</th>
+                        <th width="15%">Comments</th>
+                        <th width="10%">Amount</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -93,20 +94,23 @@
                 type:"GET",
                 url:"{{url('generateExpenseReport')}}/"+fromDate+"/"+toDate,
                 success: function(data) {
-                    //console.log(data);
+                    console.log(data);
                     let totalAmount = 0;
-
+                    let totalItem = 0;
                     for (var i=0; i<data.length; i++) {
                         let expTitle = data[i].exp_title;
                         let expCategory = data[i].get_exp_category_name['name'];
+                        let expNo = data[i].get_expense_no['exp_no'];
+                        console.log(expNo);
                         let serial_no = i+1;
                         totalAmount = totalAmount + parseInt(data[i].amount);
                         let formatedDate = formatDate(data[i].created_at);
-                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + expTitle + '</td><td>' + expCategory + '</td><td>' + data[i].comments + '</td><td>' + data[i].amount + '</td></tr>');
+                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + expNo + '</td><td>' + expTitle + '</td><td>' + expCategory + '</td><td>' + data[i].comments + '</td><td>' + data[i].amount + '</td></tr>');
                         $('#myTable').append(row);
+                        totalItem++;
                     }
 
-                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="4"></td><td style="text-align: right;">Total</td><td>' + totalAmount + '</td></tr>');
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: center;">Total Item</td><td>'+ totalItem +'</td><td style="text-align: right;">Total Amount</td><td>' + totalAmount + '</td></tr>');
                     $('#myTable').append(finalRow);
 
                     $( ".print-report" ).show();
