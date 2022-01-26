@@ -81,7 +81,7 @@
         $(".generate-pdf-report").click(function(event){
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
-            window.location.href = "{{ url('generatePdfSalesReport')}}/"+fromDate+"/"+toDate;
+            window.location.href = "{{ url('generatePdfExpenseReport')}}/"+fromDate+"/"+toDate;
         });
 
         $(".generate-report").click(function(event){

@@ -361,6 +361,30 @@ class ReportController extends Controller
         return $recordList;
     }
 
+    public function generatePdfExpenseReport($fromDate, $toDate){
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
+        $pdfName = "ExpenseReport(".$fromDate."/".$toDate.").pdf";
+        if(date('Y-m-d') == $toDate){
+            $toDate = Carbon::parse($toDate)->addDays(1);
+        }
+        $expenseList = ExpenseDetails::with('getExpCategoryName', 'getExpenseNo')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalAmount = 0;
+        $totalQty = 0;
+        foreach($expenseList as $list){
+            $totalAmount += $list->amount;
+            $totalQty++;
+        }
+
+        $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
+
+        $pdf = PDF::loadView('admin.report.expenseReportPdf', compact('expenseList', 'totalAmount', 'totalQty', 'fromDate', 'originalToDate'));
+        //return $pdf->stream();
+        return $pdf->download($pdfName);
+    }
+
 
     public function test(){
         //dd("Here");

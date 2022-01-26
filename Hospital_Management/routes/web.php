@@ -76,14 +76,14 @@ Route::post('/deleteInvoice/{id}', 'InvoiceController@destroy')->name('deleteInv
 
 //Sales Report
 Route::get('/getSalesReport', 'ReportController@getSalesReport')->name('getSalesReport');
-Route::get('/generateExpenseReport/{fromDate}/{toDate}', 'ReportController@generateExpenseReport')->name('generateExpenseReport');
+Route::get('/generateSalesReport/{fromDate}/{toDate}', 'ReportController@generateSalesReport')->name('generateSalesReport');
 Route::get('/generatePdfSalesReport/{fromDate}/{toDate}', 'ReportController@generatePdfSalesReport')->name('generatePdfSalesReport');
 
 
 //Expense Report
 Route::get('/getExpenseReport', 'ReportController@getExpenseReport')->name('getExpenseReport');
-Route::get('/generateSalesReport/{fromDate}/{toDate}', 'ReportController@generateSalesReport')->name('generateSalesReport');
-Route::get('/generatePdfSalesReport/{fromDate}/{toDate}', 'ReportController@generatePdfSalesReport')->name('generatePdfSalesReport');
+Route::get('/generateExpenseReport/{fromDate}/{toDate}', 'ReportController@generateExpenseReport')->name('generateExpenseReport');
+Route::get('/generatePdfExpenseReport/{fromDate}/{toDate}', 'ReportController@generatePdfExpenseReport')->name('generatePdfExpenseReport');
 
 
 
