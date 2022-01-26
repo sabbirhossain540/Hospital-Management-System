@@ -1,5 +1,45 @@
 @extends('admin.layouts')
 
+@section("cartScript")
+    <script>
+        Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+        Chart.defaults.global.defaultFontColor = '#858796';
+
+        // Pie Chart Example
+        var ctx = document.getElementById("myPieChart");
+        var myPieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["Income", "Expense"],
+                datasets: [{
+                    data: [{{ floor($salesAmount) }}, {{ floor($expenseAmount)  }}],
+                    backgroundColor: ['#1CC88A', '#E74A3B'],
+                    hoverBackgroundColor: ['#1CC88A', '#E74A3B'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+    </script>
+
+@endsection
+
 @section("content")
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -122,7 +162,7 @@
                 </div>
             </div>
         </div>
-            @endif
+
 
             <div class="col-xl-2 col-md-6 mb-4">
                 <div class="card border-left-danger shadow h-100 py-2">
@@ -157,6 +197,8 @@
                 </div>
             </div>
 
+            @endif
+
 
     </div>
 
@@ -165,7 +207,7 @@
     <div class="row">
 
         <!-- Area Chart -->
-        <div class="col-xl-8 col-lg-7">
+        <div class="col-xl-7 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
@@ -207,8 +249,9 @@
             </div>
         </div>
 
+    @if(Auth::user()->role == "admin")
         <!-- Pie Chart -->
-        <div class="col-xl-4 col-lg-5">
+        <div class="col-xl-5 col-lg-5">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
@@ -236,17 +279,61 @@
                     </div>
                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
+                                            <i class="fas fa-circle text-success"></i> Income
                                         </span>
                         <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
+                                            <i class="fas fa-circle text-danger"></i> Expense
                                         </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    @endif
+
+    @if(Auth::user()->role != "admin")
+        <!-- Pie Chart -->
+        <div class="col-xl-5 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Patient Overview</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="btn btn-info btn-sm" href="{{ route('invoices.index') }}">Details</a>
+                    </div>
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Mobile No</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($invoiceMaster as $invoice)
+                            <tr>
+                                <td>{{ $invoice->ic_date }}</td>
+                                <td>{{ $invoice->iv_no }}</td>
+                                <td>@if(!empty($invoice->getPatient->name)){{ $invoice->getPatient->name }}@endif</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    {{--                    <div class="chart-area">--}}
+                    {{--                        <canvas id="myAreaChart"></canvas>--}}
+                    {{--                    </div>--}}
+                </div>
+            </div>
+        </div>
+
+    @endif
+
+
+
 @endsection
