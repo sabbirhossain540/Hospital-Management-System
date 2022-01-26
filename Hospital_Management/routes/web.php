@@ -79,6 +79,18 @@ Route::get('/getSalesReport', 'ReportController@getSalesReport')->name('getSales
 Route::get('/generateSalesReport/{fromDate}/{toDate}', 'ReportController@generateSalesReport')->name('generateSalesReport');
 Route::get('/generatePdfSalesReport/{fromDate}/{toDate}', 'ReportController@generatePdfSalesReport')->name('generatePdfSalesReport');
 
+
+//Expense Report
+Route::get('/getExpenseReport', 'ReportController@getExpenseReport')->name('getExpenseReport');
+Route::get('/generateExpenseReport/{fromDate}/{toDate}', 'ReportController@generateExpenseReport')->name('generateExpenseReport');
+Route::get('/generatePdfExpenseReport/{fromDate}/{toDate}', 'ReportController@generatePdfExpenseReport')->name('generatePdfExpenseReport');
+
+//Category Wise Expense Report
+Route::get('/getCategoryWiseExpenseReport', 'ReportController@getCategoryWiseExpenseReport')->name('getCategoryWiseExpenseReport');
+Route::get('/generateCategoryWiseExpenseReport/{fromDate}/{toDate}/{catId}', 'ReportController@generateCategoryWiseExpenseReport')->name('generateCategoryWiseExpenseReport');
+Route::get('/generatePdfCategoryWiseExpenseReport/{fromDate}/{toDate}/{serviceId}', 'ReportController@generatePdfCategoryWiseExpenseReport')->name('generatePdfCategoryWiseExpenseReport');
+
+
 //Service Wise Sales Report
 Route::get('/getServiceWiseSalesReport', 'ReportController@getServiceWiseSalesReport')->name('getServiceWiseSalesReport');
 Route::get('/generateServiceWiseSalesReport/{fromDate}/{toDate}/{serviceId}', 'ReportController@generateServiceWiseSalesReport')->name('generateServiceWiseSalesReport');
