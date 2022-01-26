@@ -78,7 +78,7 @@
 
     <li class="nav-item {{ request()->is('expenses*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('expenses.index') }}">
-            <i class="fas fa-file-invoice-dollar"></i>
+            <i class="fas fa-file-invoice"></i>
             <span>Expense List</span></a>
     </li>
     @endif
