@@ -6,6 +6,7 @@ use App\Expense;
 use App\ExpenseDetails;
 use App\Invoice;
 use App\InvoiceDetails;
+use App\Patient;
 use App\Services;
 use App\User;
 use Illuminate\Http\Request;
@@ -50,7 +51,7 @@ class HomeController extends Controller
         $totalPatient = User::where('role', 'patient')->count();
 
         //Invoice
-        $invoiceMaster = Invoice::with('invoiceDetails', 'getDoctor', 'getPatient')->take(5)->orderBy('created_at', 'DESC')->get();
+        $invoiceMaster = Invoice::with('invoiceDetails', 'getDoctor', 'getPatient')->take(4)->orderBy('created_at', 'DESC')->get();
         foreach($invoiceMaster as $InDetails){
             $totalAmount = 0;
             foreach($InDetails->invoiceDetails as $list){
@@ -58,6 +59,9 @@ class HomeController extends Controller
             }
             $InDetails['totalAmount'] = floor($totalAmount);
         }
-        return view('admin.index', compact('expenseAmount', 'totalExpence', 'salesAmount', 'totalService', 'totalInvoice', 'totalUser', 'totalDoctor', 'totalPatient', 'invoiceMaster'));
+
+        $patientList = User::where('role','patient')->take(5)->orderBy('created_at', 'DESC')->get();
+
+        return view('admin.index', compact('expenseAmount', 'totalExpence', 'salesAmount', 'totalService', 'totalInvoice', 'totalUser', 'totalDoctor', 'totalPatient', 'invoiceMaster', 'patientList'));
     }
 }

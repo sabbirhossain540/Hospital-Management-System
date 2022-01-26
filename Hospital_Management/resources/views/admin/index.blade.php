@@ -207,14 +207,22 @@
     <div class="row">
 
         <!-- Area Chart -->
-        <div class="col-xl-7 col-lg-7">
+        <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Sales Overview</h6>
+
                     <div class="dropdown no-arrow">
-                        <a class="btn btn-info btn-sm" href="{{ route('invoices.index') }}">Details</a>
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{ route('invoices.index') }}">Invoice List</a>
+                        </div>
                     </div>
 
                 </div>
@@ -251,7 +259,7 @@
 
     @if(Auth::user()->role == "admin")
         <!-- Pie Chart -->
-        <div class="col-xl-5 col-lg-5">
+        <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
@@ -294,14 +302,21 @@
 
     @if(Auth::user()->role != "admin")
         <!-- Pie Chart -->
-        <div class="col-xl-5 col-lg-5">
+        <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                     <h6 class="m-0 font-weight-bold text-primary">Patient Overview</h6>
                     <div class="dropdown no-arrow">
-                        <a class="btn btn-info btn-sm" href="{{ route('invoices.index') }}">Details</a>
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{ route('patientList.index') }}">Patient List</a>
+                        </div>
                     </div>
 
                 </div>
@@ -312,22 +327,19 @@
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Mobile No</th>
-                            <th scope="col">Details</th>
+                            <th scope="col">view</th>
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($invoiceMaster as $invoice)
+                        @foreach($patientList as $patient)
                             <tr>
-                                <td>{{ $invoice->ic_date }}</td>
-                                <td>{{ $invoice->iv_no }}</td>
-                                <td>@if(!empty($invoice->getPatient->name)){{ $invoice->getPatient->name }}@endif</td>
+                                <td>{{ $patient->name }}</td>
+                                <td>{{ $patient->mobile_no }}</td>
+                                <td><a href="{{route('patientList.show',$patient->id)}}" class="btn btn-outline-dark btn-sm"><i class="fas fa-eye"></i></a></td>
                             </tr>
                         @endforeach
                         </tbody>
                     </table>
-                    {{--                    <div class="chart-area">--}}
-                    {{--                        <canvas id="myAreaChart"></canvas>--}}
-                    {{--                    </div>--}}
                 </div>
             </div>
         </div>
