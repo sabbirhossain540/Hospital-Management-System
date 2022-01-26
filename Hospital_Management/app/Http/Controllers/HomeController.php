@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Expense;
+use App\ExpenseDetails;
 use App\Invoice;
 use App\InvoiceDetails;
 use App\Services;
@@ -33,6 +35,14 @@ class HomeController extends Controller
             $salesAmount = $salesAmount + $sales->total;
         }
 
+        $expenseList = ExpenseDetails::all();
+        $expenseAmount = 0;
+        foreach($expenseList as $exl){
+            $expenseAmount += $exl->amount;
+        }
+
+        $totalExpence = Expense::all()->count();
+
         $totalService = Services::all()->count();
         $totalInvoice = Invoice::all()->count();
         $totalUser = User::where('role','!=','patient')->where('role','!=','doctor')->count();
@@ -48,6 +58,6 @@ class HomeController extends Controller
             }
             $InDetails['totalAmount'] = floor($totalAmount);
         }
-        return view('admin.index', compact('salesAmount', 'totalService', 'totalInvoice', 'totalUser', 'totalDoctor', 'totalPatient', 'invoiceMaster'));
+        return view('admin.index', compact('expenseAmount', 'totalExpence', 'salesAmount', 'totalService', 'totalInvoice', 'totalUser', 'totalDoctor', 'totalPatient', 'invoiceMaster'));
     }
 }
