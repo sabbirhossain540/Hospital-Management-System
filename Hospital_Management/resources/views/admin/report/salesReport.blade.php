@@ -115,7 +115,7 @@
                         $('#myTable').append(row);
                     }
 
-                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalSubTotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="5" style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalSubTotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
                     $('#myTable').append(finalRow);
 
                     $( ".print-report" ).show();

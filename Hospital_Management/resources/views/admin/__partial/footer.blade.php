@@ -5,7 +5,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Basundhara Clinic and digonestic center All Right Reserve, 2021 || Developed by <a
+            <span>Copyright &copy; Basundhara Clinic and digonestic center All Right Reserve, {{ now()->year }} || Developed by <a
                     href="https://www.facebook.com/SabbirHossain308/" target="_blank">Md Sabbir Hossain</a></span>
         </div>
     </div>
@@ -59,6 +59,8 @@
 <!-- Page level custom scripts -->
 {{--<script src="{{ asset('template/js/demo/chart-area-demo.js') }}"></script>--}}
 {{--<script src="{{ asset('template/js/demo/chart-pie-demo.js') }}"></script>--}}
+
+@yield("cartScript")
 
 <!-- Page level plugins -->
 <script src="{{ asset('template/vendor/datatables/jquery.dataTables.min.js') }}"></script>
