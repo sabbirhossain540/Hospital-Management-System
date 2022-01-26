@@ -466,38 +466,32 @@ class ReportController extends Controller
         return $recordList;
     }
 
-    public function generatePdfCategoryWiseExpenseReport($fromDate, $toDate, $serviceId){
-        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');;
+    public function generatePdfCategoryWiseExpenseReport($fromDate, $toDate, $catId){
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
+        $pdfName = "CategoryWiseExpenseReport(".$fromDate."/".$toDate.").pdf";
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $serviceName = Services::findOrFail($serviceId);
+        $expCategoryName = ExpenceCategory::findOrFail($catId);
 
-        $invoiceList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getDoctor')
-            ->where('service_id', $serviceId)
+        $expenseList = ExpenseDetails::with('getExpCategoryName','getExpenseNo')
+            ->where('exp_category', $catId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->orderBy('created_at', 'DESC')
             ->get();
-        //dd($invoiceList);
+
         $totalAmount = 0;
-        $totalQuantity = 0;
-        $totalSubTotal = 0;
-        $totalDiscount = 0;
-        foreach($invoiceList as $list){
-            $totalAmount = $totalAmount + $list->total;
-            $totalQuantity = $totalQuantity + $list->quantity;
-            $totalSubTotal = $totalSubTotal + $list->subtotal;
-            $discountAmount = $list->subtotal * $list->discount / 100;
-            $totalDiscount = $totalDiscount + floor($discountAmount);
-            $list['discountAmount'] = floor($discountAmount);
+
+        foreach($expenseList as $list){
+            $totalAmount = $totalAmount + $list->amount;
         }
 
         $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
 
-        $pdf = PDF::loadView('admin.report.serviceWiseSalesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'totalSubTotal', 'totalDiscount', 'fromDate', 'originalToDate', 'serviceName'));
+        $pdf = PDF::loadView('admin.report.categoryWiseExpenseReportPdf', compact('expenseList','totalAmount', 'fromDate', 'originalToDate', 'expCategoryName'));
         //return $pdf->stream();
-        return $pdf->download('ServiceWiseSalesReport.pdf');
+        return $pdf->download($pdfName);
     }
 
     public function test(){
