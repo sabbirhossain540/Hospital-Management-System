@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ExpenceCategory;
 use App\ExpenseDetails;
 use App\Invoice;
 use App\InvoiceDetails;
@@ -22,6 +23,13 @@ class ReportController extends Controller
         //set_time_limit(8000000);
     }
 
+    //Sales Report
+
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return mixed
+     */
     public function generatePdfSalesReport($fromDate, $toDate){
         $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
         if(date('Y-m-d') == $toDate){
@@ -51,12 +59,19 @@ class ReportController extends Controller
         return $pdf->download('SalesReport.pdf');
     }
 
-
-
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getSalesReport(){
         return view('admin.report.salesReport');
     }
 
+
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function generateSalesReport($fromDate, $toDate){
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
@@ -128,11 +143,21 @@ class ReportController extends Controller
     }
 
     //Reference Wise Report
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getReferenceWiseReport(){
         $referenceList = References::all();
         return view('admin.report.referenceWiseReport', compact('referenceList'));
     }
 
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @param $referenceId
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function generateReferenceWiseReport($fromDate, $toDate, $referenceId){
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
@@ -166,8 +191,12 @@ class ReportController extends Controller
         return $recordList;
     }
 
-
-
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @param $referenceId
+     * @return mixed
+     */
     public function generatePdfReferenceWiseReport($fromDate, $toDate, $referenceId){
         $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
         if(date('Y-m-d') == $toDate){
@@ -223,11 +252,22 @@ class ReportController extends Controller
 
 
     //Doctor Wise Report
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getDoctorWiseReport(){
         $doctorList = User::with('Specialist')->where('role','doctor')->orderBy('id','DESC')->get();
         return view('admin.report.doctorWiseReport', compact('doctorList'));
     }
 
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @param $doctor_id
+     * @param $type
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function generateDoctorWiseReport($fromDate, $toDate, $doctor_id, $type){
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
@@ -269,6 +309,13 @@ class ReportController extends Controller
         return $recordList;
     }
 
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @param $doctor_id
+     * @param $type
+     * @return mixed
+     */
     public function generatePdfDoctorWiseReport($fromDate, $toDate, $doctor_id, $type){
         $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
         if(date('Y-m-d') == $toDate){
@@ -347,10 +394,19 @@ class ReportController extends Controller
 
 
     //Expense Report
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getExpenseReport(){
         return view('admin.report.expenseReport');
     }
 
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function generateExpenseReport($fromDate, $toDate){
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
@@ -361,6 +417,11 @@ class ReportController extends Controller
         return $recordList;
     }
 
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return mixed
+     */
     public function generatePdfExpenseReport($fromDate, $toDate){
         $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
         $pdfName = "ExpenseReport(".$fromDate."/".$toDate.").pdf";
@@ -385,6 +446,59 @@ class ReportController extends Controller
         return $pdf->download($pdfName);
     }
 
+    //Category Wise Expense Report
+    public function getCategoryWiseExpenseReport(){
+        $expCategoryList = ExpenceCategory::all();
+        return view('admin.report.categoryWiseExpenseReport', compact('expCategoryList'));
+    }
+
+    public function generateCategoryWiseExpenseReport($fromDate, $toDate, $catId){
+        if(date('Y-m-d') == $toDate){
+            $toDate = Carbon::parse($toDate)->addDays(1);
+        }
+        $recordList = ExpenseDetails::with('getExpCategoryName','getExpenseNo')
+            ->where('exp_category', $catId)
+            ->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return $recordList;
+    }
+
+    public function generatePdfCategoryWiseExpenseReport($fromDate, $toDate, $serviceId){
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');;
+        if(date('Y-m-d') == $toDate){
+            $toDate = Carbon::parse($toDate)->addDays(1);
+        }
+        $serviceName = Services::findOrFail($serviceId);
+
+        $invoiceList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getDoctor')
+            ->where('service_id', $serviceId)
+            ->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+        //dd($invoiceList);
+        $totalAmount = 0;
+        $totalQuantity = 0;
+        $totalSubTotal = 0;
+        $totalDiscount = 0;
+        foreach($invoiceList as $list){
+            $totalAmount = $totalAmount + $list->total;
+            $totalQuantity = $totalQuantity + $list->quantity;
+            $totalSubTotal = $totalSubTotal + $list->subtotal;
+            $discountAmount = $list->subtotal * $list->discount / 100;
+            $totalDiscount = $totalDiscount + floor($discountAmount);
+            $list['discountAmount'] = floor($discountAmount);
+        }
+
+        $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
+
+        $pdf = PDF::loadView('admin.report.serviceWiseSalesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'totalSubTotal', 'totalDiscount', 'fromDate', 'originalToDate', 'serviceName'));
+        //return $pdf->stream();
+        return $pdf->download('ServiceWiseSalesReport.pdf');
+    }
 
     public function test(){
         //dd("Here");

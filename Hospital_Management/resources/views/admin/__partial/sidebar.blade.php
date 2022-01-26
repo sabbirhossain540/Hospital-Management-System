@@ -104,7 +104,7 @@
                 <a class="collapse-item" href="{{ route('getReferenceWiseReport') }}">Reference wise report</a>
                 <a class="collapse-item" href="{{ route('getDoctorWiseReport') }}">Doctor Wise report</a>
                 <a class="collapse-item" href="{{ route('getExpenseReport') }}">Expense report</a>
-                <a class="collapse-item" href="{{ route('getServiceWiseSalesReport') }}">Category wise Exp. report</a>
+                <a class="collapse-item" href="{{ route('getCategoryWiseExpenseReport') }}">Category wise Exp. report</a>
 {{--                <a class="collapse-item" href="{{ route('invoices.index') }}">Patient Wise report</a>--}}
             </div>
         </div>
