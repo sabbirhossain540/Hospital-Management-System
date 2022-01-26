@@ -447,11 +447,21 @@ class ReportController extends Controller
     }
 
     //Category Wise Expense Report
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getCategoryWiseExpenseReport(){
         $expCategoryList = ExpenceCategory::all();
         return view('admin.report.categoryWiseExpenseReport', compact('expCategoryList'));
     }
 
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @param $catId
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function generateCategoryWiseExpenseReport($fromDate, $toDate, $catId){
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
@@ -466,6 +476,12 @@ class ReportController extends Controller
         return $recordList;
     }
 
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @param $catId
+     * @return mixed
+     */
     public function generatePdfCategoryWiseExpenseReport($fromDate, $toDate, $catId){
         $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
         $pdfName = "CategoryWiseExpenseReport(".$fromDate."/".$toDate.").pdf";
@@ -494,12 +510,12 @@ class ReportController extends Controller
         return $pdf->download($pdfName);
     }
 
-    public function test(){
-        //dd("Here");
-        $pdf = PDF::loadView('admin.report.test');
-        return $pdf->stream();
-        return $pdf->download('SalesReport.pdf');
-    }
+//    public function test(){
+//        //dd("Here");
+//        $pdf = PDF::loadView('admin.report.test');
+//        return $pdf->stream();
+//        return $pdf->download('SalesReport.pdf');
+//    }
 
 
 }
