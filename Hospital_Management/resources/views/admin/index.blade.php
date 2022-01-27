@@ -51,13 +51,29 @@
     <!-- Content Row -->
     <div class="row">
         @if(Auth::user()->role == "admin")
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    Last 30 Days Sales</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">${{ floor($leatestSalesAmount) }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-success shadow h-100 py-2">
+            <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Total Sales</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">${{ floor($salesAmount) }}</div>
                         </div>
@@ -72,11 +88,28 @@
 
         <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-2 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
+                <div class="card border-left-primary shadow h-100 py-2">
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                                    Last 30 Days Invoice</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $InvoiceThityDays }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-file-alt fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-dark shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Total Invoice</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalInvoice }}</div>
                             </div>
@@ -90,11 +123,11 @@
 
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 Total Doctors</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalDoctor }}</div>
                         </div>
@@ -108,11 +141,11 @@
 
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-dark shadow h-100 py-2">
+            <div class="card border-left-danger shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                 Total Patients</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalPatient }}</div>
                         </div>
@@ -126,11 +159,11 @@
 
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Total Service</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalService }}</div>
                         </div>
@@ -147,11 +180,11 @@
         @if(Auth::user()->role == "admin")
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-2 col-md-6 mb-4">
-            <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: blue !important;">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 Total Users</div>
                             <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalUser }}</div>
                         </div>
@@ -169,7 +202,24 @@
                     <div class="card-body">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                    Last 30 Day Expense</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $leatestExpenseAmount }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-donate fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-dark shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Total Expense</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $expenseAmount }}</div>
                             </div>
@@ -186,6 +236,22 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                    Last 30 Days Exp. Voucher</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $expenseThityDays }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-file-invoice fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-2 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Expense Voucher</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalExpence }}</div>
                             </div>
