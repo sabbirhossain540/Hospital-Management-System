@@ -18,7 +18,7 @@ class CreateExpenseDetailsTable extends Migration
             $table->integer('exp_id');
             $table->integer('exp_category');
             $table->string('amount');
-            $table->string('comments');
+            $table->string('comments')->nullable();
             $table->timestamps();
         });
     }
