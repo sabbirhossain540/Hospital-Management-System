@@ -82,9 +82,6 @@ class HomeController extends Controller
         }
         //End
 
-
-
-
         return view('admin.index', compact('expenseAmount', 'totalExpence', 'salesAmount', 'totalService', 'totalInvoice', 'totalUser', 'totalDoctor', 'totalPatient', 'invoiceMaster', 'patientList', 'InvoiceThityDays' , 'leatestSalesAmount', 'expenseThityDays', 'leatestExpenseAmount'));
     }
 }

@@ -33,9 +33,43 @@
                 legend: {
                     display: false
                 },
-                cutoutPercentage: 80,
+                cutoutPercentage: 0,
             },
         });
+
+
+        var ctx1 = document.getElementById("myPieChartForLeatest");
+        var myPieChartForLeatest = new Chart(ctx1, {
+            type: 'doughnut',
+            data: {
+                labels: ["Income", "Expense"],
+                datasets: [{
+                    data: [{{ floor($leatestSalesAmount) }}, {{ floor($leatestExpenseAmount)  }}],
+                    backgroundColor: ['#1CC88A', '#E74A3B'],
+                    hoverBackgroundColor: ['#1CC88A', '#E74A3B'],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 70,
+            },
+        });
+
+
     </script>
 
 @endsection
@@ -273,6 +307,74 @@
     <div class="row">
 
         <!-- Area Chart -->
+
+
+    @if(Auth::user()->role == "admin")
+
+        <!-- Pie Chart -->
+        <div class="col-xl-12 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div
+                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink">
+                            <a class="dropdown-item" href="{{ route('invoices.index') }}">Income List</a>
+                            <a class="dropdown-item" href="{{ route('expenses.index') }}">Expense List</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="d-flex bd-highlight">
+                        <div class="col-xl-6 col-lg-6 col-md-6">
+                            <div class="chart-pie pt-0 pb-2">
+                                <p class="text-center mb-0 font-weight-normal mb-1">Last 30 days revenue statistic</p>
+                                <canvas id="myPieChartForLeatest"></canvas>
+                            </div>
+                            <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Income
+                                        </span>
+                                <span class="mr-2">
+                                            <i class="fas fa-circle text-danger"></i> Expense
+                                        </span>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6">
+                            <div class="chart-pie pt-4 pb-2 mt-2">
+                                <p class="text-center mb-0 font-weight-normal mb-1">Total revenue statistic</p>
+                                <canvas id="myPieChart"></canvas>
+                            </div>
+                            <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class="fas fa-circle text-success"></i> Income
+                                        </span>
+                                <span class="mr-2">
+                                            <i class="fas fa-circle text-danger"></i> Expense
+                                        </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+    @endif
+
+    @if(Auth::user()->role != "admin")
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
@@ -316,54 +418,12 @@
                         @endforeach
                         </tbody>
                     </table>
-{{--                    <div class="chart-area">--}}
-{{--                        <canvas id="myAreaChart"></canvas>--}}
-{{--                    </div>--}}
+                    {{--                    <div class="chart-area">--}}
+                    {{--                        <canvas id="myAreaChart"></canvas>--}}
+                    {{--                    </div>--}}
                 </div>
             </div>
         </div>
-
-    @if(Auth::user()->role == "admin")
-        <!-- Pie Chart -->
-        <div class="col-xl-4 col-lg-5">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div
-                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                    <div class="dropdown no-arrow">
-                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                             aria-labelledby="dropdownMenuLink">
-                            <a class="dropdown-item" href="{{ route('invoices.index') }}">Income List</a>
-                            <a class="dropdown-item" href="{{ route('expenses.index') }}">Expense List</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="chart-pie pt-4 pb-2">
-                        <canvas id="myPieChart"></canvas>
-                    </div>
-                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Income
-                                        </span>
-                        <span class="mr-2">
-                                            <i class="fas fa-circle text-danger"></i> Expense
-                                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    @endif
-
-    @if(Auth::user()->role != "admin")
         <!-- Pie Chart -->
         <div class="col-xl-4 col-lg-5">
             <div class="card shadow mb-4">
