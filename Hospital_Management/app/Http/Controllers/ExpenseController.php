@@ -66,12 +66,12 @@ class ExpenseController extends Controller
 
             $size = count($request->expense_details);
 
+
             for($i = 0; $i < $size ; $i++){
                 $expanseDetails = new ExpenseDetails();
                 $expanseDetails->exp_title = $request->expense_details[$i]['exp_title'];
                 $expanseDetails->exp_id = $ExpenseMaster->id;
-                $expanseDetails->exp_category = $request->expense_details[$i]['id
-                '];
+                $expanseDetails->exp_category = $request->expense_details[$i]['id'];
                 $expanseDetails->amount = $request->expense_details[$i]['exp_amount'];
                 $expanseDetails->comments = $request->expense_details[$i]['exp_comment'];
                 $expanseDetails->save();
