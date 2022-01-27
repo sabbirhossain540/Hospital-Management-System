@@ -19,7 +19,7 @@
                     <td width="20%" class="text-right"><strong>Invoice No</strong></td>
                     <td width="30%">{{ $invoiceInfo->iv_no }}</td>
                     <td width="20%" class="text-right"><strong>Invoice Date</strong></td>
-                    <td width="30%">{{ date_format($invoiceInfo->formated_ic_date,'jS M, Y') }}</td>
+                    <td width="30%">{{ date_format($invoiceInfo->formated_ic_date,'jS M, Y') }}, {{ $invoiceInfo->created_time }}</td>
                 </tr>
                 <tr>
 
@@ -72,10 +72,11 @@
 {{--                            <td>{{ $totalDiscountAmount }}</td>--}}
 {{--                            <td>{{ $totalAmount }}</td>--}}
                         </tr>
-{{--                    <tr>--}}
-{{--                        <td colspan="6" class="text-right">sdfvdsvds</td>--}}
-{{--                        <td>sds</td>--}}
-{{--                    </tr>--}}
+                        <tr>
+                            <td colspan="3" class="text-left">
+                                <p>Bill Officer: @if(!empty($invoiceInfo->getCreatedUser->name)) {{ $invoiceInfo->getCreatedUser->name }}@endif</p>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
 

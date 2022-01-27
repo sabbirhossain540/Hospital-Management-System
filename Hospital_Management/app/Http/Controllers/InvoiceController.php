@@ -178,6 +178,7 @@ class InvoiceController extends Controller
     {
         $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getDoctor.Specialist', 'getReference')->where('id', $id)->first();
         $invoiceInfo['formated_ic_date'] = Carbon::parse($invoiceInfo->ic_date);
+        $invoiceInfo['created_time'] = Carbon::createFromFormat('Y-m-d H:i:s', $invoiceInfo->created_at)->format('H:i:s');
 
         $totalAmount = 0;
         $totalQuantity = 0;
@@ -259,8 +260,8 @@ class InvoiceController extends Controller
      */
     public function printInvoice($id){
         $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getCreatedUser','getPatient', 'getDoctor', 'getDoctor.Specialist', 'getReference')->where('id', $id)->first();
-        //dd($invoiceInfo);
         $invoiceInfo['formated_ic_date'] = Carbon::parse($invoiceInfo->ic_date);
+        $invoiceInfo['created_time'] = Carbon::createFromFormat('Y-m-d H:i:s', $invoiceInfo->created_at)->format('H:i:s');
 
         $totalAmount = 0;
         $totalQuantity = 0;
