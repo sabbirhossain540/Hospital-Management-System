@@ -55,7 +55,6 @@ class DoctorController extends Controller
             'institute_name' => 'required',
         ]);
 
-
         $genUser = Str::random(11);
 
         $temp_password = rand(10000000,99999999);
