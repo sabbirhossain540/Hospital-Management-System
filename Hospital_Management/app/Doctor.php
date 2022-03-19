@@ -8,4 +8,6 @@ use App\EducationalQualification;
 class Doctor extends Model
 {
 
+    //He
+
 }
