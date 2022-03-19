@@ -6,21 +6,21 @@
     </button>
 
     <!-- Topbar Search -->
-    <form
-        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                   aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
-            </div>
-        </div>
-    </form>
+{{--    <form--}}
+{{--        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">--}}
+{{--        <div class="input-group">--}}
+{{--            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."--}}
+{{--                   aria-label="Search" aria-describedby="basic-addon2">--}}
+{{--            <div class="input-group-append">--}}
+{{--                <button class="btn btn-primary" type="button">--}}
+{{--                    <i class="fas fa-search fa-sm"></i>--}}
+{{--                </button>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </form>--}}
 
-    <marquee width="60%" direction="left">
-        Welcome <span style="color: purple">{{ Auth::user()->name }}</span> to <b style="color: green;">Bashundhara Clinic And Digonestic Center</b>
+    <marquee width="100%" direction="left">
+        <span style="color: darkgreen">স্বাগতম</span>  <span style="color: purple">{{ Auth::user()->name }}</span> , <b style="color: red;">বসুন্ধরা ক্লিনিক এন্ড ডায়াগনস্টিক সেন্টার</b>
     </marquee>
 
     <!-- Topbar Navbar -->

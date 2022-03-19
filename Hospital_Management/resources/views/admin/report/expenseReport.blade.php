@@ -6,7 +6,7 @@
         <div class="card-header py-3">
             <div class="d-flex flex-row">
                 <div class="col-md-10">
-                    <h6 class="m-0 font-weight-bold text-primary">Sales Report</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Expense Report</h6>
                 </div>
             </div>
         </div>
@@ -20,7 +20,7 @@
                 </div>
                 <div class="order-3 p-2 bd-highlight">
                     <button type="submit" class="btn btn-success generate-report" disabled>Generate Report</button>
-{{--                    <button type="submit" class="btn btn-info print-report">Print Report</button>--}}
+                    {{--                    <button type="submit" class="btn btn-info print-report">Print Report</button>--}}
                     <button type="submit" class="btn btn-warning generate-pdf-report" disabled>Generate PDF</button>
                 </div>
             </div>
@@ -31,14 +31,12 @@
                     <thead>
                     <tr>
                         <th width="5%">SN</th>
-                        <th width="15%">Sales Date</th>
-                        <th width="25%">Service Name</th>
-                        <th width="15%">Refarence</th>
-                        <th width="10%">Price</th>
-                        <th width="5%">Quantity</th>
-                        <th width="10%">Subtotal</th>
-                        <th width="5%">Discount</th>
-                        <th width="10%">Total</th>
+                        <th width="15%">Expense Date</th>
+                        <th width="20%">Exp. No</th>
+                        <th width="20%">Exp. Title</th>
+                        <th width="15%">Exp. Category</th>
+                        <th width="15%">Comments</th>
+                        <th width="10%">Amount</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -83,7 +81,7 @@
         $(".generate-pdf-report").click(function(event){
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
-            window.location.href = "{{ url('generatePdfSalesReport')}}/"+fromDate+"/"+toDate;
+            window.location.href = "{{ url('generatePdfExpenseReport')}}/"+fromDate+"/"+toDate;
         });
 
         $(".generate-report").click(function(event){
@@ -94,28 +92,25 @@
 
             $.ajax({
                 type:"GET",
-                url:"{{url('generateSalesReport')}}/"+fromDate+"/"+toDate,
+                url:"{{url('generateExpenseReport')}}/"+fromDate+"/"+toDate,
                 success: function(data) {
-                    //console.log(data);
+                    console.log(data);
                     let totalAmount = 0;
-                    let totalQuantity = 0;
-                    let totalSubTotal = 0;
-                    let totalDiscount = 0;
+                    let totalItem = 0;
                     for (var i=0; i<data.length; i++) {
-                        let serviceName = data[i].get_service_name['name'];
-                        let refName = data[i].get_invoice_info.get_reference['name'];
+                        let expTitle = data[i].exp_title;
+                        let expCategory = data[i].get_exp_category_name['name'];
+                        let expNo = data[i].get_expense_no['exp_no'];
+                        console.log(expNo);
                         let serial_no = i+1;
-                        totalAmount = totalAmount + parseInt(data[i].total);
-                        totalQuantity = totalQuantity + parseInt(data[i].quantity);
-                        totalSubTotal = totalSubTotal + parseInt(data[i].subtotal);
-                        let discountAmount = parseInt(data[i].subtotal) * parseInt(data[i].discount) / 100;
-                        totalDiscount = totalDiscount + discountAmount;
+                        totalAmount = totalAmount + parseInt(data[i].amount);
                         let formatedDate = formatDate(data[i].created_at);
-                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + refName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].subtotal + '</td><td>' + discountAmount +'('+data[i].discount+'%)' + '</td><td>' + data[i].total + '</td></tr>');
+                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + expNo + '</td><td>' + expTitle + '</td><td>' + expCategory + '</td><td>' + data[i].comments + '</td><td>' + data[i].amount + '</td></tr>');
                         $('#myTable').append(row);
+                        totalItem++;
                     }
 
-                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="5" style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalSubTotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="3"></td><td style="text-align: center;">Total Item</td><td>'+ totalItem +'</td><td style="text-align: right;">Total Amount</td><td>' + totalAmount + '</td></tr>');
                     $('#myTable').append(finalRow);
 
                     $( ".print-report" ).show();

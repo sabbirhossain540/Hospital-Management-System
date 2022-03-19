@@ -135,6 +135,7 @@ class PatientController extends Controller
      */
     public function dataInsert($modelName, $request){
         $years = Carbon::parse($request->birth_day)->age;
+
         $modelName->name = $request->name;
         $modelName->email = $request->email;
         $modelName->mobile_no = $request->mobile_no;

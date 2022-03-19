@@ -6,21 +6,29 @@
         <div class="card-header py-3">
             <div class="d-flex flex-row">
                 <div class="col-md-10">
-                    <h6 class="m-0 font-weight-bold text-primary">Sales Report</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Category Wise Expense Report</h6>
                 </div>
             </div>
         </div>
         <div class="card-body">
             <div class="d-flex flex-nowrap bd-highlight mb-3">
                 <div class="order-1 p-2 bd-highlight">
-                    <input type="text" class="form-control disableChecker" name="fromDate" id="fromDate" placeholder="From Date">
+                    <select name="cat_id" id="cat_id" class="form-control">
+                        <option value="">Select Exp. Category</option>
+                        @foreach($expCategoryList as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="order-2 p-2 bd-highlight">
-                    <input type="text" class="form-control disableChecker" name="toDate" id="toDate" placeholder="To Date">
+                    <input type="text" class="form-control disableChecker" name="fromDate" id="fromDate" placeholder="From Date">
                 </div>
                 <div class="order-3 p-2 bd-highlight">
+                    <input type="text" class="form-control disableChecker" name="toDate" id="toDate" placeholder="To Date">
+                </div>
+                <div class="order-4 p-2 bd-highlight">
                     <button type="submit" class="btn btn-success generate-report" disabled>Generate Report</button>
-{{--                    <button type="submit" class="btn btn-info print-report">Print Report</button>--}}
+                    {{--                    <button type="submit" class="btn btn-info print-report">Print Report</button>--}}
                     <button type="submit" class="btn btn-warning generate-pdf-report" disabled>Generate PDF</button>
                 </div>
             </div>
@@ -31,13 +39,10 @@
                     <thead>
                     <tr>
                         <th width="5%">SN</th>
-                        <th width="15%">Sales Date</th>
-                        <th width="25%">Service Name</th>
-                        <th width="15%">Refarence</th>
-                        <th width="10%">Price</th>
-                        <th width="5%">Quantity</th>
-                        <th width="10%">Subtotal</th>
-                        <th width="5%">Discount</th>
+                        <th width="10%">Exp. Date</th>
+                        <th width="15%">Exp. No</th>
+                        <th width="10%">Exp. Title</th>
+                        <th width="10%">Comments</th>
                         <th width="10%">Total</th>
                     </tr>
                     </thead>
@@ -70,8 +75,9 @@
         $(".disableChecker").change(function(event){
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
+            let cat_id = $("#cat_id").val();
 
-            if(fromDate <= toDate){
+            if(fromDate <= toDate && cat_id != null){
                 $(".generate-report").prop('disabled', false);
                 $(".generate-pdf-report").prop('disabled', false);
             }else{
@@ -81,46 +87,39 @@
         });
 
         $(".generate-pdf-report").click(function(event){
+            let cat_id = $("#cat_id").val();
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
-            window.location.href = "{{ url('generatePdfSalesReport')}}/"+fromDate+"/"+toDate;
+            window.location.href = "{{ url('generatePdfCategoryWiseExpenseReport')}}/"+fromDate+"/"+toDate+"/"+cat_id;
         });
 
         $(".generate-report").click(function(event){
             $('.rowTrack').remove();
+            let cat_id = $("#cat_id").val();
             let fromDate   = $("#fromDate").val();
             let toDate   = $("#toDate").val();
             $( "#myTable" ).show();
 
             $.ajax({
                 type:"GET",
-                url:"{{url('generateSalesReport')}}/"+fromDate+"/"+toDate,
+                url:"{{url('generateCategoryWiseExpenseReport')}}/"+fromDate+"/"+toDate+"/"+cat_id,
                 success: function(data) {
-                    //console.log(data);
+                   // console.log(data);
                     let totalAmount = 0;
-                    let totalQuantity = 0;
-                    let totalSubTotal = 0;
-                    let totalDiscount = 0;
+
                     for (var i=0; i<data.length; i++) {
-                        let serviceName = data[i].get_service_name['name'];
-                        let refName = data[i].get_invoice_info.get_reference['name'];
+                        let expNo = data[i].get_expense_no['exp_no'];
                         let serial_no = i+1;
-                        totalAmount = totalAmount + parseInt(data[i].total);
-                        totalQuantity = totalQuantity + parseInt(data[i].quantity);
-                        totalSubTotal = totalSubTotal + parseInt(data[i].subtotal);
-                        let discountAmount = parseInt(data[i].subtotal) * parseInt(data[i].discount) / 100;
-                        totalDiscount = totalDiscount + discountAmount;
+                        totalAmount = totalAmount + parseInt(data[i].amount);
                         let formatedDate = formatDate(data[i].created_at);
-                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + refName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].subtotal + '</td><td>' + discountAmount +'('+data[i].discount+'%)' + '</td><td>' + data[i].total + '</td></tr>');
+                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + expNo + '</td><td>' + data[i].exp_title + '</td><td>' + data[i].comments + '</td><td>' + data[i].amount + '</td></tr>');
                         $('#myTable').append(row);
                     }
 
-                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="5" style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalSubTotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="5" style="text-align: right;">Total</td><td>'  + totalAmount + '</td></tr>');
                     $('#myTable').append(finalRow);
 
                     $( ".print-report" ).show();
-
-
                 }
             });
         });

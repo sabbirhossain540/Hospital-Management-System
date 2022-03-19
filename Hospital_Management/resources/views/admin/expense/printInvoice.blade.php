@@ -10,7 +10,7 @@
     <title>Print Invoice</title>
     <style>
         .custom_font_size{
-            font-size: 9px;
+            font-size: 11px;
         }
     </style>
 </head>
@@ -23,14 +23,12 @@
 {{--    <tr></tr>--}}
 {{--</table>--}}
 {{--<h4 class="text-center mb-3" style="margin-top: -25px;">INVOICE</h4>--}}
-<table class="table table-bordered table-sm custom_font_size p-0">
+<table class="table table-bordered table-sm custom_font_size">
     <tr>
         <td width="20%" class="text-right"><strong>Invoice No</strong></td>
         <td width="30%">{{ $invoiceInfo->iv_no }}</td>
         <td width="20%" class="text-right"><strong>Invoice Date</strong></td>
-        <td width="30%" style="font-size: 10px;">{{ date_format($invoiceInfo->formated_ic_date,'jS M, Y') }}, {{ $invoiceInfo->created_time }}</td>
-
-
+        <td width="30%">{{ date_format($invoiceInfo->formated_ic_date,'jS M, Y') }}</td>
     </tr>
     <tr>
 
@@ -51,13 +49,13 @@
     </tr>
 </table>
 
-<div class="table-responsive mt-1 custom_font_size">
+<div class="table-responsive mt-3 custom_font_size">
     <table class="table table-bordered table-sm" width="100%" cellspacing="0">
         <thead>
         <tr>
             <th width="10%">SN</th>
             <th width="50%" colspan="3">Service Name</th>
-            <th width="20%" class="text-center" >Room No</th>
+            <th width="20%" >Room No</th>
             <th width="20%">Price</th>
 
 
@@ -74,7 +72,7 @@
             <tr>
                 <td>{{ $key+1 }}</td>
                 <td colspan="3">@if(!empty($invoice->getServiceName->name)){{ $invoice->getServiceName->name }}@endif</td>
-                <td class="text-center">@if(!empty($invoice->getServiceName->room_no)){{$invoice->getServiceName->room_no}}@endif</td>
+                <td>@if(!empty($invoice->getServiceName->room_no))({{$invoice->getServiceName->room_no}})@endif</td>
                 <td>{{ $invoice->price }}</td>
 {{--                <td>{{ $invoice->quantity }}</td>--}}
 {{--                <td>{{ $invoice->subtotal }}</td>--}}
@@ -83,17 +81,12 @@
             </tr>
         @endforeach
         <tr>
-            <td colspan="4">@if($invoiceInfo->dueAmount == 0)<h5 class="mt-5 text-center" style="border: 2px solid black; border-radius: 20px;">Full Paid</h5>@endif</td>
+            <td colspan="4">@if($invoiceInfo->dueAmount == 0)<h2 class="mt-5 text-center" style="border: 2px solid black; border-radius: 20px;">Full Paid</h2>@endif</td>
             <td  align="right" class="text-dark">Sub total <br> +VAT <br> -Discount <br>Net Payble <br> Paid <br> Due</td>
             <td class="text-dark">{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
             {{--                            <td>{{ $totalDiscountAmount }}</td>--}}
             {{--                            <td>{{ $totalAmount }}</td>--}}
         </tr>
-{{--        <tr>--}}
-{{--            <td colspan="3" class="text-left">--}}
-{{--                <p>Bill Officer: @if(!empty($invoiceInfo->getCreatedUser->name)) {{ $invoiceInfo->getCreatedUser->name }}@endif</p>--}}
-{{--            </td>--}}
-{{--        </tr>--}}
 {{--        <tr>--}}
 {{--            <td colspan="4" align="right">Total</td>--}}
 {{--            <td>{{ $tSubtotal }}</td>--}}
@@ -102,8 +95,6 @@
 {{--        </tr>--}}
         </tbody>
     </table>
-
-    <p class="text-right pr-3" style="font-size: 10px;">Bill Officer: @if(!empty($invoiceInfo->getCreatedUser->name)) {{ $invoiceInfo->getCreatedUser->name }}@endif</p>
 
 {{--    <table width="100%">--}}
 {{--        <tr>--}}

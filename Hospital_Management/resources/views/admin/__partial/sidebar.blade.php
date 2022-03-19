@@ -36,6 +36,7 @@
                 <a class="collapse-item" href="{{ route('medicalCollege.index') }}">Medical College Name</a>
                 <a class="collapse-item" href="{{ route('educationalQualification.index') }}">Educational Qualification</a>
                 <a class="collapse-item" href="{{ route('specialistArea.index') }}">Specialist Area</a>
+                <a class="collapse-item" href="{{ route('expenseCategory.index') }}">Expense Category</a>
             </div>
         </div>
     </li>
@@ -73,6 +74,13 @@
             <i class="fas fa-hands-helping"></i>
             <span>Reference List</span></a>
     </li>
+
+
+    <li class="nav-item {{ request()->is('expenses*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('expenses.index') }}">
+            <i class="fas fa-file-invoice"></i>
+            <span>Expense List</span></a>
+    </li>
     @endif
 
     <li class="nav-item {{ request()->is('invoices*') ? 'active' : '' }}">
@@ -96,6 +104,8 @@
                 <a class="collapse-item" href="{{ route('getServiceWiseSalesReport') }}">Service wise sales report</a>
                 <a class="collapse-item" href="{{ route('getReferenceWiseReport') }}">Reference wise report</a>
                 <a class="collapse-item" href="{{ route('getDoctorWiseReport') }}">Doctor Wise report</a>
+                <a class="collapse-item" href="{{ route('getExpenseReport') }}">Expense report</a>
+                <a class="collapse-item" href="{{ route('getCategoryWiseExpenseReport') }}">Category wise Exp. report</a>
 {{--                <a class="collapse-item" href="{{ route('invoices.index') }}">Patient Wise report</a>--}}
             </div>
         </div>

@@ -44,6 +44,9 @@ Route::post('/deleteQualification/{id}', 'EducationalQualificationController@des
 Route::resource('specialistArea','SpecialistAreaController');
 Route::post('/deleteSA/{id}', 'SpecialistAreaController@destroy')->name('deleteQualification');
 
+Route::resource('expenseCategory','ExpenceCategoryController');
+Route::post('/deleteExpCategory/{id}', 'ExpenceCategoryController@destroy')->name('deleteExpCategory');
+
 Route::resource('patientList','PatientController');
 Route::post('/deletePatient/{id}', 'PatientController@destroy')->name('deletePatient');
 
@@ -55,6 +58,11 @@ Route::post('/deleteReference/{id}', 'ReferencesController@destroy')->name('dele
 
 Route::resource('invoices','InvoiceController');
 Route::get('/printInvoice/{id}', 'InvoiceController@printInvoice')->name('printInvoice');
+
+Route::resource('expenses','ExpenseController');
+Route::post('/deleteExpense/{id}', 'ExpenseController@destroy')->name('deleteExpense');
+Route::get('/getExpenseCategoryInfo/{id}', 'ExpenseController@getExpenseCategoryInfo')->name('getExpenseCategoryInfo');
+Route::get('/printExpanse/{id}', 'ExpenseController@printExpanse')->name('printExpanse');
 
 
 
@@ -70,6 +78,18 @@ Route::post('/deleteInvoice/{id}', 'InvoiceController@destroy')->name('deleteInv
 Route::get('/getSalesReport', 'ReportController@getSalesReport')->name('getSalesReport');
 Route::get('/generateSalesReport/{fromDate}/{toDate}', 'ReportController@generateSalesReport')->name('generateSalesReport');
 Route::get('/generatePdfSalesReport/{fromDate}/{toDate}', 'ReportController@generatePdfSalesReport')->name('generatePdfSalesReport');
+
+
+//Expense Report
+Route::get('/getExpenseReport', 'ReportController@getExpenseReport')->name('getExpenseReport');
+Route::get('/generateExpenseReport/{fromDate}/{toDate}', 'ReportController@generateExpenseReport')->name('generateExpenseReport');
+Route::get('/generatePdfExpenseReport/{fromDate}/{toDate}', 'ReportController@generatePdfExpenseReport')->name('generatePdfExpenseReport');
+
+//Category Wise Expense Report
+Route::get('/getCategoryWiseExpenseReport', 'ReportController@getCategoryWiseExpenseReport')->name('getCategoryWiseExpenseReport');
+Route::get('/generateCategoryWiseExpenseReport/{fromDate}/{toDate}/{catId}', 'ReportController@generateCategoryWiseExpenseReport')->name('generateCategoryWiseExpenseReport');
+Route::get('/generatePdfCategoryWiseExpenseReport/{fromDate}/{toDate}/{serviceId}', 'ReportController@generatePdfCategoryWiseExpenseReport')->name('generatePdfCategoryWiseExpenseReport');
+
 
 //Service Wise Sales Report
 Route::get('/getServiceWiseSalesReport', 'ReportController@getServiceWiseSalesReport')->name('getServiceWiseSalesReport');

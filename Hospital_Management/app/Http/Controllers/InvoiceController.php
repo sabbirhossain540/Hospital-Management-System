@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
+use phpDocumentor\Reflection\Types\False_;
 
 class InvoiceController extends Controller
 {
@@ -57,8 +58,14 @@ class InvoiceController extends Controller
     {
         $this->validate($request, [
             'doctor_id' => 'required',
-            'pataint_id' => 'required',
+            //'pataint_id' => 'required',
         ]);
+
+        if($request->patientStatusCheck == 0){
+            $this->validate($request, [
+                'pataint_id' => 'required',
+            ]);
+        }
 
         if($request->id != ''){
             $invoiceMaster = Invoice::findOrFail($request->id);
@@ -94,12 +101,45 @@ class InvoiceController extends Controller
             return true;
 
         }else{
+            $pat_id = '';
+
+            if($request->patientStatusCheck == 1){
+                $ac = new PatientController();
+                $temp_password = rand(10000000,99999999);
+                $username = $ac->randomUsername();
+
+
+                $user = new User;
+                $user->password = Hash::make(trim($temp_password));
+                $user->password_ref = trim($temp_password);
+                $user->role = 'patient';
+                $user->username = $username;
+
+                $user->name = $request->patientName;
+                $user->mobile_no = $request->mobile_no;
+                $user->gander = $request->gander;
+                $user->age = $request->age;
+                $user->address = $request->address;
+                $user->save();
+                $pat_id = $user->id;
+            }else{
+                $pat_id = $request->pataint_id;
+
+}
+
             $getInvoice = Invoice::latest()->first();
-            $ivNo = $getInvoice->id+1;
-            $ivno = "BCADC/".date("Y")."/".date('M')."/".$ivNo;
+
+            if($getInvoice != ''){
+                $ivNo = $getInvoice->id+1;
+            }else{
+                $ivNo = 1;
+            }
+
+
+            $ivNo = "BCADC/INV/".date("y").date('m').date('d').$ivNo;
             $invoiceMaster = new Invoice();
-            $invoiceMaster->iv_no = $ivno;
-            $invoiceMaster->pataint_id = $request->pataint_id;
+            $invoiceMaster->iv_no = $ivNo;
+            $invoiceMaster->pataint_id = $pat_id;
             $invoiceMaster->doctor_id = $request->doctor_id;
             $invoiceMaster->reference_id = $request->reference_id;
             $invoiceMaster->ic_date = $request->ic_date;
@@ -138,6 +178,7 @@ class InvoiceController extends Controller
     {
         $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getPatient', 'getDoctor', 'getDoctor.Specialist', 'getReference')->where('id', $id)->first();
         $invoiceInfo['formated_ic_date'] = Carbon::parse($invoiceInfo->ic_date);
+        $invoiceInfo['created_time'] = Carbon::createFromFormat('Y-m-d H:i:s', $invoiceInfo->created_at)->format('H:i:s');
 
         $totalAmount = 0;
         $totalQuantity = 0;
@@ -168,7 +209,6 @@ class InvoiceController extends Controller
         $referenceList = References::all();
         $serviceList = Services::all();
         $invoiceList = Invoice::with('invoiceDetails', 'invoiceDetails.getServiceName')->where('id', $id)->first();
-        //dd($invoiceList);
         return view('admin.invoice.edit', compact('invoiceList', 'patientList', 'doctorList', 'referenceList', 'serviceList'));
 
     }
@@ -205,16 +245,23 @@ class InvoiceController extends Controller
         return redirect()->route('invoices.index');
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function getServiceInfo($id){
         $serviceInfo = Services::where('id',$id)->first();
         return $serviceInfo;
     }
 
-
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function printInvoice($id){
         $invoiceInfo = Invoice::with('invoiceDetails.getServiceName', 'getCreatedUser','getPatient', 'getDoctor', 'getDoctor.Specialist', 'getReference')->where('id', $id)->first();
-        //dd($invoiceInfo);
         $invoiceInfo['formated_ic_date'] = Carbon::parse($invoiceInfo->ic_date);
+        $invoiceInfo['created_time'] = Carbon::createFromFormat('Y-m-d H:i:s', $invoiceInfo->created_at)->format('H:i:s');
 
         $totalAmount = 0;
         $totalQuantity = 0;
