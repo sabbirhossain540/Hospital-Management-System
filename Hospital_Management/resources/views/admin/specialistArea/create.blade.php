@@ -34,9 +34,9 @@
                             </div>
                         </div>
                         <div class="d-flex flex-row mb-3">
-                            <div class="col-10 p-2"></div>
-                            <div class="col-2 p-2">
-                                <a href="{{route('specialistArea.index')}}" class="btn btn-danger btn-sm">Cancel</a>
+                            <div class="col-9 p-2"></div>
+                            <div class="col-3 p-2">
+                                <a href="{{route('specialistArea.index')}}" class="btn btn-danger btn-sm ml-5">Cancel</a>
                                 <button type="submit" class="btn btn-success btn-sm">@if(isset($saList)) Update @else Submit @endif</button>
                             </div>
                         </div>

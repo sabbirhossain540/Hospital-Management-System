@@ -7,8 +7,8 @@
                 <div class="col-md-10">
                     <h6 class="m-0 font-weight-bold text-primary">Invoice List</h6>
                 </div>
-                <div class="col-md-2" style="margin-left: 65px;">
-                    <a href="{{route('invoices.create')}}" class="btn btn-primary btn-sm pl-10">Create Invoice</a>
+                <div class="col-md-2" style="margin-left: 40px;">
+                    <a href="{{route('invoices.create')}}" class="btn btn-primary btn-sm pl-10"><i class="fas fa-plus"></i> Create Invoice</a>
                 </div>
             </div>
         </div>
@@ -44,10 +44,10 @@
                             <td>@if(!empty($invoice->getCreatedUser['name'])){{ $invoice->getCreatedUser['name'] }}@endif</td>
                             @endif
                             <td>
-                                <a href="{{route('invoices.show',$invoice->id)}}" class="btn btn-info btn-sm">View</a>
-                                <a target="_blank" class="btn btn-warning btn-sm" href="{{route('printInvoice', $invoice->id)}}">Print</a>
-                                <a href="{{route('invoices.edit',$invoice->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $invoice->id }})">Delete</button>
+                                <a href="{{route('invoices.show',$invoice->id)}}" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+                                <a target="_blank" class="btn btn-warning btn-sm" href="{{route('printInvoice', $invoice->id)}}"><i class="fas fa-print"></i></a>
+                                <a href="{{route('invoices.edit',$invoice->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $invoice->id }})"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                     @endforeach

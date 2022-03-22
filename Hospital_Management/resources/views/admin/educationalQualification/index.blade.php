@@ -7,8 +7,8 @@
                 <div class="col-md-10">
                     <h6 class="m-0 font-weight-bold text-primary">Educational Qualification List</h6>
                 </div>
-                <div class="col-md-2" style="margin-left: 65px;">
-                    <a href="{{route('educationalQualification.create')}}" class="btn btn-primary btn-sm pl-10">Create Qualification</a>
+                <div class="col-md-2" style="margin-left: 40px;">
+                    <a href="{{route('educationalQualification.create')}}" class="btn btn-primary btn-sm pl-10"><i class="fas fa-plus"></i> Create EQ</a>
                 </div>
             </div>
         </div>
@@ -28,8 +28,8 @@
                             <td>{{ $key+1 }}</td>
                             <td>{{ $eql->name }}</td>
                             <td>
-                                <a href="{{route('educationalQualification.edit',$eql->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $eql->id }})">Delete</button>
+                                <a href="{{route('educationalQualification.edit',$eql->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $eql->id }})"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                     @endforeach
