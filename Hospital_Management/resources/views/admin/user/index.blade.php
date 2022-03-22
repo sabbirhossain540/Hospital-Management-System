@@ -21,7 +21,9 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Username</th>
+                        @if(Auth::user()->privilage == 1)
                         <th>Password</th>
+                        @endif
                         <th>Role</th>
                         <th>Action</th>
                     </tr>
@@ -32,7 +34,9 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->username }}</td>
+                                @if(Auth::user()->privilage == 1)
                                 <td>{{ $user->password_ref }}</td>
+                                @endif
                                 <td>{{ $user->role }}</td>
                                 <td>
                                     <a href="{{route('editUser',['id'=> $user->id ])}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
