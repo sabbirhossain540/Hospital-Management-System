@@ -41,7 +41,7 @@
                             <td>{{ $invoice->paidAmount }}</td>
                             <td>{{ $invoice->dueAmount }}</td>
                             @if(Auth::user()->role == "admin")
-                            <td>{{ $invoice->getCreatedUser['name'] }}</td>
+                            <td>@if(!empty($invoice->getCreatedUser['name'])){{ $invoice->getCreatedUser['name'] }}@endif</td>
                             @endif
                             <td>
                                 <a href="{{route('invoices.show',$invoice->id)}}" class="btn btn-info btn-sm">View</a>
