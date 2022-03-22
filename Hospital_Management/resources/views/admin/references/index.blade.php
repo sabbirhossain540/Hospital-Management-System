@@ -7,8 +7,8 @@
                 <div class="col-md-10">
                     <h6 class="m-0 font-weight-bold text-primary">References List</h6>
                 </div>
-                <div class="col-md-2" style="margin-left: 65px;">
-                    <a href="{{route('references.create')}}" class="btn btn-primary btn-sm pl-10">Create Reference</a>
+                <div class="col-md-2" style="margin-left: 30px;">
+                    <a href="{{route('references.create')}}" class="btn btn-primary btn-sm pl-10"><i class="fas fa-plus"></i> Create Reference</a>
                 </div>
             </div>
         </div>
@@ -36,8 +36,8 @@
                             <td>{{ $reference->address }}</td>
                             <td>{{ $reference->comission }}</td>
                             <td>
-                                <a href="{{route('references.edit',$reference->id)}}" class="btn btn-primary btn-sm">Edit</a>
-                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $reference->id }})">Delete</button>
+                                <a href="{{route('references.edit',$reference->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $reference->id }})"><i class="fas fa-trash-alt"></i></button>
                             </td>
                         </tr>
                     @endforeach

@@ -88,7 +88,7 @@
                             <td>@if(!empty($invoice->getDoctor->name)){{ $invoice->getDoctor->name }}@endif</td>
                             <td>{{ $invoice->paidAmount }}</td>
                             <td>{{ $invoice->dueAmount }}</td>
-                            <td><a target="_blank" class="btn btn-warning btn-sm" href="{{route('printInvoice', $invoice->id)}}">Invoice Print</a></td>
+                            <td><a target="_blank" class="btn btn-warning btn-sm" href="{{route('printInvoice', $invoice->id)}}"><i class="fas fa-print"></i></a></td>
                         </tr>
                     @endforeach
 

@@ -8,8 +8,8 @@
                 <div class="col-md-10">
                     <h6 class="m-0 font-weight-bold text-primary">User List</h6>
                 </div>
-                <div class="col-md-2" style="margin-left: 65px;">
-                    <a href="{{route('createUser',['userList'])}}" class="btn btn-primary btn-sm pl-10">Create User</a>
+                <div class="col-md-2" style="margin-left: 40px;">
+                    <a href="{{route('createUser',['userList'])}}" class="btn btn-primary btn-sm pl-10"><i class="fas fa-plus"></i> Create User</a>
                 </div>
             </div>
         </div>
@@ -35,8 +35,8 @@
                                 <td>{{ $user->password_ref }}</td>
                                 <td>{{ $user->role }}</td>
                                 <td>
-                                    <a href="{{route('editUser',['id'=> $user->id ])}}" class="btn btn-primary btn-sm">Edit</a>
-                                    @if($user->role != "admin")<button class="btn btn-danger btn-sm" onclick="handleDelete({{ $user->id }})">Delete</button>@endif
+                                    <a href="{{route('editUser',['id'=> $user->id ])}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                    @if($user->role != "admin")<button class="btn btn-danger btn-sm" onclick="handleDelete({{ $user->id }})"><i class="fas fa-trash-alt"></i></button>@endif
                                 </td>
                             </tr>
                         @endforeach

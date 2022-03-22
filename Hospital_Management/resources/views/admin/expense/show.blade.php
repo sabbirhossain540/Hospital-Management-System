@@ -8,7 +8,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Expense Details</h6>
                 </div>
                 <div class="col-md-2" style="margin-left: 65px;">
-                    <a target="_blank" class="btn btn-warning btn-sm" href="{{route('printExpanse', $expanseList->id)}}">Print</a>
+                    <a target="_blank" class="btn btn-warning btn-sm" href="{{route('printExpanse', $expanseList->id)}}"><i class="fas fa-print"></i></a>
                     <a href="{{route('expenses.index')}}" class="btn btn-primary btn-sm">Back</a>
                 </div>
             </div>

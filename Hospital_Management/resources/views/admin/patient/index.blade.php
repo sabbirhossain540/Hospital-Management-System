@@ -7,8 +7,8 @@
                 <div class="col-md-10">
                     <h6 class="m-0 font-weight-bold text-primary">Patient List</h6>
                 </div>
-                <div class="col-md-2" style="margin-left: 65px;">
-                    <a href="{{route('patientList.create')}}" class="btn btn-primary btn-sm pl-10"><i class="fas fa-plus-square"></i> Create Patient</a>
+                <div class="col-md-2" style="margin-left: 50px;">
+                    <a href="{{route('patientList.create')}}" class="btn btn-primary btn-sm pl-10"><i class="fas fa-plus"></i> Create Patient</a>
                 </div>
             </div>
         </div>

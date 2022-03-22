@@ -42,8 +42,8 @@
                                 <div class="col-md-10">
 
                                 </div>
-                                <div class="col-md-2" style="margin-left: 27px;">
-                                    <a class="btn btn-success btn-sm " onclick="handleItem()">Add Expense</a>
+                                <div class="col-md-2" style="margin-left: 10px;">
+                                    <a class="btn btn-success btn-sm " onclick="handleItem()"><i class="fas fa-plus"></i> Add Expense</a>
                                 </div>
                             </div>
                         </div>
@@ -92,13 +92,13 @@
                                             </div>
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <label for="exp_title">Title</label>
+                                                    <label for="exp_title">Title<span style="color: red;">*</span></label>
                                                     <input type="text" name="exp_title" id="exp_title" class="form-control" placeholder="Expense Title">
                                                 </div>
                                             </div>
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <label for="quantity">Exp. Category</label>
+                                                    <label for="quantity">Exp. Category<span style="color: red;">*</span></label>
                                                     <select name="expense_id" id="expense_id" class="form-control" onchange="getExpenseDetails()" required>
                                                         <option value="">Select Expense Category</option>
                                                         @foreach($expenseList as $expense)
@@ -107,14 +107,14 @@
                                                     </select>
                                                 </div>
                                                 <div class="col">
-                                                    <label for="exp_title">Amount</label>
+                                                    <label for="exp_title">Amount<span style="color: red;">*</span></label>
                                                     <input type="number" name="exp_amount" id="exp_amount" class="form-control" placeholder="Expense Amount">
                                                 </div>
                                             </div>
                                             <div class="row mb-2">
                                                 <div class="col">
-                                                    <label for="total">Comments</label>
-                                                    <textarea name="exp_comment" id="exp_comment" cols="30" rows="3" class="form-control"></textarea>
+                                                    <label for="total">Comments <sub>(Optional)</sub></label>
+                                                    <textarea name="exp_comment" id="exp_comment" cols="30" rows="3" class="form-control" placeholder="Any Comment"></textarea>
 
                                                 </div>
                                             </div>
