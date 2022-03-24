@@ -96,14 +96,21 @@
                 type:"GET",
                 url:"{{url('generateSalesReport')}}/"+fromDate+"/"+toDate,
                 success: function(data) {
-                    //console.log(data);
+                    console.log(data);
                     let totalAmount = 0;
                     let totalQuantity = 0;
                     let totalSubTotal = 0;
                     let totalDiscount = 0;
                     for (var i=0; i<data.length; i++) {
                         let serviceName = data[i].get_service_name['name'];
-                        let refName = data[i].get_invoice_info.get_reference['name'];
+
+                        let refName = ''
+                        if(data[i].get_invoice_info.reference_id != null){
+                             refName = data[i].get_invoice_info.get_reference['name'];
+                        }else{
+                             refName = '';
+                        }
+
                         let serial_no = i+1;
                         totalAmount = totalAmount + parseInt(data[i].total);
                         totalQuantity = totalQuantity + parseInt(data[i].quantity);
