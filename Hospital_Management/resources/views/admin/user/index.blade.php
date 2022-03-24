@@ -39,7 +39,10 @@
                                 @endif
                                 <td>{{ $user->role }}</td>
                                 <td>
-                                    <a href="{{route('editUser',['id'=> $user->id ])}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
+                                    @if($user->privilage == 0)
+                                        <a href="{{route('editUser',['id'=> $user->id ])}}" class="btn btn-primary btn-sm"><i class="fas fa-edit" disabled></i></a>
+                                    @endif
+
                                     @if($user->role != "admin")<button class="btn btn-danger btn-sm" onclick="handleDelete({{ $user->id }})"><i class="fas fa-trash-alt"></i></button>@endif
                                 </td>
                             </tr>
