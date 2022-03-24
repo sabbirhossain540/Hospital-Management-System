@@ -92,7 +92,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Last 30 Days Sales</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">${{ floor($leatestSalesAmount) }}</div>
+                                <div class="h7 mb-0 font-weight-bold text-gray-800">${{ floor($leatestSalesAmount) }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
@@ -109,7 +109,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Total Sales</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">${{ floor($salesAmount) }}</div>
+                            <div class="h7 mb-0 font-weight-bold text-gray-800">${{ floor($salesAmount) }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-file-invoice-dollar fa-2x text-gray-300"></i>
@@ -258,7 +258,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                                     Last 30 Day Expense</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $leatestExpenseAmount }}</div>
+                                <div class="h7 mb-0 font-weight-bold text-gray-800">{{ $leatestExpenseAmount }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-donate fa-2x text-gray-300"></i>
@@ -275,7 +275,7 @@
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">
                                     Total Expense</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $expenseAmount }}</div>
+                                <div class="h7 mb-0 font-weight-bold text-gray-800">{{ $expenseAmount }}</div>
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-donate fa-2x text-gray-300"></i>
