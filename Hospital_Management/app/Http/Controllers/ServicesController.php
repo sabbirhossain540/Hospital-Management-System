@@ -16,7 +16,7 @@ class ServicesController extends Controller
     public function index()
     {
         $serviceList = Services::all();
-        $this->activity_log("get all services list", "index");
+        //$this->activity_log("get all services list", "index");
         return view('admin.services.index')->with('serviceList', $serviceList);
     }
 
@@ -27,7 +27,7 @@ class ServicesController extends Controller
      */
     public function create()
     {
-        $this->activity_log("open service create from", "create");
+        //$this->activity_log("open service create from", "create");
         return view('admin.services.create');
     }
 
@@ -51,7 +51,7 @@ class ServicesController extends Controller
         $services->save();
 
         session()->flash('success', $request->name.' created successfully');
-        $this->activity_log("store new service. { name:".$request->name." }", "store");
+        //$this->activity_log("store new service. { name:".$request->name." }", "store");
         return redirect()->route('services.index');
     }
 
@@ -65,7 +65,7 @@ class ServicesController extends Controller
     public function edit($id)
     {
         $serviceInfo = Services::where('id',$id)->first();
-        $this->activity_log("edit service. { name:".$serviceInfo->name." id:".$serviceInfo->id." }", "edit");
+        //$this->activity_log("edit service. { name:".$serviceInfo->name." id:".$serviceInfo->id." }", "edit");
         return view('admin.services.create')->with('serviceInfo', $serviceInfo);
     }
 
@@ -89,7 +89,7 @@ class ServicesController extends Controller
         $serviceInfo->price = $request->price;
         $serviceInfo->room_no = $request->room_no;
         $serviceInfo->save();
-        $this->activity_log("updated service. { name:".$serviceInfo->name." id:".$serviceInfo->id." }", "update");
+        //$this->activity_log("updated service. { name:".$serviceInfo->name." id:".$serviceInfo->id." }", "update");
         session()->flash('success', $serviceInfo->name.' service updated successfully');
         return redirect()->route('services.index');
 
@@ -109,7 +109,7 @@ class ServicesController extends Controller
             return redirect()->route('services.index');
         }else{
             $medicalCollege = Services::findOrFail($id);
-            $this->activity_log("deleted service { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
+            //$this->activity_log("deleted service { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
             $medicalCollege->delete();
             session()->flash('success', 'Service deleted successfully');
             return redirect()->route('services.index');

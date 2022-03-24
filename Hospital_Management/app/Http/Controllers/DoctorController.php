@@ -21,7 +21,7 @@ class DoctorController extends Controller
     public function index()
     {
         $userList = User::with('educationQualification')->where('role','doctor')->get();
-        $this->activity_log("get doctor list", "index");
+        //$this->activity_log("get doctor list", "index");
         return view('admin.doctor.index')->with('userlist', $userList);
     }
 
@@ -35,7 +35,7 @@ class DoctorController extends Controller
         $collegeList = MedicalCollege::all();
         $qualificationList = EducationalQualification::all();
         $specialistAreaList = SpecialistArea::all();
-        $this->activity_log("open doctor create from", "create");
+        //$this->activity_log("open doctor create from", "create");
         return view('admin.doctor.create',compact(array('collegeList', 'qualificationList', 'specialistAreaList')));
     }
 
@@ -67,7 +67,7 @@ class DoctorController extends Controller
         $this->dataInsert($user,$request);
 
         session()->flash('success', 'Doctor created successfully');
-        $this->activity_log("store new doctor. { name:".$request->name." }", "store");
+        //$this->activity_log("store new doctor. { name:".$request->name." }", "store");
         return redirect()->route('doctorList.index');
     }
 
@@ -80,7 +80,7 @@ class DoctorController extends Controller
     public function show($id)
     {
         $userInfo = User::with('educationQualification', 'CollageName', 'Specialist')->where('id',$id)->first();
-        $this->activity_log("show doctor details. { name:".$userInfo->name." id:".$userInfo->id." }", "show");
+        //$this->activity_log("show doctor details. { name:".$userInfo->name." id:".$userInfo->id." }", "show");
         return view('admin.doctor.show',compact(array('userInfo')));
     }
 
@@ -96,7 +96,7 @@ class DoctorController extends Controller
         $qualificationList = EducationalQualification::all();
         $specialistAreaList = SpecialistArea::all();
         $userInfo = User::with('educationQualification', 'CollageName', 'Specialist')->where('id',$id)->first();
-        $this->activity_log("edit doctor. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
+        //$this->activity_log("edit doctor. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
         return view('admin.doctor.edit',compact(array('collegeList', 'qualificationList', 'specialistAreaList', 'userInfo')));
     }
 
@@ -118,7 +118,7 @@ class DoctorController extends Controller
         $user->password = Hash::make(trim($request->password));
         $user->password_ref = trim($request->password);
         $this->dataInsert($user, $request);
-        $this->activity_log("update doctor. { name:".$request->name." }", "edit");
+        //$this->activity_log("update doctor. { name:".$request->name." }", "edit");
         session()->flash('success', 'Doctor updated successfully');
         return redirect()->route('doctorList.index');
     }
@@ -161,7 +161,7 @@ class DoctorController extends Controller
             return redirect()->route('doctorList.index');
         }else{
             $user = User::findOrFail($id);
-            $this->activity_log("delete doctor. { name:".$user->name." id:".$user->id." }", "delete");
+            //$this->activity_log("delete doctor. { name:".$user->name." id:".$user->id." }", "delete");
             $user->delete();
             session()->flash('success', 'Doctor deleted successfully');
             return redirect()->route('doctorList.index');

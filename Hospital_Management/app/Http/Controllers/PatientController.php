@@ -19,7 +19,7 @@ class PatientController extends Controller
     public function index()
     {
         $userList = User::where('role','patient')->get();
-        $this->activity_log("get patient list", "index");
+        //$this->activity_log("get patient list", "index");
         return view('admin.patient.index')->with('userlist', $userList);
     }
 
@@ -30,7 +30,7 @@ class PatientController extends Controller
      */
     public function create()
     {
-        $this->activity_log("open patient create from", "create");
+        //$this->activity_log("open patient create from", "create");
         return view('admin.patient.create');
     }
 
@@ -60,7 +60,7 @@ class PatientController extends Controller
         $this->dataInsert($user,$request);
 
         session()->flash('success', 'Patient created successfully');
-        $this->activity_log("store new patient. { name:".$request->name." }", "store");
+        //$this->activity_log("store new patient. { name:".$request->name." }", "store");
         return redirect()->route('patientList.index');
     }
 
@@ -91,7 +91,7 @@ class PatientController extends Controller
         foreach($invoiceList as $list){
             $list['formated_ic_date'] = \Illuminate\Support\Carbon::parse($list->ic_date);
         }
-        $this->activity_log("show patient details. { name:".$userInfo->name." id:".$userInfo->id." }", "show");
+        //$this->activity_log("show patient details. { name:".$userInfo->name." id:".$userInfo->id." }", "show");
         return view('admin.patient.show',compact(array('userInfo', 'invoiceList')));
     }
 
@@ -104,7 +104,7 @@ class PatientController extends Controller
     public function edit($id)
     {
         $userInfo = User::with('educationQualification', 'CollageName', 'Specialist')->where('id',$id)->first();
-        $this->activity_log("edit patient. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
+        //$this->activity_log("edit patient. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
         return view('admin.patient.edit',compact(array('userInfo')));
     }
 
@@ -124,7 +124,7 @@ class PatientController extends Controller
         ]);
 
         $this->dataInsert($user, $request);
-        $this->activity_log("update patient. { name:".$request->name." }", "edit");
+        //$this->activity_log("update patient. { name:".$request->name." }", "edit");
         session()->flash('success', 'Patient updated successfully');
         return redirect()->route('patientList.index');
     }
@@ -160,7 +160,7 @@ class PatientController extends Controller
             return redirect()->route('patientList.index');
         }else{
             $user = User::findOrFail($id);
-            $this->activity_log("delete patient. { name:".$user->name." id:".$user->id." }", "delete");
+           //$this->activity_log("delete patient. { name:".$user->name." id:".$user->id." }", "delete");
             $user->delete();
             session()->flash('success', 'Patient deleted successfully');
             return redirect()->route('patientList.index');

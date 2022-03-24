@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EducationalQualification;
+use App\ExpenseDetails;
 use Illuminate\Http\Request;
 use App\ExpenceCategory;
 
@@ -103,10 +104,18 @@ class ExpenceCategoryController extends Controller
      */
     public function destroy($id)
     {
-        $expCategory = ExpenceCategory::findOrFail($id);
-        //$this->activity_log("deleted educational qualification { name:".$eduQualification->name." id:".$eduQualification->id." }", "destroy");
-        $expCategory->delete();
-        session()->flash('success', 'Expense Category deleted successfully');
-        return redirect()->route('expenseCategory.index');
+
+        $expenseInfo = ExpenseDetails::where('exp_category', $id)->get();
+        if(count($expenseInfo) > 0){
+            session()->flash('warning', 'You can not delete this Category. Because an Expense already created using this Category');
+            return redirect()->route('expenseCategory.index');
+        }else{
+            $expCategory = ExpenceCategory::findOrFail($id);
+            //$this->activity_log("deleted educational qualification { name:".$eduQualification->name." id:".$eduQualification->id." }", "destroy");
+            $expCategory->delete();
+            session()->flash('success', 'Expense Category deleted successfully');
+            return redirect()->route('expenseCategory.index');
+        }
+
     }
 }

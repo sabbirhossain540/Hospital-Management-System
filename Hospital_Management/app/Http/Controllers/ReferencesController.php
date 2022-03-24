@@ -16,7 +16,7 @@ class ReferencesController extends Controller
     public function index()
     {
         $referenceList = References::orderBy('id', 'DESC')->get();
-        $this->activity_log("get all reference list", "index");
+        //$this->activity_log("get all reference list", "index");
         return view('admin.references.index')->with('referenceList', $referenceList);
     }
 
@@ -27,7 +27,7 @@ class ReferencesController extends Controller
      */
     public function create()
     {
-        $this->activity_log("open reference create from", "create");
+        //$this->activity_log("open reference create from", "create");
         return view('admin.references.create');
     }
 
@@ -50,7 +50,7 @@ class ReferencesController extends Controller
         $this->dataStore($references, $request);
 
         session()->flash('success', $request->name.' references created successfully');
-        $this->activity_log("store new reference. { name:".$request->name." }", "store");
+        //$this->activity_log("store new reference. { name:".$request->name." }", "store");
         return redirect()->route('references.index');
     }
 
@@ -64,7 +64,7 @@ class ReferencesController extends Controller
     public function edit($id)
     {
         $referenceInfo = References::where('id',$id)->first();
-        $this->activity_log("edit reference. { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "edit");
+        //$this->activity_log("edit reference. { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "edit");
         return view('admin.references.create')->with('referenceInfo', $referenceInfo);
     }
 
@@ -86,7 +86,7 @@ class ReferencesController extends Controller
         ]);
         $this->dataStore($referenceInfo, $request);
 
-        $this->activity_log("updated reference. { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "update");
+        //$this->activity_log("updated reference. { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "update");
         session()->flash('success', $referenceInfo->name.' reference updated successfully');
         return redirect()->route('references.index');
 
@@ -119,7 +119,7 @@ class ReferencesController extends Controller
             return redirect()->route('references.index');
         }else{
             $referenceInfo = References::findOrFail($id);
-            $this->activity_log("deleted reference { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "destroy");
+            //$this->activity_log("deleted reference { name:".$referenceInfo->name." id:".$referenceInfo->id." }", "destroy");
             $referenceInfo->delete();
             session()->flash('success', 'Reference deleted successfully');
             return redirect()->route('references.index');

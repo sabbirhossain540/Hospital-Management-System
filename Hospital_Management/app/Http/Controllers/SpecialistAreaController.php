@@ -17,7 +17,7 @@ class SpecialistAreaController extends Controller
     public function index()
     {
         $saList = SpecialistArea::all();
-        $this->activity_log("get Specialist area list", "index");
+        //$this->activity_log("get Specialist area list", "index");
         return view('admin.specialistArea.index')->with('saList', $saList);
     }
 
@@ -28,7 +28,7 @@ class SpecialistAreaController extends Controller
      */
     public function create()
     {
-        $this->activity_log("open Specialist area from", "create");
+        //$this->activity_log("open Specialist area from", "create");
         return view('admin.specialistArea.create');
     }
 
@@ -48,7 +48,7 @@ class SpecialistAreaController extends Controller
         $saList->save();
 
         session()->flash('success', 'Specialist area created successfully');
-        $this->activity_log("store new specialist area. { name:".$request->name." }", "store");
+        //$this->activity_log("store new specialist area. { name:".$request->name." }", "store");
         return redirect()->route('specialistArea.index');
     }
 
@@ -62,7 +62,7 @@ class SpecialistAreaController extends Controller
     public function edit($id)
     {
         $saList = SpecialistArea::where('id',$id)->first();
-        $this->activity_log("edit specialist area. { name:".$saList->name." id:".$saList->id." }", "edit");
+        //$this->activity_log("edit specialist area. { name:".$saList->name." id:".$saList->id." }", "edit");
         return view('admin.specialistArea.create')->with('saList', $saList);
     }
 
@@ -83,7 +83,7 @@ class SpecialistAreaController extends Controller
 
         $saList->name = $request->name;
         $saList->save();
-        $this->activity_log("updated specialist area. { name:".$saList->name." id:".$saList->id." }", "update");
+        //$this->activity_log("updated specialist area. { name:".$saList->name." id:".$saList->id." }", "update");
         session()->flash('success', 'Specialist area updated successfully');
         return redirect()->route('specialistArea.index');
 
@@ -103,7 +103,7 @@ class SpecialistAreaController extends Controller
             return redirect()->route('specialistArea.index');
         }else{
             $saList = SpecialistArea::findOrFail($id);
-            $this->activity_log("deleted specialist area { name:".$saList->name." id:".$saList->id." }", "destroy");
+            //$this->activity_log("deleted specialist area { name:".$saList->name." id:".$saList->id." }", "destroy");
             $saList->delete();
             session()->flash('success', 'Special Area deleted successfully');
             return redirect()->route('specialistArea.index');

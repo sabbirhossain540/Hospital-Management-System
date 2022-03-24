@@ -10,7 +10,7 @@
     <title>Print Invoice</title>
     <style>
         .custom_font_size{
-            font-size: 9px;
+            font-size: 10px;
         }
     </style>
 </head>

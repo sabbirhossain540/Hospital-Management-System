@@ -16,7 +16,7 @@ class MedicalCollegeController extends Controller
     public function index()
     {
         $collegeList = MedicalCollege::all();
-        $this->activity_log("get medical college list", "index");
+        //$this->activity_log("get medical college list", "index");
         return view('admin.medicalCollege.index')->with('collegeList', $collegeList);
     }
 
@@ -27,7 +27,7 @@ class MedicalCollegeController extends Controller
      */
     public function create()
     {
-        $this->activity_log("open Medical College from", "create");
+        //$this->activity_log("open Medical College from", "create");
         return view('admin.medicalCollege.create');
     }
 
@@ -47,7 +47,7 @@ class MedicalCollegeController extends Controller
         $medicalCollege->save();
 
         session()->flash('success', 'Medical College created successfully');
-        $this->activity_log("store new Medical College. { name:".$request->name." }", "store");
+        //$this->activity_log("store new Medical College. { name:".$request->name." }", "store");
         return redirect()->route('medicalCollege.index');
     }
 
@@ -61,7 +61,7 @@ class MedicalCollegeController extends Controller
     public function edit($id)
     {
         $collegeInfo = MedicalCollege::where('id',$id)->first();
-        $this->activity_log("edit College. { name:".$collegeInfo->name." id:".$collegeInfo->id." }", "edit");
+        //$this->activity_log("edit College. { name:".$collegeInfo->name." id:".$collegeInfo->id." }", "edit");
         return view('admin.medicalCollege.create')->with('collegeInfo', $collegeInfo);
     }
 
@@ -82,7 +82,7 @@ class MedicalCollegeController extends Controller
 
         $collegeInfo->name = $request->name;
         $collegeInfo->save();
-        $this->activity_log("updated Medical College. { name:".$collegeInfo->name." id:".$collegeInfo->id." }", "update");
+        //$this->activity_log("updated Medical College. { name:".$collegeInfo->name." id:".$collegeInfo->id." }", "update");
         session()->flash('success', 'Medical College updated successfully');
         return redirect()->route('medicalCollege.index');
 
@@ -102,7 +102,7 @@ class MedicalCollegeController extends Controller
             return redirect()->route('medicalCollege.index');
         }else{
             $medicalCollege = MedicalCollege::findOrFail($id);
-            $this->activity_log("deleted medical college { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
+            //$this->activity_log("deleted medical college { name:".$medicalCollege->name." id:".$medicalCollege->id." }", "destroy");
             $medicalCollege->delete();
             session()->flash('success', 'Medical College deleted successfully');
             return redirect()->route('medicalCollege.index');

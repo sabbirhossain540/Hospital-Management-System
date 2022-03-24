@@ -11,12 +11,12 @@ class UserController extends Controller
 {
     public function index(){
         $userList = User::where('role','!=','patient')->where('role','!=','doctor')->get();
-        $this->activity_log("get user list", "index");
+        //$this->activity_log("get user list", "index");
         return view('admin.user.index')->with('userlist', $userList);
     }
 
     public function create($type){
-        $this->activity_log("open user from", "create");
+        //$this->activity_log("open user from", "create");
         return view('admin.user.createForm')->with('usertype', $type);
     }
 
@@ -43,13 +43,13 @@ class UserController extends Controller
         $user->address = $request->address;
         $user->save();
         session()->flash('success', 'User created successfully');
-        $this->activity_log("store new user. { name:".$request->name." id:".$user->id." }", "store");
+        //$this->activity_log("store new user. { name:".$request->name." id:".$user->id." }", "store");
         return redirect()->route('userList');
     }
 
     public function edit($id){
         $userInfo = User::where('id',$id)->first();
-        $this->activity_log("edit user. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
+        //$this->activity_log("edit user. { name:".$userInfo->name." id:".$userInfo->id." }", "edit");
         return view('admin.user.edit')->with('userInfo', $userInfo)->with('editStatus','Normal');
     }
 
@@ -77,10 +77,10 @@ class UserController extends Controller
         session()->flash('success', 'User updated successfully');
 
         if($request->edittype == "PE"){
-            $this->activity_log("update my profile", "update");
+            //$this->activity_log("update my profile", "update");
             return redirect()->route('showProfile');
         }else{
-            $this->activity_log("update user. { name:".$user->name." id:".$user->id." }", "update");
+            //$this->activity_log("update user. { name:".$user->name." id:".$user->id." }", "update");
             return redirect()->route('userList');
         }
 
@@ -88,7 +88,7 @@ class UserController extends Controller
 
     public function delete($id){
         $user = User::findOrFail($id);
-        $this->activity_log("delete user. { name:".$user->name." id:".$user->id." }", "delete");
+        //$this->activity_log("delete user. { name:".$user->name." id:".$user->id." }", "delete");
         $user->delete();
         session()->flash('success', 'User deleted successfully');
         return redirect()->route('userList');
@@ -96,18 +96,18 @@ class UserController extends Controller
 
     public function showProfile(){
         $userProfile = User::where('id',auth()->user()->id)->first();
-        $this->activity_log("Show ". $userProfile->name ." user profile", "showProfile");
+        //$this->activity_log("Show ". $userProfile->name ." user profile", "showProfile");
         return view('admin.user.userProfile')->with('userProfile', $userProfile);
     }
 
     public function editProfile(){
         $userProfile = User::where('id',auth()->user()->id)->first();
-        $this->activity_log("Edit ". $userProfile->name ." user profile", "editProfile");
+        //$this->activity_log("Edit ". $userProfile->name ." user profile", "editProfile");
         return view('admin.user.edit')->with('userInfo', $userProfile)->with('editStatus','PE');
     }
 
     public function changePassword(){
-        $this->activity_log("View to password change page", "changePassword");
+        //$this->activity_log("View to password change page", "changePassword");
         return view('admin.user.passwordChange');
     }
 
@@ -121,16 +121,16 @@ class UserController extends Controller
                 $getUserPassword->save();
 
                 session()->flash('success', 'Password has been changed successfully');
-                $this->activity_log("Successfully Password Chage", "updatePassword");
+                //$this->activity_log("Successfully Password Chage", "updatePassword");
                 return redirect()->route('showProfile');
             }else{
                 session()->flash('error', 'new password and confirm password not match!!');
-                $this->activity_log("new password and confirm password not match!!", "updatePassword");
+                //$this->activity_log("new password and confirm password not match!!", "updatePassword");
                 return redirect()->route('changePassword')->with('passwordSubmitData',$request->all());
             }
         }else{
             session()->flash('error', 'Old password not match!!');
-            $this->activity_log("Old password not match", "updatePassword");
+            //$this->activity_log("Old password not match", "updatePassword");
             return redirect()->route('changePassword')->with('passwordSubmitData',$request->all());
         }
     }
