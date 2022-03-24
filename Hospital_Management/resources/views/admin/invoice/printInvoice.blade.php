@@ -56,9 +56,9 @@
         <thead>
         <tr>
             <th width="10%">SN</th>
-            <th width="50%" colspan="3">Service Name</th>
-            <th width="20%" class="text-center" >Room No</th>
-            <th width="20%">Price</th>
+            <th width="45%" colspan="3">Service Name</th>
+            <th width="30%" class="text-center" >Room No</th>
+            <th width="15%">Price</th>
 
 
 {{--            <th width="10%">Quantity</th>--}}
