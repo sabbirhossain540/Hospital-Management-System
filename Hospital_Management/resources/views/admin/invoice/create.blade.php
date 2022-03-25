@@ -1,6 +1,7 @@
 @extends('admin.layouts')
 
 @section("content")
+
     <script>
         $( document ).ready(function() {
             $("#dwAddress").hide();
@@ -16,6 +17,10 @@
                     $("#dwAddress").hide();
                     $("#dwNewPatientArea").hide();
                 }
+            });
+
+            $(".js-example-responsive").select2({
+                width: 'resolve'
             });
         });
     </script>
@@ -85,7 +90,7 @@
                             </div>
 
                             <div class="col-md-6" id="dwPatient">
-                                <label for="pn">Patient Name</label>
+                                <label for="pn">Patient Name</label><br>
                                 <select name="pataint_id" id="pataint_id" class="form-control search-option" required>
                                     <option value="">Select Patient Name</option>
                                     @foreach($patientList as $patient)
@@ -97,7 +102,7 @@
                                 @enderror
                             </div>
                             <div class="col-md-6">
-                                <label for="pn">Doctor Name</label>
+                                <label for="pn">Doctor Name</label><br>
                                 <select name="doctor_id" id="doctor_id" class="form-control search-option" required>
                                     <option value="">Select Doctor Name</option>
                                     @foreach($doctorList as $doctor)
@@ -193,14 +198,24 @@
                                                 <div class="col">
                                                     <input type="hidden" name="csrf-token" id="csrf-token" value="{{ csrf_token() }}">
                                                     <input type="hidden" name="id" id="id">
+
+
                                                     <label for="pn">Item Name</label>
                                                     <input type="hidden" name="service_name" id="service_name" class="form-control" readonly>
-                                                    <select name="service_id" id="service_id" class="form-control" onchange="getProductDetails()" required>
+
+                                                    <select name="service_id" id="service_id"  class="js-example-responsive" style="width: 100%" onchange="getProductDetails()" required>
                                                         <option value="">Select a service</option>
                                                         @foreach($serviceList as $service)
                                                             <option value="{{ $service->id }}">{{ $service->name }}</option>
                                                         @endforeach
                                                     </select>
+
+{{--                                                    <select name="service_id" id="service_id" class="js-example-responsive" onchange="getProductDetails()" required>--}}
+{{--                                                        <option value="">Select a service</option>--}}
+{{--                                                        @foreach($serviceList as $service)--}}
+{{--                                                            <option value="{{ $service->id }}">{{ $service->name }}</option>--}}
+{{--                                                        @endforeach--}}
+{{--                                                    </select>--}}
                                                     @error('service_id')
                                                     <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -266,6 +281,11 @@
 
     <script>
         $(".search-option").select2({
+            tags: true
+        });
+
+
+        $(".search-option1").select2({
             tags: true
         });
 
