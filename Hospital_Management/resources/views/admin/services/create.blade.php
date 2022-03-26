@@ -31,12 +31,31 @@
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
-                        <div class="row mb-3">
                             <div class="col">
                                 <label for="mcn">Price</label>
                                 <input type="number" name="price" id="price" class="form-control" placeholder="Enter service price" @if(isset($serviceInfo)) value="{{ $serviceInfo->price }}" @else value="{{ old('price') }} @endif" required>
                                 @error('price')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label for="mcn">Discount Type</label>
+                                <select name="discountType" id="discountType" class="form-control" required>
+                                    <option value="">Select Type</option>
+                                    <option value="0">Not Fixed</option>
+                                    <option value="1">Fixed</option>
+                                </select>
+                                @error('discountType')
+                                <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label for="mcn">Max. Discount</label>
+                                <input type="number" name="maxDiscount" id="maxDiscount" class="form-control" placeholder="Enter maximum discount amount (taka)" @if(isset($serviceInfo)) value="{{ $serviceInfo->price }}" @else value="{{ old('price') }} @endif" required>
+                                @error('maxDiscount')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
