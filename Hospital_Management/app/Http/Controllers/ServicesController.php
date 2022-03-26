@@ -42,12 +42,21 @@ class ServicesController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'price' => 'required',
+            'discountType' => 'required',
         ]);
 
+
+        /*
+         * 0 == Not Fixed
+         * 1 = Not Fixed
+         *
+         */
         $services = new Services();
         $services->name = $request->name;
         $services->price = $request->price;
         $services->room_no = $request->room_no;
+        $services->discountType = $request->discountType;
+        $services->maxDiscount = $request->maxDiscount;
         $services->save();
 
         session()->flash('success', $request->name.' created successfully');
@@ -83,11 +92,14 @@ class ServicesController extends Controller
         $this->validate($request, [
             'name' => 'required',
             'price' => 'required',
+            'discountType' => 'required',
         ]);
 
         $serviceInfo->name = $request->name;
         $serviceInfo->price = $request->price;
         $serviceInfo->room_no = $request->room_no;
+        $serviceInfo->discountType = $request->discountType;
+        $serviceInfo->maxDiscount = $request->maxDiscount;
         $serviceInfo->save();
         //$this->activity_log("updated service. { name:".$serviceInfo->name." id:".$serviceInfo->id." }", "update");
         session()->flash('success', $serviceInfo->name.' service updated successfully');

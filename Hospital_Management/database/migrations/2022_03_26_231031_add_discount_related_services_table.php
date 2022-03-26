@@ -14,7 +14,7 @@ class AddDiscountRelatedServicesTable extends Migration
     public function up()
     {
         Schema::table('services', function (Blueprint $table) {
-            $table->string('discountType')->after('price');
+            $table->string('discountType')->after('price')->default(0);
             $table->string('maxDiscount')->after('discountType')->nullable();
         });
     }

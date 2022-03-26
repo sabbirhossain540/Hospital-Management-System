@@ -1,6 +1,20 @@
 @extends('admin.layouts')
 
 @section("content")
+    <script>
+        $( document ).ready(function() {
+            $("#depType").hide();
+        });
+
+        function test(){
+            var disType = $( "#discountType" ).val();
+            if(disType == 1){
+                $("#depType").show();
+            }else{
+                $("#depType").hide();
+            }
+        }
+    </script>
 
     <div class="row justify-content-md-center">
         <div class="col-md-10">
@@ -43,18 +57,18 @@
                         <div class="row mb-3">
                             <div class="col">
                                 <label for="mcn">Discount Type</label>
-                                <select name="discountType" id="discountType" class="form-control" required>
+                                <select name="discountType" id="discountType" class="form-control" onchange="test()" required>
                                     <option value="">Select Type</option>
-                                    <option value="0">Not Fixed</option>
-                                    <option value="1">Fixed</option>
+                                    <option @if(isset($serviceInfo))@if($serviceInfo->discountType == 0) selected @endif @endif value="0">Not Fixed</option>
+                                    <option @if(isset($serviceInfo))@if($serviceInfo->discountType == 1) selected @endif @endif value="1">Fixed</option>
                                 </select>
                                 @error('discountType')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="col">
+                            <div class="col" id="depType">
                                 <label for="mcn">Max. Discount</label>
-                                <input type="number" name="maxDiscount" id="maxDiscount" class="form-control" placeholder="Enter maximum discount amount (taka)" @if(isset($serviceInfo)) value="{{ $serviceInfo->price }}" @else value="{{ old('price') }} @endif" required>
+                                <input type="number" name="maxDiscount" id="maxDiscount" class="form-control" placeholder="Enter maximum discount amount (taka)" @if(isset($serviceInfo)) value="{{ $serviceInfo->maxDiscount }}" @else value="{{ old('maxDiscount') }} @endif">
                                 @error('maxDiscount')
                                 <span class="text-danger">{{ $message }}</span>
                                 @enderror
