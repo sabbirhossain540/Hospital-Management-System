@@ -173,6 +173,7 @@ class ReportController extends Controller
             $discountAmount = 0;
             $totalAmount = 0;
             foreach($record->invoiceDetails as $ids){
+
                 $subtotal = $subtotal + $ids->subtotal;
                 $discount = $ids->subtotal * $ids->discount / 100;
                 $discountAmount = $discountAmount + $discount;

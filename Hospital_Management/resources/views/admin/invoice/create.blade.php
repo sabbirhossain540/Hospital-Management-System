@@ -295,6 +295,8 @@
             flatpickr("#ic_date");
         });
 
+
+
         let arr = []
         $(".main-form-submit").click(function(event){
             event.preventDefault();
@@ -353,6 +355,8 @@
         });
 
         let serviceDiscountAmount = 0;
+        let serviceType = 0;
+        let serMaxDiscount = 0;
 
         function showDataOnGrid(){
 
@@ -438,6 +442,8 @@
                 url:"{{url('getServiceInfo')}}/"+service_id,
                 success: function(data) {
                     console.log(data);
+                    serviceType = data.discountType;
+                    serMaxDiscount = data.maxDiscount;
                     $('#price').val(data.price);
                     $('#service_name').val(data.name);
                     $('#quantity').val(1);
@@ -456,6 +462,15 @@
             var discounted_price = totalAmount - (totalAmount * discount / 100)
             $('#subTotal').val(Math.floor(totalAmount));
             $('#total').val(Math.floor(discounted_price));
+
+            if(serviceType == 1){
+                let discountCalculation = totalAmount * discount / 100;
+                if(discountCalculation > serMaxDiscount){
+                    alert("Sorry! Discount Amount Cross Maximum Limit");
+                    $("#discount").val(0);
+                    $('#total').val(totalAmount);
+                }
+            }
         }
         function formReset(){
             $('#service_id').val('');

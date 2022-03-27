@@ -288,7 +288,6 @@ class InvoiceController extends Controller
         }
         $Different =  $tSubtotal - (($totalDiscountAmount + $invoiceInfo->discountAmount) + $invoiceInfo->paidAmount + $invoiceInfo->dueAmount);
         $totalDiscountAmount = $totalDiscountAmount + $Different;
-
         $totalDiscountAmount += $invoiceInfo->discountAmount;
         $totalAmount -= $invoiceInfo->discountAmount;
 
