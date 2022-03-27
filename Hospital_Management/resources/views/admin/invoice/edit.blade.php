@@ -202,6 +202,9 @@
         $( document ).ready(function() {
             let pAmount = "{{$invoiceList->paidAmount}}";
             let dAmount = "{{$invoiceList->dueAmount}}";
+            let disAmount = "{{$invoiceList->discountAmount}}";
+            let totalSeviceDiscount = 0;
+
             @foreach($invoiceList->invoiceDetails as $invoiceList)
             arr.push({
                 "id": "{{ $invoiceList->getServiceName->id }}",
@@ -213,14 +216,21 @@
                 "total": {{ $invoiceList->total }},
                 "service_name":"{{ $invoiceList->getServiceName->name }}"
             });
+
+            totalSeviceDiscount += (parseInt({{ $invoiceList->subtotal }}) * parseInt({{ $invoiceList->discount }}) / 100);
             @endforeach
+
             calculatePrice();
             showDataOnGrid();
 
             $('#paidAmount').val(pAmount);
             $('#dueAmount').val(dAmount);
+            $('#discountAmount').val(disAmount);
+            let totalDiscountCalculation = parseInt(totalSeviceDiscount) + parseInt(disAmount);
+            $('#totalDiscountAmount').val(totalDiscountCalculation);
 
         });
+
         $(".main-form-submit").click(function(event){
             event.preventDefault();
             let _token   = $("#csrf-token").val();
@@ -231,6 +241,7 @@
             let remark   = $("#remark").val();
             let id = $("#invoiceId").val();
             let paidAmount   = $("#paidAmount").val();
+            let discountAmount   = $("#discountAmount").val();
             let dueAmount   = $("#dueAmount").val();
             $.ajax({
                 url: "{{route('invoices.store')}}",
@@ -243,6 +254,7 @@
                     ic_date:ic_date,
                     remark:remark,
                     paidAmount:paidAmount,
+                    discountAmount:discountAmount,
                     dueAmount:dueAmount,
                     invoice_details: arr,
                     _token: _token
@@ -257,6 +269,9 @@
                 },
             });
         });
+
+        let serviceDiscountAmount = 0;
+
         function showDataOnGrid(){
             let totalSubTotal = 0;
             let totalDiscountAmount = 0;
@@ -266,26 +281,41 @@
                 var discounted_price = (parseInt(arr[i].subTotal) * parseInt(arr[i].discount) / 100);
                 totalDiscountAmount = totalDiscountAmount + discounted_price;
                 totalPayble = totalPayble + parseInt(arr[i].total);
-                var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].subTotal + '</td><td>' + arr[i].discount + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
+                var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].subTotal + '</td><td>' + arr[i].discount + '</td><td>' + Math.floor(arr[i].total) + '</td><td><button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 //var row = $('<tr class="rowTrack"><td>' + arr[i].service_name+ '</td><td>' + arr[i].price + '</td><td>' + arr[i].quantity + '</td><td>' + arr[i].total + '</td><td><button class="btn btn-outline-info btn-sm" onclick="handleEdit(' + arr[i].id + ')"><i class="far fa-edit"></i></button> <button class="btn btn-outline-danger btn-sm" onclick="handleDelete(' + arr[i].id + ')"><i class="fas fa-trash-alt"></i></button></td></tr>');
                 $('#myTable').append(row);
             }
-            let rose = $('<tr class="rowTrack"><td class="text-right" colspan="4">Subtotal <br> +VAT TK, <br> -Discount TK <br> Payble TK. <br> Paid <br> Due Amount</td>' +
-                '<td colspan="2" class="text-center">'+totalSubTotal+'<br>0 <br>'+Math.floor(totalDiscountAmount)+'<br>'+totalPayble+'<br> <input type="number" name="paidAmount" id="paidAmount" onkeyup="calculatePaidAmount('+totalPayble+')" style="width: 80px;text-align: center;border-radius: 10px;outline: none;"> <br><input type="number" name="dueAmount" id="dueAmount" readonly style="width: 80px;text-align: center;border-radius: 10px;outline: none;"></td></tr>');
+
+            let rose = $('<tr class="rowTrack"><td class="text-right" colspan="4">Subtotal <br> +VAT TK, <br> <p style="margin-top: 5px; margin-bottom: -15px;">-Total Discount TK</p> <br> Payble TK. <br> Paid Amount <br> <p style="margin-top: 9px; margin-bottom: -15px;">General Discount</p>  <br> Due Amount</td>' +
+                '<td colspan="2" class="text-center">'+totalSubTotal+'<br>0 <br>'+'<input type="number" name="totalDiscountAmount" id="totalDiscountAmount" readonly style="width: 80px;text-align: center;border-radius: 10px;outline: none;">'+'<br>'+'<input type="number" name="totalPayble" id="totalPayble" readonly style="width: 80px;text-align: center;border-radius: 10px;outline: none;">'+'<br> <input type="number" name="paidAmount" id="paidAmount" onkeyup="calculatePaidAmount('+totalPayble+')" style="width: 80px;text-align: center;border-radius: 10px;outline: none;"><br> <input type="number" name="discountAmount" id="discountAmount" onkeyup="calculatePaidAmount('+totalPayble+')" style="width: 80px;text-align: center;border-radius: 10px;outline: none;"> <br><input type="number" name="dueAmount" id="dueAmount" readonly style="width: 80px;text-align: center;border-radius: 10px;outline: none;"></td></tr>');
             $('#myTable').append(rose);
             //$('#paidAmount').val(0);
             $('#dueAmount').val(totalPayble);
+            //$('#discountAmount').val(0);
+            $('#totalPayble').val(Math.floor(totalPayble));
+            $('#totalDiscountAmount').val(Math.floor(totalDiscountAmount));
+            serviceDiscountAmount = totalDiscountAmount;
         }
 
 
         function calculatePaidAmount(payble){
             let paidAmount = $("#paidAmount").val();
+            let discountAmount = $("#discountAmount").val();
+
             if(paidAmount == ''){
                 $('#paidAmount').val(0);
             }
 
+            if(discountAmount == ''){
+                $('#discountAmount').val(0);
+            }
+
             let remainingAmount = parseInt(payble) - parseInt(paidAmount);
+            remainingAmount = parseInt(remainingAmount) - parseInt(discountAmount);
+
+            let discountCalculation = parseInt(discountAmount) + parseInt(serviceDiscountAmount);
             $('#dueAmount').val(remainingAmount);
+            $('#totalDiscountAmount').val(discountCalculation);
 
             if(paidAmount == ''){
                 $('#dueAmount').val(payble);

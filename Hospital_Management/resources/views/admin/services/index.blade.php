@@ -18,9 +18,10 @@
                     <thead>
                     <tr>
                         <th width="5%">SN</th>
-                        <th width="30%">Name</th>
+                        <th width="20%">Name</th>
                         <th width="20%">Price</th>
                         <th width="20%">Room No</th>
+                        <th width="20%">Discount Type</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -31,6 +32,7 @@
                             <td>{{ $service->name }}</td>
                             <td>{{ $service->price }}</td>
                             <td>{{ $service->room_no }}</td>
+                            <td>@if($service->discountType == 1) Fixed ({{ $service->maxDiscount }}) @else Not Fixed @endif </td>
                             <td>
                                 <a href="{{route('services.edit',$service->id)}}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
                                 <button class="btn btn-danger btn-sm" onclick="handleDelete({{ $service->id }})"><i class="fas fa-trash-alt"></i></button>

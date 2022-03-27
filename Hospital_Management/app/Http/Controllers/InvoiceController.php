@@ -75,6 +75,7 @@ class InvoiceController extends Controller
             $invoiceMaster->ic_date = $request->ic_date;
             $invoiceMaster->remark = $request->remark;
             $invoiceMaster->paidAmount = $request->paidAmount;
+            $invoiceMaster->discountAmount = $request->discountAmount;
             $invoiceMaster->dueAmount = $request->dueAmount;
             $invoiceMaster->save();
 
@@ -145,6 +146,7 @@ class InvoiceController extends Controller
             $invoiceMaster->ic_date = $request->ic_date;
             $invoiceMaster->remark = $request->remark;
             $invoiceMaster->paidAmount = $request->paidAmount;
+            $invoiceMaster->discountAmount = $request->discountAmount;
             $invoiceMaster->dueAmount = $request->dueAmount;
             $invoiceMaster->created_user = Auth::user()->id;
             $invoiceMaster->save();
@@ -193,7 +195,16 @@ class InvoiceController extends Controller
             $invoiceList['disAmount'] = floor($disCalculate);
         }
 
-        return view('admin.invoice.show', compact('invoiceInfo', 'totalAmount', 'totalQuantity', 'tSubtotal', 'totalDiscountAmount'));
+
+
+        //$totalDiscountAmount += $invoiceInfo->discountAmount;
+        $generalDiscount = $invoiceInfo->discountAmount;
+        $totalAmount -= $invoiceInfo->discountAmount;
+
+        $Different =  $tSubtotal - (($totalDiscountAmount + $invoiceInfo->discountAmount) + $invoiceInfo->paidAmount + $invoiceInfo->dueAmount);
+        $totalDiscountAmount = $totalDiscountAmount + $Different;
+
+        return view('admin.invoice.show', compact('invoiceInfo', 'totalAmount', 'totalQuantity', 'tSubtotal', 'totalDiscountAmount', 'generalDiscount'));
     }
 
     /**
@@ -275,6 +286,13 @@ class InvoiceController extends Controller
             $totalDiscountAmount = $totalDiscountAmount + floor($disCalculate);
             $invoiceList['disAmount'] = floor($disCalculate);
         }
+        $Different =  $tSubtotal - (($totalDiscountAmount + $invoiceInfo->discountAmount) + $invoiceInfo->paidAmount + $invoiceInfo->dueAmount);
+        $totalDiscountAmount = $totalDiscountAmount + $Different;
+
+        $totalDiscountAmount += $invoiceInfo->discountAmount;
+        $totalAmount -= $invoiceInfo->discountAmount;
+
+
 
         $customPaper = array(0,0,380,576);
         $pdf = PDF::loadView('admin.invoice.printInvoice', compact('invoiceInfo', 'totalAmount', 'totalQuantity', 'tSubtotal', 'totalDiscountAmount'))->setPaper($customPaper, 'portrait');;

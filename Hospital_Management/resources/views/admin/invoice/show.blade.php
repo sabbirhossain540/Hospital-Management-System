@@ -67,8 +67,8 @@
                         </tr>
                     @endforeach
                         <tr>
-                            <td colspan="2" align="right" class="text-dark">Sub total <br> +VAT TK. <br> -Discount TK. <br>Net Payble <br> Advanced Tk <br> Due TK</td>
-                            <td class="text-dark">{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
+                            <td colspan="2" align="right" class="text-dark">Sub total <br> +VAT TK. <br> -Discount TK. <br> -General Dis. <br>Net Payble <br> Paid Amount <br> Due TK</td>
+                            <td class="text-dark">{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $generalDiscount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
 {{--                            <td>{{ $totalDiscountAmount }}</td>--}}
 {{--                            <td>{{ $totalAmount }}</td>--}}
                         </tr>
