@@ -162,25 +162,29 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $recordList = Invoice::with('invoiceDetails', 'getReference', 'getPatient', 'getDoctor')
+        $recordList = Invoice::with('invoiceDetails', 'invoiceDetails.getInvoiceInfo.getReference', 'getReference', 'getPatient', 'getDoctor')
             ->where('reference_id', $referenceId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->orderBy('created_at', 'DESC')
             ->get();
+
         foreach($recordList as $record){
             $subtotal = 0;
             $discountAmount = 0;
             $totalAmount = 0;
-            foreach($record->invoiceDetails as $ids){
+            $referenceAmount = 0;
 
+            foreach($record->invoiceDetails as $ids){
                 $subtotal = $subtotal + $ids->subtotal;
                 $discount = $ids->subtotal * $ids->discount / 100;
                 $discountAmount = $discountAmount + $discount;
                 $totalAmount = $totalAmount + $ids->total;
+                $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                $referenceAmount = $ids->subtotal * $refferalCommision / 100;
             }
 
-            $referenceAmount = $totalAmount * $record->getReference->comission / 100;
+            $referenceAmount = $referenceAmount - $record->discountAmount;
 
             $record['subtotal'] = floor($subtotal);
             $record['discount'] = floor($discountAmount);
@@ -228,6 +232,8 @@ class ReportController extends Controller
                 $discountAmount = $discountAmount + $discount;
                 $totalAmount = $totalAmount + $ids->total;
             }
+
+
 
             $referenceAmount = $totalAmount * $record->getReference->comission / 100;
 
