@@ -46,7 +46,7 @@
                         <th width="5%">Sub Total</th>
                         <th width="10%">Service / Test Discount</th>
                         <th width="10%">General Discount</th>
-                        <th width="10%">Total</th>
+                        <th width="10%">Paid Amount</th>
                         <th width="10%">Referal Amount</th>
                     </tr>
                     </thead>
@@ -134,7 +134,7 @@
                         $('#myTable').append(row);
                     }
 
-                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="4">Refferal Commission: '+ referelCommission + '</td><td style="text-align: right;">Total</td><td>' + totalSubtotal + '</td><td>' + totalDiscount + '</td><td>' + generalDiscount + '</td><td>' + totalAmount + '</td><td>' + totalRefaralAmount + '</td></tr>');
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="4">Refferal Commission: '+ referelCommission + '%</td><td style="text-align: right;">Total</td><td>' + totalSubtotal + '</td><td>' + totalDiscount + '</td><td>' + generalDiscount + '</td><td>' + totalAmount + '</td><td>' + totalRefaralAmount + '</td></tr>');
                     $('#myTable').append(finalRow);
 
                     $( ".print-report" ).show();
