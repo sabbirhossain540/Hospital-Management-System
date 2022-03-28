@@ -106,6 +106,11 @@ Route::get('/getDoctorWiseReport', 'ReportController@getDoctorWiseReport')->name
 Route::get('/generateDoctorWiseReport/{fromDate}/{toDate}/{doctorId}/{type}', 'ReportController@generateDoctorWiseReport')->name('generateDoctorWiseReport');
 Route::get('/generatePdfDoctorWiseReport/{fromDate}/{toDate}/{doctorId}/{type}', 'ReportController@generatePdfDoctorWiseReport')->name('generatePdfDoctorWiseReport');
 
+//Account Summary Report
+Route::get('/getAccountSummaryReport', 'ReportController@getAccountSummaryReport')->name('getAccountSummaryReport');
+Route::get('/generateAccountSummaryReport/{fromDate}/{toDate}', 'ReportController@generateAccountSummaryReport')->name('generateAccountSummaryReport');
+Route::get('/generatePdfAccountSummaryReport/{fromDate}/{toDate}', 'ReportController@generatePdfAccountSummaryReport')->name('generatePdfAccountSummaryReport');
+
 
 Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog');
 
@@ -113,5 +118,8 @@ Route::get('/getActiveLog', 'ActiveController@getActiveLog')->name('getActiveLog
 Route::get('/test', 'ReportController@test')->name('test');
 
 //
+
+
+
 
 

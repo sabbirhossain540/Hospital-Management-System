@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ExpenceCategory;
+use App\Expense;
 use App\ExpenseDetails;
 use App\Invoice;
 use App\InvoiceDetails;
@@ -528,6 +529,88 @@ class ReportController extends Controller
         //return $pdf->stream();
         return $pdf->download($pdfName);
     }
+
+
+    //Account Summary Report
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getAccountSummaryReport(){
+        return view('admin.report.accountSummaryReport');
+    }
+
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function generateAccountSummaryReport($fromDate, $toDate){
+        if(date('Y-m-d') == $toDate){
+            $toDate = Carbon::parse($toDate)->addDays(1);
+        }
+
+        $invoiceList = Invoice::with('invoiceDetails')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalIncome = 0;
+        foreach($invoiceList as $list){
+            $totalIncome += $list->paidAmount;
+        }
+
+        $expenseList = Expense::with('expenseDetails')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalExpense = 0;
+        foreach($expenseList as $list){
+            $totalExpense += $list->amount;
+        }
+        $finalResult = [$totalIncome, $totalExpense];
+
+        return $finalResult;
+    }
+
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return mixed
+     */
+    public function generatePdfAccountSummaryReport($fromDate, $toDate){
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
+        $pdfName = "ExpenseReport(".$fromDate."/".$toDate.").pdf";
+        if(date('Y-m-d') == $toDate){
+            $toDate = Carbon::parse($toDate)->addDays(1);
+        }
+
+        $invoiceList = Invoice::with('invoiceDetails')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalIncome = 0;
+        foreach($invoiceList as $list){
+            $totalIncome += $list->paidAmount;
+        }
+
+        $expenseList = Expense::with('expenseDetails')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalExpense = 0;
+        foreach($expenseList as $list){
+            $totalExpense += $list->amount;
+        }
+
+        $profitCalculation = $totalIncome - $totalExpense;
+
+        $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
+
+        $pdf = PDF::loadView('admin.report.accountSummaryReportPdf', compact('totalIncome', 'totalExpense', 'profitCalculation', 'fromDate', 'originalToDate'));
+        //return $pdf->stream();
+        return $pdf->download($pdfName);
+    }
+
 
 //    public function test(){
 //        //dd("Here");
