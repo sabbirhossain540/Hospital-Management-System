@@ -31,14 +31,16 @@
                     <thead>
                     <tr>
                         <th width="5%">SN</th>
-                        <th width="15%">Sales Date</th>
-                        <th width="25%">Service Name</th>
-                        <th width="15%">Refarence</th>
-                        <th width="10%">Price</th>
-                        <th width="5%">Quantity</th>
-                        <th width="10%">Subtotal</th>
-                        <th width="5%">Discount</th>
-                        <th width="10%">Total</th>
+                        <th width="10%">Sales Date</th>
+                        <th width="15%">IV No</th>
+                        <th width="15%">Patient Name</th>
+                        <th width="15%">Doctor Name</th>
+                        <th width="15%">Reference Name</th>
+                        <th width="5%">Sub Total</th>
+                        <th width="5%">Service Discount</th>
+                        <th width="5%">General Discount</th>
+                        <th width="5%">Total</th>
+                        <th width="5%">Due</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -96,33 +98,47 @@
                 type:"GET",
                 url:"{{url('generateSalesReport')}}/"+fromDate+"/"+toDate,
                 success: function(data) {
-                    console.log(data);
-                    let totalAmount = 0;
-                    let totalQuantity = 0;
-                    let totalSubTotal = 0;
-                    let totalDiscount = 0;
+                    //console.log(data);
+
+                    let totalSubtotal = 0;
+                    let totalServiceDiscount = 0;
+                    let totalGeneralDiscount = 0;
+                    let totalPaidAmount = 0;
+                    let dueAmount = 0;
+
                     for (var i=0; i<data.length; i++) {
-                        let serviceName = data[i].get_service_name['name'];
+
+                        let subtotal = 0;
+                        let discountCalculation = 0;
+                        for(var j=0; j<data[i].invoice_details.length; j++){
+                            subtotal = parseInt(subtotal)+parseInt(data[i].invoice_details[j]['price']);
+                            discountCalculation = discountCalculation + parseInt(data[i].invoice_details[j]['subtotal']) * parseInt(data[i].invoice_details[j]['discount']) / 100;
+                        }
+
+
+                        let doctorName = data[i].get_doctor['name'];
+                        let patientName = data[i].get_patient['name'];
 
                         let refName = ''
-                        if(data[i].get_invoice_info.reference_id != null){
-                             refName = data[i].get_invoice_info.get_reference['name'];
+                        if(data[i].get_reference['name'] != null){
+                            refName = data[i].get_reference['name'];
                         }else{
-                             refName = '';
+                            refName = '';
                         }
 
                         let serial_no = i+1;
-                        totalAmount = totalAmount + parseInt(data[i].total);
-                        totalQuantity = totalQuantity + parseInt(data[i].quantity);
-                        totalSubTotal = totalSubTotal + parseInt(data[i].subtotal);
-                        let discountAmount = parseInt(data[i].subtotal) * parseInt(data[i].discount) / 100;
-                        totalDiscount = totalDiscount + discountAmount;
+                        totalSubtotal = totalSubtotal + parseInt(subtotal);
+                        totalServiceDiscount = totalServiceDiscount + parseInt(discountCalculation);
+                        totalGeneralDiscount = totalGeneralDiscount + parseInt(data[i].discountAmount);
+                        totalPaidAmount = totalPaidAmount + parseInt(data[i].paidAmount);
+                        dueAmount = dueAmount + parseInt(data[i].dueAmount);
+
                         let formatedDate = formatDate(data[i].created_at);
-                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + serviceName + '</td><td>' + refName + '</td><td>' + data[i].price + '</td><td>' + data[i].quantity + '</td><td>' + data[i].subtotal + '</td><td>' + discountAmount +'('+data[i].discount+'%)' + '</td><td>' + data[i].total + '</td></tr>');
+                        let row = $('<tr class="rowTrack"><td>' + serial_no + '</td><td>' + formatedDate + '</td><td>' + data[i].iv_no + '</td><td>' + patientName + '</td><td>' + doctorName + '</td><td>' + refName + '</td><td>' + subtotal + '</td><td>' + Math.floor(discountCalculation) + '</td><td>' + data[i].discountAmount + '</td><td>' + data[i].paidAmount + '</td><td>' + data[i].dueAmount + '</td></tr>');
                         $('#myTable').append(row);
                     }
 
-                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="5" style="text-align: right;">Total</td><td>' + totalQuantity + '</td><td>' + totalSubTotal + '</td><td>' + totalDiscount + '</td><td>' + totalAmount + '</td></tr>');
+                    let finalRow = $('<tr class="rowTrack" style="font-weight: bold;"><td colspan="6" style="text-align: right;">Total</td><td>' + totalSubtotal + '</td><td>' + totalServiceDiscount + '</td><td>' + totalGeneralDiscount + '</td><td>' + totalPaidAmount + '</td><td>' + dueAmount  + '</td></tr>');
                     $('#myTable').append(finalRow);
 
                     $( ".print-report" ).show();

@@ -77,9 +77,14 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $recordList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getReference')->where('created_at', '>=', $fromDate)
+
+        $recordList = Invoice::with('getReference', 'getDoctor', 'getPatient', 'invoiceDetails', 'invoiceDetails.getServiceName')->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->get();
+
+//        $recordList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getReference')->where('created_at', '>=', $fromDate)
+//            ->where('created_at', '<=', $toDate)
+//            ->get();
 //        return $toDate;
 //        $endDate =  Carbon::parse($toDate)->addDays(1);
 //        $endDate = $endDate->format('Y-m-d');
