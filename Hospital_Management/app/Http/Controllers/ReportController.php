@@ -231,12 +231,32 @@ class ReportController extends Controller
                 }
             }else{
                 foreach($record->invoiceDetails as $ids){
-                    $subtotal = $subtotal + $ids->subtotal;
-                    $discount = $ids->subtotal * $ids->discount / 100;
-                    $discountAmount = $discountAmount + $discount;
-                    $totalAmount = $totalAmount + $ids->total;
-                    $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
-                    $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+
+                    if($ids->getServiceName['discountType'] == 1){
+                        $subtotal = $subtotal + $ids->subtotal;
+                        $discount = $ids->subtotal * $ids->discount / 100;
+                        $discountAmount = $discountAmount + $discount;
+                        $totalAmount = $totalAmount + $ids->total;
+
+                        //$totalDiscount = $discount + $ids->getInvoiceInfo['discountAmount'];
+                        $refAmount = $ids->getServiceName['maxDiscount'] - $discount;
+                        if($refAmount > 0){
+                            $referenceAmount += $refAmount;
+                        }else{
+                            $referenceAmount += 0;
+                        }
+                    }else{
+
+                        $subtotal = $subtotal + $ids->subtotal;
+
+                        $discount = $ids->subtotal * $ids->discount / 100;
+                        $discountAmount = $discountAmount + $discount;
+                        $totalAmount = $totalAmount + $ids->total;
+                        $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                        $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+
+                    }
+
                 }
 
                 $referenceAmount = $referenceAmount - $record->discountAmount;
@@ -319,12 +339,31 @@ class ReportController extends Controller
                 }
             }else{
                 foreach($record->invoiceDetails as $ids){
-                    $subtotal = $subtotal + $ids->subtotal;
-                    $discount = $ids->subtotal * $ids->discount / 100;
-                    $discountAmount = $discountAmount + $discount;
-                    $totalAmount = $totalAmount + $ids->total;
-                    $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
-                    $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+
+                    if($ids->getServiceName['discountType'] == 1){
+                        $subtotal = $subtotal + $ids->subtotal;
+                        $discount = $ids->subtotal * $ids->discount / 100;
+                        $discountAmount = $discountAmount + $discount;
+                        $totalAmount = $totalAmount + $ids->total;
+
+                        $refAmount = $ids->getServiceName['maxDiscount'] - $discount;
+                        if($refAmount > 0){
+                            $referenceAmount += $refAmount;
+                        }else{
+                            $referenceAmount += 0;
+                        }
+                    }else{
+
+                        $subtotal = $subtotal + $ids->subtotal;
+
+                        $discount = $ids->subtotal * $ids->discount / 100;
+                        $discountAmount = $discountAmount + $discount;
+                        $totalAmount = $totalAmount + $ids->total;
+                        $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                        $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+
+                    }
+
                 }
 
                 $referenceAmount = $referenceAmount - $record->discountAmount;
