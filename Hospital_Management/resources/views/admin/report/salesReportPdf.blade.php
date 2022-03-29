@@ -21,18 +21,20 @@
 
 <h6 class="text-center mb-4">Date Range: {{ $fromDate }} -- {{ $originalToDate }}</h6>
 
-<table class="table table-sm table-bordered">
+<table class="table table-sm table-bordered" style="font-size: 10px;">
     <thead>
     <tr>
-        <th class="text-center" scope="col">SN</th>
-        <th class="text-center" scope="col">Sales Date</th>
-        <th class="text-center" scope="col">Service Name</th>
-        <th class="text-center" scope="col">Ref Name</th>
-        <th class="text-center" scope="col">Price</th>
-        <th class="text-center" scope="col">Quantity</th>
+        <th class="text-center" scope="col" width="5%">SN</th>
+        <th class="text-center" scope="col" width="5%">Sales Date</th>
+        <th class="text-center" scope="col">IV No</th>
+        <th class="text-center" scope="col">Patient Name</th>
+        <th class="text-center" scope="col">Doctor Name</th>
+        <th class="text-center" scope="col">Reference Name</th>
         <th class="text-center" scope="col">Sub Total</th>
-        <th class="text-center" scope="col">Discount(%)</th>
+        <th class="text-center" scope="col">Service Discount</th>
+        <th class="text-center" scope="col">General Discount</th>
         <th class="text-center" scope="col">Total</th>
+        <th class="text-center" scope="col">Due</th>
     </tr>
     </thead>
     <tbody>
@@ -40,23 +42,25 @@
             <tr>
                 <td>{{ $key+1 }}</td>
                 <td>{{ $list->created_at->format('d/m/Y') }}</td>
-                <td>@if(!empty($list->getServiceName->name)){{ $list->getServiceName->name }}@endif</td>
-{{--                <td>{{ $list->getInvoiceInfo->getReference->name }}</td>--}}
-                <td>@if(!empty($list->getInvoiceInfo->getReference->name)){{ $list->getInvoiceInfo->getReference->name }}@endif</td>
-                <td class="text-center">{{ $list->price }}</td>
-                <td class="text-center">{{ $list->quantity }}</td>
+                <td>{{ $list->iv_no }}</td>
+                <td>@if(!empty($list->getPatient->name)){{ $list->getPatient->name }}@endif</td>
+                <td>@if(!empty($list->getDoctor->name)){{ $list->getDoctor->name }}@endif</td>
+                <td>@if(!empty($list->getReference->name)){{ $list->getReference->name }}@endif</td>
                 <td class="text-center">{{ $list->subtotal }}</td>
-                <td class="text-center">{{ $list->discountAmount }}({{ $list->discount }}%)</td>
-                <td class="text-center">{{ floor($list->total) }}</td>
+                <td class="text-center">{{ $list->discountCalculation }}</td>
+                <td class="text-center">{{ $list->discountAmount }}</td>
+                <td class="text-center">{{ $list->paidAmount }}</td>
+                <td class="text-center">{{ floor($list->dueAmount) }}</td>
             </tr>
         @endforeach
             <tr>
-                <td colspan="4"></td>
+                <td colspan="5"></td>
                 <td>Total</td>
-                <td class="text-center">{{ $totalQuantity }}</td>
-                <td class="text-center">{{ $totalSubTotal }}</td>
-                <td class="text-center">{{ $totalDiscount }}</td>
-                <td class="text-center">{{ floor($totalAmount) }}</td>
+                <td class="text-center">{{ floor($totalSubtotal) }}</td>
+                <td class="text-center">{{ floor($totalServiceDiscount) }}</td>
+                <td class="text-center">{{ floor($totalGeneralDiscount) }}</td>
+                <td class="text-center">{{ floor($totalPaid) }}</td>
+                <td class="text-center">{{ floor($totalDue) }}</td>
             </tr>
     </tbody>
 </table>

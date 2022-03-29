@@ -36,28 +36,43 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $invoiceList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getReference')->where('created_at', '>=', $fromDate)
+
+        $invoiceList = Invoice::with('getReference', 'getDoctor', 'getPatient', 'invoiceDetails', 'invoiceDetails.getServiceName')->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->get();
 
-        $totalAmount = 0;
-        $totalQuantity = 0;
-        $totalSubTotal = 0;
-        $totalDiscount = 0;
+        $totalSubtotal = 0;
+        $totalServiceDiscount = 0;
+        $totalGeneralDiscount = 0;
+        $totalPaid = 0;
+        $totalDue = 0;
+
         foreach($invoiceList as $list){
-            $totalSubTotal = $totalSubTotal + $list->subtotal;
-            $discountAmount = $list->subtotal * $list->discount / 100;
-            $totalDiscount = $totalDiscount + floor($discountAmount);
-            $totalAmount = $totalAmount + $list->total;
-            $totalQuantity = $totalQuantity + $list->quantity;
-            $list['discountAmount'] = floor($discountAmount);
+            $subtotal = 0;
+            $discountCalculation = 0;
+
+            foreach($list->invoiceDetails as $ids){
+                $subtotal = $subtotal + $ids->subtotal;
+                $discountAmount = $ids->subtotal * $ids->discount / 100;
+                $discountCalculation = $discountCalculation + floor($discountAmount);
+            }
+
+            $list['subtotal'] = $subtotal;
+            $list['discountCalculation'] = $discountCalculation;
+
+            $totalSubtotal = $totalSubtotal + $subtotal;
+            $totalServiceDiscount = $totalServiceDiscount + $discountCalculation;
+            $totalGeneralDiscount = $totalGeneralDiscount + $list->discountAmount;
+            $totalPaid = $totalPaid + $list->paidAmount;
+            $totalDue = $totalDue + $list->dueAmount;
         }
 
         $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
 
-        $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'totalSubTotal', 'totalDiscount', 'fromDate', 'originalToDate'));
+        $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalSubtotal', 'totalServiceDiscount', 'totalGeneralDiscount', 'totalPaid', 'totalDue', 'fromDate', 'originalToDate'));
         //return $pdf->stream();
         return $pdf->download('SalesReport.pdf');
+
     }
 
     /**

@@ -31,11 +31,11 @@
                     <thead>
                     <tr>
                         <th width="5%">SN</th>
-                        <th width="10%">Sales Date</th>
+                        <th width="15%">Sales Date</th>
                         <th width="15%">IV No</th>
                         <th width="15%">Patient Name</th>
                         <th width="15%">Doctor Name</th>
-                        <th width="15%">Reference Name</th>
+                        <th width="10%">Reference Name</th>
                         <th width="5%">Sub Total</th>
                         <th width="5%">Service Discount</th>
                         <th width="5%">General Discount</th>
