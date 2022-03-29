@@ -183,7 +183,7 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $recordList = Invoice::with('invoiceDetails', 'invoiceDetails.getInvoiceInfo.getReference', 'getReference', 'getPatient', 'getDoctor')
+        $recordList = Invoice::with('invoiceDetails', 'invoiceDetails.getServiceName', 'invoiceDetails.getInvoiceInfo', 'invoiceDetails.getInvoiceInfo.getReference', 'getReference', 'getPatient', 'getDoctor')
             ->where('reference_id', $referenceId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
@@ -196,16 +196,52 @@ class ReportController extends Controller
             $totalAmount = 0;
             $referenceAmount = 0;
 
-            foreach($record->invoiceDetails as $ids){
-                $subtotal = $subtotal + $ids->subtotal;
-                $discount = $ids->subtotal * $ids->discount / 100;
-                $discountAmount = $discountAmount + $discount;
-                $totalAmount = $totalAmount + $ids->total;
-                $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
-                $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+
+            $invoiceSize = sizeof($record->invoiceDetails);
+
+            if($invoiceSize <= 1){
+                foreach($record->invoiceDetails as $ids){
+                    //dd($ids->getInvoiceInfo['discountAmount']);
+                    if($ids->getServiceName['discountType'] == 1){
+                        $subtotal = $subtotal + $ids->subtotal;
+                        $discount = $ids->subtotal * $ids->discount / 100;
+                        $discountAmount = $discountAmount + $discount;
+                        $totalAmount = $totalAmount + $ids->total;
+
+                        $totalDiscount = $discount + $ids->getInvoiceInfo['discountAmount'];
+                        $refAmount = $ids->getServiceName['maxDiscount'] - $totalDiscount;
+                        if($refAmount > 0){
+                            $referenceAmount += $refAmount;
+                        }else{
+                            $referenceAmount += 0;
+                        }
+//                        dd($refAmount);
+//                        dd($discount);
+                    }else{
+                        $subtotal = $subtotal + $ids->subtotal;
+                        $discount = $ids->subtotal * $ids->discount / 100;
+                        $discountAmount = $discountAmount + $discount;
+                        $totalAmount = $totalAmount + $ids->total;
+                        $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                        $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+
+                        $referenceAmount = $referenceAmount - $record->discountAmount;
+                    }
+
+                }
+            }else{
+                foreach($record->invoiceDetails as $ids){
+                    $subtotal = $subtotal + $ids->subtotal;
+                    $discount = $ids->subtotal * $ids->discount / 100;
+                    $discountAmount = $discountAmount + $discount;
+                    $totalAmount = $totalAmount + $ids->total;
+                    $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                    $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+                }
+
+                $referenceAmount = $referenceAmount - $record->discountAmount;
             }
 
-            $referenceAmount = $referenceAmount - $record->discountAmount;
 
             $record['subtotal'] = floor($subtotal);
             $record['discount'] = floor($discountAmount);
@@ -230,7 +266,7 @@ class ReportController extends Controller
         }
         $referelName = References::findOrFail($referenceId);
 
-        $recordList = Invoice::with('invoiceDetails', 'invoiceDetails.getInvoiceInfo.getReference', 'getReference', 'getPatient', 'getDoctor')
+        $recordList = Invoice::with('invoiceDetails', 'invoiceDetails.getServiceName', 'invoiceDetails.getInvoiceInfo', 'invoiceDetails.getInvoiceInfo.getReference', 'getReference', 'getPatient', 'getDoctor')
             ->where('reference_id', $referenceId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
@@ -249,29 +285,56 @@ class ReportController extends Controller
             $discountAmount = 0;
             $totalAmount = 0;
             $referenceAmount = 0;
+            $invoiceSize = sizeof($record->invoiceDetails);
 
-            foreach($record->invoiceDetails as $ids){
-                //dd($ids->getInvoiceInfo->getReference['comission'], $ids->discount);
-                //$refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
-                $subtotal = $subtotal + $ids->subtotal;
+            if($invoiceSize <= 1){
+                foreach($record->invoiceDetails as $ids){
+                    //dd($ids->getInvoiceInfo['discountAmount']);
+                    if($ids->getServiceName['discountType'] == 1){
+                        $subtotal = $subtotal + $ids->subtotal;
+                        $discount = $ids->subtotal * $ids->discount / 100;
+                        $discountAmount = $discountAmount + $discount;
+                        $totalAmount = $totalAmount + $ids->total;
 
-                $discount = $ids->subtotal * $ids->discount / 100;
-                $discountAmount = $discountAmount + $discount;
+                        $totalDiscount = $discount + $ids->getInvoiceInfo['discountAmount'];
+                        $refAmount = $ids->getServiceName['maxDiscount'] - $totalDiscount;
+                        if($refAmount > 0){
+                            $referenceAmount += $refAmount;
+                        }else{
+                            $referenceAmount += 0;
+                        }
+//                        dd($refAmount);
+//                        dd($discount);
+                    }else{
+                        $subtotal = $subtotal + $ids->subtotal;
+                        $discount = $ids->subtotal * $ids->discount / 100;
+                        $discountAmount = $discountAmount + $discount;
+                        $totalAmount = $totalAmount + $ids->total;
+                        $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                        $referenceAmount += $ids->subtotal * $refferalCommision / 100;
 
-                $totalAmount = $totalAmount + $ids->total;
+                        $referenceAmount = $referenceAmount - $record->discountAmount;
+                    }
 
-                $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                }
+            }else{
+                foreach($record->invoiceDetails as $ids){
+                    $subtotal = $subtotal + $ids->subtotal;
+                    $discount = $ids->subtotal * $ids->discount / 100;
+                    $discountAmount = $discountAmount + $discount;
+                    $totalAmount = $totalAmount + $ids->total;
+                    $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                    $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+                }
 
-                $referenceAmount += $ids->subtotal * $refferalCommision / 100;
+                $referenceAmount = $referenceAmount - $record->discountAmount;
             }
 
-            $referenceAmount = $referenceAmount - $record->discountAmount;
+            $record['subtotal'] = $subtotal;
+            $record['serviceDiscountAmount'] = $discountAmount;
+            $record['referenceAmount'] = $referenceAmount;
 
-            $record['subtotal'] = floor($subtotal);
-            $record['discount'] = floor($discountAmount);
-            $record['total'] = floor($totalAmount);
-            $record['referalParcentage'] = $record->getReference->comission;
-            $record['referalAmount'] = floor($referenceAmount);
+
 
 
             $finalTotalAmount = $finalTotalAmount + $record->paidAmount;
@@ -284,6 +347,7 @@ class ReportController extends Controller
 
 
         $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
+        //dd($recordList);
 
         $pdf = PDF::loadView('admin.report.referenceWiseReportPdf', compact('recordList','finalTotalAmount', 'finalTotalDiscount','finalTotalRefaralAmount', 'finalTotalSubtotal','finalreferelCommission', 'fromDate', 'originalToDate', 'referelName', 'finalGeneralDiscount'));
         //return $pdf->stream();

@@ -49,11 +49,11 @@
                 <td class="text-center">@if(!empty($list->getPatient->name)){{ $list->getPatient->name }}@endif</td>
                 <td class="text-center">@if(!empty($list->getDoctor->name)){{ $list->getDoctor->name }}@endif</td>
                 <td class="text-center">{{ $list->subtotal }}</td>
-                <td class="text-center">{{ $list->discount }}</td>
+                <td class="text-center">{{ floor($list->serviceDiscountAmount) }}</td>
                 <td class="text-center">{{ $list->discountAmount }}</td>
                 <td class="text-center">{{ $list->paidAmount }}</td>
 {{--                <td class="text-center">{{ $list->referalParcentage }}</td>--}}
-                <td class="text-center">{{ $list->referalAmount }}</td>
+                <td class="text-center">{{ floor($list->referenceAmount) }}</td>
                 <td></td>
             </tr>
         @endforeach
