@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ExpenceCategory;
+use App\Expense;
 use App\ExpenseDetails;
 use App\Invoice;
 use App\InvoiceDetails;
@@ -35,28 +36,43 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $invoiceList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getReference')->where('created_at', '>=', $fromDate)
+
+        $invoiceList = Invoice::with('getReference', 'getDoctor', 'getPatient', 'invoiceDetails', 'invoiceDetails.getServiceName')->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->get();
 
-        $totalAmount = 0;
-        $totalQuantity = 0;
-        $totalSubTotal = 0;
-        $totalDiscount = 0;
+        $totalSubtotal = 0;
+        $totalServiceDiscount = 0;
+        $totalGeneralDiscount = 0;
+        $totalPaid = 0;
+        $totalDue = 0;
+
         foreach($invoiceList as $list){
-            $totalSubTotal = $totalSubTotal + $list->subtotal;
-            $discountAmount = $list->subtotal * $list->discount / 100;
-            $totalDiscount = $totalDiscount + floor($discountAmount);
-            $totalAmount = $totalAmount + $list->total;
-            $totalQuantity = $totalQuantity + $list->quantity;
-            $list['discountAmount'] = floor($discountAmount);
+            $subtotal = 0;
+            $discountCalculation = 0;
+
+            foreach($list->invoiceDetails as $ids){
+                $subtotal = $subtotal + $ids->subtotal;
+                $discountAmount = $ids->subtotal * $ids->discount / 100;
+                $discountCalculation = $discountCalculation + floor($discountAmount);
+            }
+
+            $list['subtotal'] = $subtotal;
+            $list['discountCalculation'] = $discountCalculation;
+
+            $totalSubtotal = $totalSubtotal + $subtotal;
+            $totalServiceDiscount = $totalServiceDiscount + $discountCalculation;
+            $totalGeneralDiscount = $totalGeneralDiscount + $list->discountAmount;
+            $totalPaid = $totalPaid + $list->paidAmount;
+            $totalDue = $totalDue + $list->dueAmount;
         }
 
         $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
 
-        $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalAmount', 'totalQuantity', 'totalSubTotal', 'totalDiscount', 'fromDate', 'originalToDate'));
+        $pdf = PDF::loadView('admin.report.salesReportPdf', compact('invoiceList','totalSubtotal', 'totalServiceDiscount', 'totalGeneralDiscount', 'totalPaid', 'totalDue', 'fromDate', 'originalToDate'));
         //return $pdf->stream();
         return $pdf->download('SalesReport.pdf');
+
     }
 
     /**
@@ -76,9 +92,14 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $recordList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getReference')->where('created_at', '>=', $fromDate)
+
+        $recordList = Invoice::with('getReference', 'getDoctor', 'getPatient', 'invoiceDetails', 'invoiceDetails.getServiceName')->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->get();
+
+//        $recordList = InvoiceDetails::with('getServiceName','getInvoiceInfo.getReference')->where('created_at', '>=', $fromDate)
+//            ->where('created_at', '<=', $toDate)
+//            ->get();
 //        return $toDate;
 //        $endDate =  Carbon::parse($toDate)->addDays(1);
 //        $endDate = $endDate->format('Y-m-d');
@@ -162,24 +183,29 @@ class ReportController extends Controller
         if(date('Y-m-d') == $toDate){
             $toDate = Carbon::parse($toDate)->addDays(1);
         }
-        $recordList = Invoice::with('invoiceDetails', 'getReference', 'getPatient', 'getDoctor')
+        $recordList = Invoice::with('invoiceDetails', 'invoiceDetails.getInvoiceInfo.getReference', 'getReference', 'getPatient', 'getDoctor')
             ->where('reference_id', $referenceId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
             ->orderBy('created_at', 'DESC')
             ->get();
+
         foreach($recordList as $record){
             $subtotal = 0;
             $discountAmount = 0;
             $totalAmount = 0;
+            $referenceAmount = 0;
+
             foreach($record->invoiceDetails as $ids){
                 $subtotal = $subtotal + $ids->subtotal;
                 $discount = $ids->subtotal * $ids->discount / 100;
                 $discountAmount = $discountAmount + $discount;
                 $totalAmount = $totalAmount + $ids->total;
+                $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+                $referenceAmount += $ids->subtotal * $refferalCommision / 100;
             }
 
-            $referenceAmount = $totalAmount * $record->getReference->comission / 100;
+            $referenceAmount = $referenceAmount - $record->discountAmount;
 
             $record['subtotal'] = floor($subtotal);
             $record['discount'] = floor($discountAmount);
@@ -204,7 +230,7 @@ class ReportController extends Controller
         }
         $referelName = References::findOrFail($referenceId);
 
-        $recordList = Invoice::with('invoiceDetails', 'getReference', 'getPatient', 'getDoctor')
+        $recordList = Invoice::with('invoiceDetails', 'invoiceDetails.getInvoiceInfo.getReference', 'getReference', 'getPatient', 'getDoctor')
             ->where('reference_id', $referenceId)
             ->where('created_at', '>=', $fromDate)
             ->where('created_at', '<=', $toDate)
@@ -216,19 +242,30 @@ class ReportController extends Controller
         $finalTotalRefaralAmount = 0;
         $finalTotalSubtotal = 0;
         $finalreferelCommission = 0;
+        $finalGeneralDiscount = 0;
 
         foreach($recordList as $record){
             $subtotal = 0;
             $discountAmount = 0;
             $totalAmount = 0;
+            $referenceAmount = 0;
+
             foreach($record->invoiceDetails as $ids){
+                //dd($ids->getInvoiceInfo->getReference['comission'], $ids->discount);
+                //$refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
                 $subtotal = $subtotal + $ids->subtotal;
+
                 $discount = $ids->subtotal * $ids->discount / 100;
                 $discountAmount = $discountAmount + $discount;
+
                 $totalAmount = $totalAmount + $ids->total;
+
+                $refferalCommision = $ids->getInvoiceInfo->getReference['comission'] - $ids->discount;
+
+                $referenceAmount += $ids->subtotal * $refferalCommision / 100;
             }
 
-            $referenceAmount = $totalAmount * $record->getReference->comission / 100;
+            $referenceAmount = $referenceAmount - $record->discountAmount;
 
             $record['subtotal'] = floor($subtotal);
             $record['discount'] = floor($discountAmount);
@@ -236,16 +273,19 @@ class ReportController extends Controller
             $record['referalParcentage'] = $record->getReference->comission;
             $record['referalAmount'] = floor($referenceAmount);
 
-            $finalTotalAmount = $finalTotalAmount + $totalAmount;
+
+            $finalTotalAmount = $finalTotalAmount + $record->paidAmount;
             $finalTotalDiscount = $finalTotalDiscount + $discountAmount;
             $finalTotalRefaralAmount = $finalTotalRefaralAmount + $referenceAmount;
             $finalTotalSubtotal = $finalTotalSubtotal + $subtotal;
             $finalreferelCommission = $record->getReference->comission;
+            $finalGeneralDiscount = $finalGeneralDiscount + $record->discountAmount;
         }
+
 
         $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
 
-        $pdf = PDF::loadView('admin.report.referenceWiseReportPdf', compact('recordList','finalTotalAmount', 'finalTotalDiscount','finalTotalRefaralAmount', 'finalTotalSubtotal','finalreferelCommission', 'fromDate', 'originalToDate', 'referelName'));
+        $pdf = PDF::loadView('admin.report.referenceWiseReportPdf', compact('recordList','finalTotalAmount', 'finalTotalDiscount','finalTotalRefaralAmount', 'finalTotalSubtotal','finalreferelCommission', 'fromDate', 'originalToDate', 'referelName', 'finalGeneralDiscount'));
         //return $pdf->stream();
         return $pdf->download('ReferenceWiseReport.pdf');
     }
@@ -509,6 +549,88 @@ class ReportController extends Controller
         //return $pdf->stream();
         return $pdf->download($pdfName);
     }
+
+
+    //Account Summary Report
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getAccountSummaryReport(){
+        return view('admin.report.accountSummaryReport');
+    }
+
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function generateAccountSummaryReport($fromDate, $toDate){
+        if(date('Y-m-d') == $toDate){
+            $toDate = Carbon::parse($toDate)->addDays(1);
+        }
+
+        $invoiceList = Invoice::with('invoiceDetails')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalIncome = 0;
+        foreach($invoiceList as $list){
+            $totalIncome += $list->paidAmount;
+        }
+
+        $expenseList = Expense::with('expenseDetails')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalExpense = 0;
+        foreach($expenseList as $list){
+            $totalExpense += $list->amount;
+        }
+        $finalResult = [$totalIncome, $totalExpense];
+
+        return $finalResult;
+    }
+
+    /**
+     * @param $fromDate
+     * @param $toDate
+     * @return mixed
+     */
+    public function generatePdfAccountSummaryReport($fromDate, $toDate){
+        $originalToDate = Carbon::parse($toDate)->format('jS M, Y');
+        $pdfName = "ExpenseReport(".$fromDate."/".$toDate.").pdf";
+        if(date('Y-m-d') == $toDate){
+            $toDate = Carbon::parse($toDate)->addDays(1);
+        }
+
+        $invoiceList = Invoice::with('invoiceDetails')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalIncome = 0;
+        foreach($invoiceList as $list){
+            $totalIncome += $list->paidAmount;
+        }
+
+        $expenseList = Expense::with('expenseDetails')->where('created_at', '>=', $fromDate)
+            ->where('created_at', '<=', $toDate)
+            ->get();
+
+        $totalExpense = 0;
+        foreach($expenseList as $list){
+            $totalExpense += $list->amount;
+        }
+
+        $profitCalculation = $totalIncome - $totalExpense;
+
+        $fromDate = Carbon::parse($fromDate)->format('jS M, Y');
+
+        $pdf = PDF::loadView('admin.report.accountSummaryReportPdf', compact('totalIncome', 'totalExpense', 'profitCalculation', 'fromDate', 'originalToDate'));
+        //return $pdf->stream();
+        return $pdf->download($pdfName);
+    }
+
 
 //    public function test(){
 //        //dd("Here");

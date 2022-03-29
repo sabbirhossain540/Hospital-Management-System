@@ -21,7 +21,7 @@
 <h6 class="text-center">Reference Name: {{ $referelName->name }} ({{ $referelName->code }})</h6>
 <h6 class="text-center mb-4">Date Range: {{ $fromDate }} -- {{ $originalToDate }}</h6>
 
-<table class="table table-sm table-bordered" width="100">
+<table class="table table-sm table-bordered" width="100" style="font-size: 10px !important;">
     <thead>
         <tr>
             <th class="text-center"  width="5%">SN</th>
@@ -30,8 +30,9 @@
             <th class="text-center"  width="15%">Patient Name</th>
             <th class="text-center"  width="15%">Doctor Name</th>
             <th class="text-center"  width="5%">Sub Total</th>
-            <th class="text-center"  width="5%">Discount</th>
-            <th class="text-center"  width="10%">Total</th>
+            <th class="text-center"  width="5%">Sevice / Test Discount</th>
+            <th class="text-center"  width="5%">General Discount</th>
+            <th class="text-center"  width="10%">Paid Amount</th>
 {{--            <th class="text-center"  width="10%">Comission(%)</th>--}}
             <th class="text-center"  width="10%">Referal Amount</th>
             <th></th>
@@ -49,7 +50,8 @@
                 <td class="text-center">@if(!empty($list->getDoctor->name)){{ $list->getDoctor->name }}@endif</td>
                 <td class="text-center">{{ $list->subtotal }}</td>
                 <td class="text-center">{{ $list->discount }}</td>
-                <td class="text-center">{{ $list->total }}</td>
+                <td class="text-center">{{ $list->discountAmount }}</td>
+                <td class="text-center">{{ $list->paidAmount }}</td>
 {{--                <td class="text-center">{{ $list->referalParcentage }}</td>--}}
                 <td class="text-center">{{ $list->referalAmount }}</td>
                 <td></td>
@@ -61,6 +63,7 @@
             <td style="text-align: center; font-weight: bold;">Total</td>
             <td class="text-center">{{ floor($finalTotalSubtotal) }}</td>
             <td class="text-center">{{ floor($finalTotalDiscount) }}</td>
+            <td class="text-center">{{ floor($finalGeneralDiscount) }}</td>
             <td class="text-center">{{ floor($finalTotalAmount) }}</td>
 {{--            <td class="text-center">{{ $finalreferelCommission }}</td>--}}
             <td class="text-center" colspan="2">{{ floor($finalTotalRefaralAmount) }}</td>
