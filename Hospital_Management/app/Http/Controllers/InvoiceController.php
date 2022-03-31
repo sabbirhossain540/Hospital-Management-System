@@ -298,5 +298,21 @@ class InvoiceController extends Controller
         return $pdf->stream();
     }
 
+    public function getInvoiceInfo($id){
+        $invoiceInfo = Invoice::where('id',$id)->first();
+        return $invoiceInfo;
+    }
+
+    public function saveDuePayment(Request $request){
+        $invoiceInfo = Invoice::where('id',$request->ivId)->first();
+        $paidAmount = $invoiceInfo->paidAmount + $request->duePaidAmount;
+        $dueAmount = $invoiceInfo->dueAmount - $request->duePaidAmount;
+        $invoiceInfo->paidAmount = $paidAmount;
+        $invoiceInfo->dueAmount = $dueAmount;
+        $invoiceInfo->save();
+        return true;
+
+    }
+
 
 }

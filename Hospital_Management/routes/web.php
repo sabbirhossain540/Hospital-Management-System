@@ -71,6 +71,8 @@ Route::post('/postServiceInfo', 'InvoiceController@postServiceInfo')->name('post
 Route::get('/getTempInvoiceDetails', 'InvoiceController@getTempInvoiceDetails')->name('getTempInvoiceDetails');
 Route::get('/deleteTempService/{id}', 'InvoiceController@deleteTempService')->name('deleteTempService');
 Route::get('/getTempServiceForEdit/{id}', 'InvoiceController@getTempServiceForEdit')->name('getTempServiceForEdit');
+Route::get('/getInvoiceInfo/{id}', 'InvoiceController@getInvoiceInfo')->name('getInvoiceInfo');
+Route::post('/saveDuePayment', 'InvoiceController@saveDuePayment')->name('saveDuePayment');
 
 Route::post('/deleteInvoice/{id}', 'InvoiceController@destroy')->name('deleteInvoice');
 
