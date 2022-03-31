@@ -137,7 +137,7 @@ class InvoiceController extends Controller
             }
 
 
-            $ivNo = "BCADC/INV/".date("y").date('m').date('d').$ivNo;
+            $ivNo = "BCDC/INV/".date("y").date('m').date('d').$ivNo;
             $invoiceMaster = new Invoice();
             $invoiceMaster->iv_no = $ivNo;
             $invoiceMaster->pataint_id = $pat_id;
