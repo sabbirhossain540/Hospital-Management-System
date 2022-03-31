@@ -84,8 +84,8 @@
         @endforeach
         <tr>
             <td colspan="4">@if($invoiceInfo->dueAmount == 0)<h5 class="mt-5 text-center" style="border: 2px solid black; border-radius: 20px;">Full Paid</h5>@endif</td>
-            <td  align="right" class="text-dark">Sub total <br> +VAT <br> -Discount <br>Net Payble <br> Paid <br> Due</td>
-            <td class="text-dark">{{ $tSubtotal }} <br> 0 <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
+            <td  align="right" class="text-dark">Sub total  <br> -Discount <br>Net Payble <br> Paid <br> Due</td>
+            <td class="text-dark">{{ $tSubtotal }}  <br> {{ $totalDiscountAmount }} <br> {{ $totalAmount }}<br> {{ $invoiceInfo->paidAmount }}<br> {{ $invoiceInfo->dueAmount }}</td>
             {{--                            <td>{{ $totalDiscountAmount }}</td>--}}
             {{--                            <td>{{ $totalAmount }}</td>--}}
         </tr>
@@ -103,7 +103,7 @@
         </tbody>
     </table>
 
-    <p class="text-right pr-3" style="font-size: 10px;">Bill Officer: @if(!empty($invoiceInfo->getCreatedUser->name)) {{ $invoiceInfo->getCreatedUser->name }}@endif</p>
+    <p class="text-right pr-5 mt-5" style="font-size: 10px;">Bill Officer: @if(!empty($invoiceInfo->getCreatedUser->name)) {{ $invoiceInfo->getCreatedUser->name }}@endif</p>
 
 {{--    <table width="100%">--}}
 {{--        <tr>--}}
