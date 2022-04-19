@@ -117,7 +117,11 @@
                     let generalDiscount = 0;
 
                     for (var i=0; i<data.length; i++) {
-                        let doctorName = data[i].get_doctor['name'];
+                        let doctorName = "";
+                        if(data[i].get_doctor != null){
+                            doctorName = data[i].get_doctor['name'];
+                        }
+
                         let patientName = data[i].get_patient['name'];
                         let IVNO = data[i].iv_no;
                         let serial_no = i+1;

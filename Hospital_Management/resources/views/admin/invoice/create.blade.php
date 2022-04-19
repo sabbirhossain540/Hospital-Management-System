@@ -106,7 +106,7 @@
                                 <select name="doctor_id" id="doctor_id" class="form-control search-option" required>
                                     <option value="">Select Doctor Name</option>
                                     @foreach($doctorList as $doctor)
-                                        <option value="{{ $doctor->id }}">{{ $doctor->name }} (@if(!empty($doctor->Specialist->name)){{ $doctor->Specialist->name }}@endif)</option>
+                                        <option value="{{ $doctor->id }}">{{ $doctor->name }} @if(!empty($doctor->Specialist->name))({{ $doctor->Specialist->name }})@endif</option>
                                     @endforeach
                                 </select>
                                 @error('doctor_id')

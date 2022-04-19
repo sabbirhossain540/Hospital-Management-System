@@ -16,7 +16,7 @@
                     <select name="doctor_id" id="doctor_id" class="form-control" style="width: 150px;">
                         <option value="">Select a Doctor</option>
                         @foreach($doctorList as $doctor)
-                            <option value="{{ $doctor->id }}">{{ $doctor->name }} ({{ $doctor->Specialist->name }})</option>
+                            <option value="{{ $doctor->id }}">{{ $doctor->name }} @if(isset($doctor->Specialist->name))({{ $doctor->Specialist->name }})@endif</option>
                         @endforeach
                     </select>
                 </div>
@@ -169,7 +169,12 @@
                         let referelCommission = 0;
 
                         for (var i=0; i<data.length; i++) {
-                            let referenceName = data[i].get_reference['name'];
+
+                            let referenceName = "";
+                            if(data[i].get_reference != null){
+                                referenceName = data[i].get_reference['name'];
+                            }
+                           // let referenceName = data[i].get_reference['name'];
                             let patientName = data[i].get_patient['name'];
                             let IVNO = data[i].iv_no;
                             let serial_no = i+1;

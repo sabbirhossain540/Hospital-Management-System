@@ -107,7 +107,7 @@
                     let dueAmount = 0;
 
                     for (var i=0; i<data.length; i++) {
-
+                        console.log(data[i]);
                         let subtotal = 0;
                         let discountCalculation = 0;
                         for(var j=0; j<data[i].invoice_details.length; j++){
@@ -116,14 +116,16 @@
                         }
 
 
-                        let doctorName = data[i].get_doctor['name'];
+                        let doctorName = "";
                         let patientName = data[i].get_patient['name'];
 
-                        let refName = ''
-                        if(data[i].get_reference['name'] != null){
+                        if(data[i].get_doctor != null){
+                            doctorName = data[i].get_doctor['name'];
+                        }
+
+                        let refName = "";
+                        if(data[i].get_reference != null){
                             refName = data[i].get_reference['name'];
-                        }else{
-                            refName = '';
                         }
 
                         let serial_no = i+1;
