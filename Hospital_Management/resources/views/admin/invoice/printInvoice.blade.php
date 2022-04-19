@@ -103,7 +103,7 @@
         </tbody>
     </table>
 
-    <p class="text-right pr-5 mt-5" style="font-size: 10px;">Bill Officer: @if(!empty($invoiceInfo->getCreatedUser->name)) {{ $invoiceInfo->getCreatedUser->name }}@endif</p>
+    <p class="text-right pr-5 mt-3" style="font-size: 10px;">Bill Officer: @if(!empty($invoiceInfo->getCreatedUser->name)) {{ $invoiceInfo->getCreatedUser->name }}@endif</p>
 
 {{--    <table width="100%">--}}
 {{--        <tr>--}}
